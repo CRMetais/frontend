@@ -1,0 +1,34 @@
+.lista-colaboradores-titulo {
+  text-align: left;
+}
+
+.lista-colaboradores-container {
+  width: 956px;
+}
+
+.colaborador-item {
+  display: flex;
+  padding: 4px 0 4px 0;
+}
+
+.colaborador-nome,
+.colaborador-email {
+  display: flex;
+  width: 400px;
+  text-align: left;
+  align-items: center;
+  font-size: 18px;
+}
+
+.colaborador-line {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.divisao {
+  width: 100%;
+  color: #e5e5e5;
+  height: 2px;
+  background-color: #e5e5e5;
+}

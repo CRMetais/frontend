@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/ListagemDeColaboradoresStyle.css";
 
 const colaboradores = [
   { id: 1, nome: "Carlos Almeida", email: "carlosAlmeida@gmail.com" },
@@ -22,12 +23,15 @@ const ColaboradorItem = ({ colaborador }) => {
   };
 
   return (
-    <div className="colaborador-item">
-      <span className="colaborador-nome">{colaborador.nome}</span>
-      <span className="colaborador-email">{colaborador.email}</span>
-      <button className="btn-acoes" onClick={handleAcoesClick}>
-        Ações
-      </button>
+    <div className="colaborador-line">
+      <div className="colaborador-item">
+        <span className="colaborador-nome">{colaborador.nome}</span>
+        <span className="colaborador-email">{colaborador.email}</span>
+        <button className="btn-acoes" onClick={handleAcoesClick}>
+          Ações
+        </button>
+      </div>
+      <div className="divisao"></div>
     </div>
   );
 };
@@ -35,7 +39,8 @@ const ColaboradorItem = ({ colaborador }) => {
 const ListaColaboradores = ({ lista = colaboradores }) => {
   return (
     <div className="lista-colaboradores-container">
-      <h2 className="lista-colaboradores-titulo">Colaboradores</h2>
+      <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
+      <br />
 
       <div className="lista-colaboradores-grid">
         {lista.map((colaborador) => (
