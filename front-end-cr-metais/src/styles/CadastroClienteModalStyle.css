@@ -1,0 +1,146 @@
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Caixa principal */
+.modal-box {
+  flex-direction: column;
+  display: flex;
+  width: 330px;
+  background: #ffffff;
+  padding: 28px 20px;
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.18);
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  gap: 10px;
+}
+
+/* Título */
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0;
+}
+
+.yellow-bars {
+  color: #f7c500;
+}
+
+/* Subtítulo */
+.subtitle {
+  margin-top: 6px;
+  font-size: 20px;
+  color: #2d2d2d;
+  margin-bottom: 22px;
+}
+
+/* Caixa de input igual ao Figma */
+.input-box {
+  background: #f2f2f2;
+  width: 90%;
+  padding: 12px 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  border: 1px solid #e7e7e7;
+}
+
+.logo-img {
+  width: 40px;
+  height: auto;
+  object-fit: contain;
+}
+
+.icon-img {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+
+.input-box input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Botão próximo */
+.btn-next {
+  width: 100%;
+  background: #2d2d2d;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.btn-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.btn-next:hover {
+  background: #1f1f1f;
+}
+
+/* Bolinhas (steps indicators) */
+.dots-wrapper {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d6d6d6;
+}
+
+.dot.active {
+  background: #3d3d3d;
+}
+
+* {
+  color: #434343;
+}
+
+.btn-prev {
+  background: #434343;
+  color: #ffffff;
+  padding: 12px;
+  width: 50%;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-prev:hover {
+  background: #303030;
+}
+
+button {
+  background: #434343 !important;
+  color: #ffffff !important;
+}
