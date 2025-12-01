@@ -1,8 +1,9 @@
 import { useState } from "react";
 import "../styles/NavbarStyle.css";
+import logo from "../styles/img/LOGO.png";
 
 export default function Navbar() {
-  const [active, setActive] = useState("Clientes");
+  const [active, setActive] = useState("");
 
   const items = [
     "Resumo",
@@ -16,33 +17,22 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      {/* Logo */}
-      <div className="navbar-logo">
-        <span className="logo-text">CR Metais</span>
-        <div className="logo-bars">
-          <div className="bar"></div>
-          <div className="bar"></div>
-          <div className="bar"></div>
-        </div>
+      <div className="logo">
+        <p className="texto_logo">CR Metais</p>
+        <img src={logo} alt="Logo" id="logo"/>
       </div>
-
-      {/* Menu */}
-      <ul className="navbar-menu">
-        {items.map((item) => (
-          <li key={item} className="menu-item">
-            <button
-              onClick={() => setActive(item)}
-              className={`menu-link ${active === item ? "active" : ""}`}
-            >
-              {item}
-            </button>
-            {active === item && <span className="underline" />}
+      <ul className="item_list">
+        {items.map(item => (
+          <li 
+            key={item} 
+            className={active === item ? "active" : ""}
+            onClick={() => setActive(item)}
+          >
+            {item}
           </li>
         ))}
       </ul>
-
-      {/* Logout */}
-      <button className="logout-btn">Sair</button>
+      <button className="btn_sair">Sair</button>
     </nav>
   );
 }

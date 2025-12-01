@@ -10,11 +10,6 @@ function App() {
   return (
     <div>
       <Navbar></Navbar>
-      <br />
-      <div style={{ display: "flex", gap: "300px", alignItems: "flex-start" }}>
-      <ListaColaboradores></ListaColaboradores>
-      <CadastroClienteModal></CadastroClienteModal>
-      </div>
       
     </div>
   );

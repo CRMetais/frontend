@@ -21,10 +21,12 @@ html {
   width: 100%;
   max-width: 100%;
   font-family: "IBM Plex Sans";
+  margin: 0;
+  padding: 0;
 }
 
 #root {
-  width: calc(100% - (96px * 2));
+  width: 100%;
 }
 
 a {
