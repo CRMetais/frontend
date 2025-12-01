@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import "../styles/CadastroClienteModalStyle.css";
 import info from "../styles/img/yellow-bars-img.png";
 import check from "../styles/img/check.png";
-import logo from "../styles/img/Logo.png"
-
+import logo from "../styles/img/LOGO.png";
 
 export default function CadastroClienteModal() {
   const [step, setStep] = useState(1);
@@ -49,7 +48,6 @@ export default function CadastroClienteModal() {
 
   function renderStep() {
     switch (step) {
-
       // STEP 1 -------------------------
       case 1:
         return (
@@ -117,8 +115,12 @@ export default function CadastroClienteModal() {
             {["CEP", "Bairro", "Logradouro", "Número", "Município", "UF"].map(
               (placeholder, index) => {
                 const setters = [
-                  setCep, setBairro, setLogradouro,
-                  setNumero, setMunicipio, setUf
+                  setCep,
+                  setBairro,
+                  setLogradouro,
+                  setNumero,
+                  setMunicipio,
+                  setUf,
                 ];
                 const values = [cep, bairro, logradouro, numero, municipio, uf];
 
@@ -178,26 +180,28 @@ export default function CadastroClienteModal() {
 
             {pagamento === "banco" && (
               <>
-                {[
-                  "Banco",
-                  "Agência",
-                  "Conta",
-                  "Tipo de Conta"
-                ].map((placeholder, index) => {
-                  const setters = [setBanco, setAgencia, setConta, setTipoConta];
-                  const values = [banco, agencia, conta, tipoConta];
+                {["Banco", "Agência", "Conta", "Tipo de Conta"].map(
+                  (placeholder, index) => {
+                    const setters = [
+                      setBanco,
+                      setAgencia,
+                      setConta,
+                      setTipoConta,
+                    ];
+                    const values = [banco, agencia, conta, tipoConta];
 
-                  return (
-                    <div className="input-box" key={index}>
-                      <img src={info} className="icon-img" />
-                      <input
-                        placeholder={placeholder}
-                        value={values[index]}
-                        onChange={(e) => setters[index](e.target.value)}
-                      />
-                    </div>
-                  );
-                })}
+                    return (
+                      <div className="input-box" key={index}>
+                        <img src={info} className="icon-img" />
+                        <input
+                          placeholder={placeholder}
+                          value={values[index]}
+                          onChange={(e) => setters[index](e.target.value)}
+                        />
+                      </div>
+                    );
+                  }
+                )}
               </>
             )}
 
@@ -235,11 +239,7 @@ export default function CadastroClienteModal() {
           <div className="final-step">
             <h2 className="final-title">Cadastro realizado com sucesso!</h2>
 
-            <img
-              src={check}
-              alt="Sucesso"
-              className="final-check"
-            />
+            <img src={check} alt="Sucesso" className="final-check" />
           </div>
         );
 
@@ -252,8 +252,7 @@ export default function CadastroClienteModal() {
     <div className="modal-overlay">
       <div className="modal-box">
         <h1 className="title">
-          CR Metais{" "}
-          <img src={logo} className="logo-img" />
+          CR Metais <img src={logo} className="logo-img" />
         </h1>
 
         <p className="subtitle">Cadastro de novo cliente</p>
@@ -261,8 +260,6 @@ export default function CadastroClienteModal() {
         {renderStep()}
 
         <div className="btn-wrapper">
-          
-
           {step < 4 && (
             <button className="btn-prev" onClick={nextStep}>
               Próximo
