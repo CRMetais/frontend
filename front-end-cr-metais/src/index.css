@@ -25,6 +25,8 @@ html {
   width: 100%;
   max-width: 100%;
   font-family: "IBM Plex Sans";
+  background-color: #fafafa;
+  background-size: cover;
 }
 
 #root {

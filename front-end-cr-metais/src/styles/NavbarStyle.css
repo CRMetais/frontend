@@ -43,6 +43,10 @@ body{
   border-bottom: 3px solid transparent;
 }
 
+.item_list li:hover:not(.active){
+  border-bottom: 3px solid #ffd90069;
+}
+
 .item_list li.active{
   border-bottom: 3px solid #FACC15;
 }

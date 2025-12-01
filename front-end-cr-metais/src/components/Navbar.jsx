@@ -14,7 +14,7 @@ export default function Navbar() {
     "Gestão de dados",
     "Dashboard",
   ];
-
+  
   return (
     <nav className="navbar">
       <div className="logo">
@@ -25,7 +25,7 @@ export default function Navbar() {
         {items.map(item => (
           <li 
             key={item} 
-            className={active === item ? "active" : ""}
+            className={active === item ? "active" : "inactivated"}
             onClick={() => setActive(item)}
           >
             {item}
