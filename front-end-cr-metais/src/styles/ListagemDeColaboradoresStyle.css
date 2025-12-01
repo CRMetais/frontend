@@ -32,3 +32,7 @@
   height: 2px;
   background-color: #e5e5e5;
 }
+
+.lista-colaboradores-grid {
+  width: calc(110vh + 10%) !important;
+}

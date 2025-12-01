@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap");
 
+#root {
+  height: auto !important;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -21,6 +25,8 @@ html {
   width: 100%;
   max-width: 100%;
   font-family: "IBM Plex Sans";
+  background-color: #fafafa;
+  background-size: cover;
 }
 
 #root {
