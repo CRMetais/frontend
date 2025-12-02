@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './Login.css';
+import "../styles/login.css";
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,13 +12,12 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1 className="login-title">
-          CR Metais <span className="login-bars">|||</span>
-        </h1>
+        <div className="logo"><h1>CRmetais</h1>
+        <img src="src\styles\img\LOGO.png" alt="" /></div>
+    
         <p className="login-subtitle">Bem-vindo de volta!</p>
 
         <div className="input-group">
-          <span className="input-icon">ⓘ</span>
           <input
             type="email"
             placeholder="Informe seu email"
@@ -26,10 +25,8 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             className="input-field"
           />
-        </div>
-
-        <div className="input-group">
-          <span className="input-icon">ⓘ</span>
+        
+  
           <input
             type="password"
             placeholder="Informe sua senha"

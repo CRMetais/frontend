@@ -5,11 +5,13 @@ import "./App.css";
 import CadastroClienteModal from "./components/CadastroClienteModal";
 import ListaColaboradores from "./components/ListagemDeColaboradores";
 import Navbar from "./components/Navbar";
+import Login from "./components/login";
+
 
 function App() {
   return (
     <div>
-      <Navbar></Navbar>
+      <Login></Login>
       
     </div>
   );
