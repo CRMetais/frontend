@@ -7,7 +7,6 @@ import logo from "../styles/img/LOGO.png";
 export default function CadastroClienteModal() {
   const [step, setStep] = useState(1);
 
-  // Step 1 - Dados Gerais
   const [cpfCnpj, setCpfCnpj] = useState("");
   const [nome, setNome] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -15,7 +14,6 @@ export default function CadastroClienteModal() {
   const [tipoPessoa, setTipoPessoa] = useState("");
   const [email, setEmail] = useState("");
 
-  // Step 2 - Endereço
   const [cep, setCep] = useState("");
   const [bairro, setBairro] = useState("");
   const [logradouro, setLogradouro] = useState("");
@@ -23,7 +21,6 @@ export default function CadastroClienteModal() {
   const [municipio, setMunicipio] = useState("");
   const [uf, setUf] = useState("");
 
-  // Step 3 - Pagamento
   const [pagamento, setPagamento] = useState("pix");
   const [chavePix, setChavePix] = useState("");
   const [banco, setBanco] = useState("");
@@ -31,7 +28,6 @@ export default function CadastroClienteModal() {
   const [conta, setConta] = useState("");
   const [tipoConta, setTipoConta] = useState("");
 
-  // Pertence ao cliente
   const [pertenceCliente, setPertenceCliente] = useState("sim");
 
   function nextStep() {
@@ -48,7 +44,6 @@ export default function CadastroClienteModal() {
 
   function renderStep() {
     switch (step) {
-      // STEP 1 -------------------------
       case 1:
         return (
           <>
@@ -108,7 +103,6 @@ export default function CadastroClienteModal() {
           </>
         );
 
-      // STEP 2 -------------------------
       case 2:
         return (
           <>
@@ -123,7 +117,6 @@ export default function CadastroClienteModal() {
                   setUf,
                 ];
                 const values = [cep, bairro, logradouro, numero, municipio, uf];
-
                 return (
                   <div className="input-box" key={index}>
                     <img src={info} className="icon-img" />
@@ -139,7 +132,6 @@ export default function CadastroClienteModal() {
           </>
         );
 
-      // STEP 3 -------------------------
       case 3:
         return (
           <>
@@ -233,7 +225,6 @@ export default function CadastroClienteModal() {
           </>
         );
 
-      // STEP 4 — FINALIZAÇÃO -------------------------
       case 4:
         return (
           <div className="final-step">
@@ -252,7 +243,7 @@ export default function CadastroClienteModal() {
     <div className="modal-overlay">
       <div className="modal-box">
         <h1 className="title">
-          CR Metais <img src={logo} className="logo-img" />
+          <img src={logo} className="logo-img" /> CR Metais 
         </h1>
 
         <p className="subtitle">Cadastro de novo cliente</p>

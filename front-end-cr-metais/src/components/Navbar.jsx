@@ -18,8 +18,8 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="logo">
+       <img src={logo} alt="Logo" id="logo"/>
         <p className="texto_logo">CR Metais</p>
-        <img src={logo} alt="Logo" id="logo"/>
       </div>
       <ul className="item_list">
         {items.map(item => (
