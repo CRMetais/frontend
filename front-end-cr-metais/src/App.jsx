@@ -3,6 +3,7 @@
 // import viteLogo from '/vite.svg'
 import "./App.css";
 import CadastroClienteModal from "./components/CadastroClienteModal";
+import Dashboard from "./components/Dashboard";
 import ListaColaboradores from "./components/ListagemDeColaboradores";
 import Navbar from "./components/Navbar";
 import Login from "./components/login";
@@ -11,8 +12,8 @@ import Login from "./components/login";
 function App() {
   return (
     <div>
-      <Login></Login>
-      
+      <Navbar></Navbar>
+      <Dashboard></Dashboard>
     </div>
   );
 }

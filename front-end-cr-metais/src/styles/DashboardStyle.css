@@ -1,0 +1,55 @@
+.container_dash{
+    width: 100%;
+    height: 87vh;
+    display: flex;
+}
+
+.container_kpi{
+    width: 30%;
+    height: 100%;
+    background-color: red;
+}
+
+.date_filter{
+    background-color: blue;
+    height: 20%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+.cards_kpi{
+    background-color: yellow;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.card_kpi{
+    background-color: green;
+    width: 80%;
+    height: 60%;
+    margin: auto;
+}
+
+.container_valor_card{
+    background-color: purple;
+    display: flex;
+    height: 55%;
+    align-items: center;
+    justify-content: center;
+}
+.container_graficos{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: green;
+    width: 70%;
+}
+h3{
+    margin: 0 !important;
+    padding: 0 !important;
+}
