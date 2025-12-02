@@ -7,31 +7,31 @@ export default function Dashboard(){
             <div className="container_kpi">
                 <div className="date_filter">
                     <div>
-                        <p>Data inicial</p>
-                        <input type="date" />
+                        <p className="tit_data">Data inicial</p>
+                        <input type="date" defaultValue="2025-09-01"/>
                     </div>
                     <div>
-                        <p>Data final</p>
-                        <input type="date" />
+                        <p className="tit_data">Data final</p>
+                        <input type="date" defaultValue="2025-10-01"/>
                     </div>
                 </div>
                 <div className="cards_kpi">
                     <div className="card_kpi">
-                        <p className="titulo_kpi">Total de vendas</p>
+                        <p className="titulo_kpi">Total de vendas:</p>
                         <div className="container_valor_card">
-                            <p>R$100.000,52</p>
+                            <p className="valor_kpi">R$100.000,52</p>
                         </div>
                     </div>
                     <div className="card_kpi">
-                        <p className="titulo_kpi">Total de vendas</p>
+                        <p className="titulo_kpi">Total de vendas:</p>
                         <div className="container_valor_card">
-                            <p>R$100.000,52</p>
+                            <p className="valor_kpi">R$100.000,52</p>
                         </div>
                     </div>
                     <div className="card_kpi">
-                        <p className="titulo_kpi">Total de vendas</p>
+                        <p className="titulo_kpi">Total de vendas:</p>
                         <div className="container_valor_card">
-                            <p>R$100.000,52</p>
+                            <p className="valor_kpi">R$100.000,52</p>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@ export default function Dashboard(){
                                 color: '#FACC15',
                             },
                         ]}
-                        width={600}
+                        width={630}
                         height={250}
                     />
                 </div>
@@ -75,7 +75,7 @@ export default function Dashboard(){
                                 color: '#60A5FA',
                             },
                         ]}
-                        width={600}
+                        width={630}
                         height={250}
                     />
                 </div>
