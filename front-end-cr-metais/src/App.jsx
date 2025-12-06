@@ -13,7 +13,7 @@ import CadastroColaboradorModal from "./components/CadastroColaboradorModal"
 function App() {
   return (
     <div>
-      <CadastroClienteModal></CadastroClienteModal>
+      <ListaColaboradores></ListaColaboradores>
     </div>
   );
 }
