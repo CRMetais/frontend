@@ -62,7 +62,6 @@ const ClienteModal = ({ cliente, onClose }) => {
 
         <div className="modal-grid">
           
-          {/* Coluna 1 - Informações */}
           <div className="modal-section">
             <h3 className="modal-section-title">Informações</h3>
             
@@ -91,7 +90,6 @@ const ClienteModal = ({ cliente, onClose }) => {
             </div>
           </div>
 
-          {/* Coluna 2 - Endereço */}
           <div className="modal-section">
             <h3 className="modal-section-title">Endereço</h3>
             
@@ -117,7 +115,6 @@ const ClienteModal = ({ cliente, onClose }) => {
             </div>
           </div>
 
-          {/* Coluna 3 - Conta Bancária */}
           <div className="modal-section">
             <h3 className="modal-section-title">Conta Bancária</h3>
             
@@ -191,19 +188,11 @@ const ClienteHeader = () => {
       <span className="colaborador-nome">Nome</span>
       <span className="colaborador-email">E-mail</span>
       <span className="colaborador-email">Tabela</span>
-      <span className="colaborador-acoes">Ações</span>
     </div>
   );
 };
 
 const ClienteItem = ({ cliente, onClick }) => {
-  const handleAcoesClick = (e) => {
-    e.stopPropagation();
-    console.log(`Ações para ${cliente.nome}`);
-    console.log(`Cliente recebido: ${cliente.id}`);
-    onClick(cliente);
-  };
-
   return (
     <div className="colaborador-line" onClick={() => onClick(cliente)}>
       <div className="colaborador-item">
@@ -211,9 +200,6 @@ const ClienteItem = ({ cliente, onClick }) => {
         <span className="colaborador-nome">{cliente.nome}</span>
         <span className="colaborador-email">{cliente.reponsavel}</span>
         <span className="colaborador-email">{cliente.tabela}</span>
-        <button className="btn-acoes" onClick={handleAcoesClick}>
-          Ações
-        </button>
       </div>
       <div className="divisao"></div>
     </div>
