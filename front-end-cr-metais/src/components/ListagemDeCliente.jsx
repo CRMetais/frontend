@@ -143,7 +143,6 @@ const ClienteModal = ({ cliente, onClose }) => {
             </div>
           </div>
 
-          {/* Coluna 4 - Tabela de preço */}
           <div className="modal-section">
             <h3 className="modal-section-title">Tabela de preço</h3>
             
