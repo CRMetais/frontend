@@ -6,43 +6,52 @@ body{
 .navbar{
   width: 100%;
   background-color: white;
-  height: 13vh;
+  min-height: 80px;
   justify-content: space-evenly;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 #logo{
-  height: 6vh;
-  margin-left: 5%;
+  height: 40px;
+  margin-left: 1rem;
 }
+
 .texto_logo{
   font-size: 20px;
   font-weight: bold;
   white-space: nowrap;
+  margin-right: 0.5rem;
 }
 
 .logo{
-  max-width: 10%;
-  height: 100%;
   display: flex;
   align-items: center;
-  padding: 0;
-
+  padding: 0.5rem;
+  min-width: 150px;
 }
+
 .item_list{
   display: flex;
   text-decoration: none;
   list-style: none;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
 }
 
 .item_list li{
   text-align: center;
   white-space: nowrap;
-  padding: 0 20px;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
 }
 
 .item_list li:hover:not(.active){
@@ -56,7 +65,85 @@ body{
 .btn_sair{
   background-color: #FACC15 !important;
   color: black !important;
-  height: 55%;
-  width: 6%;
-  box-shadow: 0px 2px 5px  rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1.5rem;
+  min-width: 80px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s;
+}
+
+.btn_sair:hover {
+  transform: scale(1.05);
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .item_list li {
+    padding: 0.5rem 0.8rem;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar {
+    flex-direction: column;
+    min-height: auto;
+    padding: 1rem;
+  }
+  
+  .logo {
+    margin-bottom: 1rem;
+  }
+  
+  .item_list {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .item_list li {
+    font-size: 13px;
+    padding: 0.4rem 0.6rem;
+  }
+  
+  .btn_sair {
+    width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .texto_logo {
+    font-size: 18px;
+  }
+  
+  #logo {
+    height: 35px;
+  }
+  
+  .item_list li {
+    font-size: 12px;
+    padding: 0.3rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .item_list {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .item_list li {
+    width: 100%;
+    padding: 0.8rem;
+    border-bottom: 1px solid #eee;
+    border-left: 3px solid transparent;
+  }
+  
+  .item_list li.active {
+    border-left: 3px solid #FACC15;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .item_list li:hover:not(.active) {
+    border-left: 3px solid #ffd90069;
+    border-bottom: 1px solid #eee;
+  }
 }

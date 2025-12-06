@@ -1,74 +1,102 @@
 .container_dash{
     width: 100%;
-    height: 87vh;
+    min-height: calc(100vh - 80px);
     display: flex;
     background-color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    gap: 2rem;
 }
+
 body{
-    width:100vw;
+    width: 100vw;
+    overflow-x: hidden;
 }
+
 .container_kpi{
-    width: 30%;
-    height: 100%;
+    flex: 1;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
-    margin-left: 7em;
+    gap: 1.5rem;
 }
 
 .date_filter{
-    height: 20%;
     display: flex;
-    justify-content: space-around;
+    gap: 1rem;
+    flex-wrap: wrap;
     align-items: center;
-    padding: 0;
-    margin: 0;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
 }
+
+.date_filter > div {
+    flex: 1;
+    min-width: 150px;
+}
+
 .cards_kpi{
-    height: 80%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    gap: 1.5rem;
 }
+
 .card_kpi{
-    width: 80%;
-    height: 60%;
-    margin: auto;
+    width: 100%;
+    padding: 1rem;
 }
 
 .container_valor_card{
     display: flex;
-    height: 45%;
+    min-height: 80px;
     align-items: center;
     justify-content: center;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px  rgba(0, 0, 0, 0.5);
-    background-color: #FACC15
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    background-color: #FACC15;
+    padding: 1rem;
 }
+
 .container_graficos{
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: space-around;
-    width: 70%;
+    gap: 2rem;
+    flex: 2;
+    min-width: 300px;
+}
+
+.grafico {
+    width: 100%;
+    max-width: 800px;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 h3{
-    margin: 0 !important;
+    margin: 0 0 1rem 0 !important;
     padding: 0 !important;
+    text-align: center;
 }
 
 input{
     background-color: #FACC15;
     border: none;
-    height: 4vh;
+    padding: 0.5rem;
     border-radius: 5px;
-    box-shadow: 0px 2px 5px  rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .titulo_kpi{
     text-align: left;
     font-size: 1.2em;
     font-weight: bold;
+    margin-bottom: 0.5rem;
 }
 
 .valor_kpi{
@@ -81,4 +109,57 @@ input{
     font-size: 1em;
     font-weight: bold;
     margin-bottom: 0.5em;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .container_dash {
+        flex-direction: column;
+        padding: 1.5rem;
+    }
+    
+    .container_kpi,
+    .container_graficos {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container_dash {
+        padding: 1rem;
+    }
+    
+    .date_filter {
+        flex-direction: column;
+    }
+    
+    .date_filter > div {
+        width: 100%;
+    }
+    
+    .grafico {
+        overflow-x: auto;
+    }
+    
+    .titulo_kpi {
+        font-size: 1em;
+    }
+    
+    .container_valor_card p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container_dash {
+        padding: 0.5rem;
+    }
+    
+    h3 {
+        font-size: 1em;
+    }
+    
+    .card_kpi {
+        padding: 0.5rem;
+    }
 }

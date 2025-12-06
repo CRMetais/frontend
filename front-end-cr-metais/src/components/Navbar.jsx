@@ -1,10 +1,7 @@
-import { useState } from "react";
 import "../styles/NavbarStyle.css";
 import logo from "../styles/img/LOGO.png";
 
-export default function Navbar() {
-  const [active, setActive] = useState("");
-
+export default function Navbar({ currentPage, setCurrentPage }) {
   const items = [
     "Resumo",
     "Histórico",
@@ -14,19 +11,23 @@ export default function Navbar() {
     "Gestão de dados",
     "Dashboard",
   ];
+
+  const handleItemClick = (item) => {
+    setCurrentPage(item);
+  };
   
   return (
     <nav className="navbar">
       <div className="logo">
         <p className="texto_logo">CR Metais</p>
-       <img src={logo} alt="Logo" id="logo"/>
+        <img src={logo} alt="Logo" id="logo"/>
       </div>
       <ul className="item_list">
         {items.map(item => (
           <li 
             key={item} 
-            className={active === item ? "active" : "inactivated"}
-            onClick={() => setActive(item)}
+            className={currentPage === item ? "active" : "inactivated"}
+            onClick={() => handleItemClick(item)}
           >
             {item}
           </li>

@@ -1,7 +1,29 @@
+import { useEffect, useState } from "react";
 import "../styles/DashboardStyle.css";
 import { BarChart } from '@mui/x-charts/BarChart';
 
 export default function Dashboard(){
+    const [chartWidth, setChartWidth] = useState(600);
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            if (width < 480) {
+                setChartWidth(Math.min(width - 40, 350));
+            } else if (width < 768) {
+                setChartWidth(Math.min(width - 60, 500));
+            } else if (width < 1200) {
+                setChartWidth(Math.min(width - 100, 600));
+            } else {
+                setChartWidth(630);
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return(
         <div className="container_dash">
             <div className="container_kpi">
@@ -53,7 +75,7 @@ export default function Dashboard(){
                                 color: '#FACC15',
                             },
                         ]}
-                        width={630}
+                        width={chartWidth}
                         height={250}
                     />
                 </div>
@@ -75,7 +97,7 @@ export default function Dashboard(){
                                 color: '#60A5FA',
                             },
                         ]}
-                        width={630}
+                        width={chartWidth}
                         height={250}
                     />
                 </div>
