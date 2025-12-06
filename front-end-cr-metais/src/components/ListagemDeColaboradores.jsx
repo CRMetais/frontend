@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/ListagemDeColaboradoresStyle.css";
+import CadastroColaboradorModal from "./CadastroColaborador";
 
-const colaboradores = [
+const colaboradoresIniciais = [
   { id: 1, nome: "Carlos Almeida", email: "carlosAlmeida@gmail.com" },
   { id: 2, nome: "Cláudio Filho", email: "claudioFilho@gmail.com" },
   { id: 3, nome: "João Vitor", email: "joaoVitor@gmail.com" },
@@ -36,16 +37,23 @@ const ColaboradorItem = ({ colaborador }) => {
   );
 };
 
-const ListaColaboradores = ({ lista = colaboradores }) => {
-  return (
-    <div className="lista-colaboradores-container">
-      <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
-      <br />
+const ListaColaboradores = () => {
+  const [colaboradores, setColaboradores] = useState(colaboradoresIniciais);
 
-      <div className="lista-colaboradores-grid">
-        {lista.map((colaborador) => (
-          <ColaboradorItem key={colaborador.id} colaborador={colaborador} />
-        ))}
+  return (
+    <div className="lista-colaboradores-page">
+      <div className="lista-colaboradores-container">
+        <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
+
+        <div className="lista-colaboradores-grid">
+          {colaboradores.map((colaborador) => (
+            <ColaboradorItem key={colaborador.id} colaborador={colaborador} />
+          ))}
+        </div>
+      </div>
+
+      <div className="cadastro-colaborador-card">
+        <CadastroColaboradorModal isOpen={true} onClose={() => {}} />
       </div>
     </div>
   );

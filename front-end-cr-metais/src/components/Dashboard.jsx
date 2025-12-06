@@ -76,7 +76,7 @@ export default function Dashboard(){
                             },
                         ]}
                         width={chartWidth}
-                        height={250}
+                        height={400}
                     />
                 </div>
                 
@@ -98,7 +98,7 @@ export default function Dashboard(){
                             },
                         ]}
                         width={chartWidth}
-                        height={250}
+                        height={400}
                     />
                 </div>
             </div>

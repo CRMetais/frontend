@@ -2,6 +2,7 @@
     width: 100%;
     min-height: calc(100vh - 80px);
     display: flex;
+    flex-direction: column;
     background-color: white;
     padding: 2rem;
     box-sizing: border-box;
@@ -14,8 +15,7 @@ body{
 }
 
 .container_kpi{
-    flex: 1;
-    min-width: 300px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -38,12 +38,15 @@ body{
 
 .cards_kpi{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1.5rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .card_kpi{
-    width: 100%;
+    flex: 1;
+    min-width: 200px;
     padding: 1rem;
 }
 
@@ -61,15 +64,15 @@ body{
 .container_graficos{
     display: flex;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     gap: 2rem;
-    flex: 2;
-    min-width: 300px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .grafico {
-    width: 100%;
-    max-width: 800px;
+    flex: 1;
+    min-width: 400px;
     padding: 1rem;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -113,14 +116,16 @@ input{
 
 /* Responsividade */
 @media (max-width: 1200px) {
-    .container_dash {
+    .container_graficos {
         flex-direction: column;
-        padding: 1.5rem;
     }
     
-    .container_kpi,
-    .container_graficos {
+    .grafico {
         width: 100%;
+    }
+    
+    .container_dash {
+        padding: 1.5rem;
     }
 }
 

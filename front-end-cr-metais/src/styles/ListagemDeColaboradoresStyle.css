@@ -1,9 +1,28 @@
-.lista-colaboradores-titulo {
-  text-align: left;
+.lista-colaboradores-page {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: flex-start;
 }
 
 .lista-colaboradores-container {
-  width: 956px;
+  flex: 1.5;
+  min-width: 400px;
+}
+
+.lista-colaboradores-titulo {
+  text-align: left;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.cadastro-colaborador-card {
+  flex: 1;
+  max-width: 450px;
+  min-width: 350px;
+  height: fit-content;
 }
 
 .colaborador-item {
@@ -171,6 +190,63 @@
 
 .modal-field strong {
   font-weight: 600;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .lista-colaboradores-page {
+    flex-direction: column;
+  }
+
+  .lista-colaboradores-container,
+  .cadastro-colaborador-card {
+    max-width: 100%;
+  }
+
+  .cadastro-colaborador-card {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .lista-colaboradores-page {
+    padding: 1rem;
+  }
+
+  .lista-colaboradores-titulo {
+    font-size: 1.5rem;
+  }
+
+  .colaborador-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .colaborador-nome,
+  .colaborador-email {
+    font-size: 16px;
+  }
+
+  .btn-acoes {
+    align-self: flex-end;
+  }
+
+  .lista-colaboradores-grid {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .lista-colaboradores-titulo {
+    font-size: 1.2rem;
+  }
+
+  .colaborador-nome,
+  .colaborador-email {
+    font-size: 14px;
+  }
 }
 
 .modal-footer {

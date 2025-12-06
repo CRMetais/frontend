@@ -16,6 +16,10 @@ export default function Navbar({ currentPage, setCurrentPage }) {
     setCurrentPage(item);
   };
   
+  const handleLogout = () => {
+    setCurrentPage("Login");
+  };
+  
   return (
     <nav className="navbar">
       <div className="logo">
@@ -33,7 +37,7 @@ export default function Navbar({ currentPage, setCurrentPage }) {
           </li>
         ))}
       </ul>
-      <button className="btn_sair">Sair</button>
+      <button className="btn_sair" onClick={handleLogout}>Sair</button>
     </nav>
   );
 }

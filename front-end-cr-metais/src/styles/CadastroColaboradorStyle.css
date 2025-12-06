@@ -1,0 +1,119 @@
+.modal-content-colaborador {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e5e5;
+}
+
+.modal-header-colaborador {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.modal-logo-colaborador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-logo-colaborador h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.logo-icon {
+  height: 40px;
+}
+
+.modal-header-colaborador h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0;
+}
+
+.form-colaborador {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-box-colaborador {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+}
+
+.input-box-colaborador:focus-within {
+  border-color: #FACC15;
+}
+
+.icon-img-colaborador {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.input-box-colaborador input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.input-box-colaborador input::placeholder {
+  color: #999;
+}
+
+.btn-proximo-colaborador {
+  background-color: #2d2d2d;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 1rem;
+}
+
+.btn-proximo-colaborador:hover {
+  background-color: #1a1a1a;
+  transform: translateY(-2px);
+}
+
+.btn-proximo-colaborador:active {
+  transform: translateY(0);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .modal-content-colaborador {
+    padding: 1.5rem;
+    width: 95%;
+  }
+
+  .modal-logo-colaborador h2 {
+    font-size: 1.2rem;
+  }
+
+  .modal-header-colaborador h3 {
+    font-size: 1rem;
+  }
+
+  .input-box-colaborador input {
+    font-size: 0.9rem;
+  }
+}

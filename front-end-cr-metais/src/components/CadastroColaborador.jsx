@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/CadastroClienteModalStyle.css";
+import "../styles/CadastroClienteStyle.css";
 import info from "../styles/img/yellow-bars-img.png";
 import check from "../styles/img/check.png";
 import logo from "../styles/img/LOGO.png";
@@ -101,29 +101,27 @@ export default function CadastroClienteModal() {
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-box">
-        <h1 className="title">
-          <img src={logo} className="logo-img" /> CR Metais 
-        </h1>
+    <div className="cadastro-box">
+      <h1 className="title">
+        <img src={logo} className="logo-img" /> CR Metais 
+      </h1>
 
-        <p className="subtitle">Cadastro de novo colaborador</p>
+      <p className="subtitle">Cadastro de novo colaborador</p>
 
-        {renderStep()}
+      {renderStep()}
 
-        <div className="btn-wrapper">
-          {step === 1 && (
-            <button className="btn-prev" onClick={nextStep}>
-              Próximo
-            </button>
-          )}
+      <div className="btn-wrapper">
+        {step === 1 && (
+          <button className="btn-prev" onClick={nextStep}>
+            Próximo
+          </button>
+        )}
 
-          {step === 2 && (
-            <button className="btn-prev" onClick={restart}>
-              Finalizar
-            </button>
-          )}
-        </div>
+        {step === 2 && (
+          <button className="btn-prev" onClick={restart}>
+            Finalizar
+          </button>
+        )}
       </div>
     </div>
   );

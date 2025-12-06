@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import "../styles/login.css";
 
-export default function Login() {
+export default function Login({ setCurrentPage }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
   const enviar = () => {
     console.log('Login:', { email, senha });
+    setCurrentPage('Dashboard');
   };
 
   return (

@@ -3,14 +3,16 @@ body{
   padding: 0;
 }
 
+
+
 .navbar{
   width: 100%;
   background-color: white;
   min-height: 80px;
-  justify-content: space-evenly;
+  justify-content: space-between;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -39,10 +41,11 @@ body{
   text-decoration: none;
   list-style: none;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
   padding: 0;
   margin: 0;
+  margin-right: 7vw;
 }
 
 .item_list li{
@@ -69,6 +72,7 @@ body{
   min-width: 80px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s;
+  margin-right: 7vw;
 }
 
 .btn_sair:hover {
@@ -85,25 +89,30 @@ body{
 
 @media (max-width: 992px) {
   .navbar {
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     min-height: auto;
-    padding: 1rem;
+    padding: 0.75rem 1rem;
+    flex-wrap: nowrap;
   }
-  
+
   .logo {
-    margin-bottom: 1rem;
+    margin-bottom: 0;
   }
-  
+
   .item_list {
-    justify-content: center;
-    margin-bottom: 1rem;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0;
+    flex-wrap: nowrap;
   }
-  
+
   .item_list li {
     font-size: 13px;
     padding: 0.4rem 0.6rem;
   }
-  
+
   .btn_sair {
     width: auto;
   }
@@ -125,25 +134,35 @@ body{
 }
 
 @media (max-width: 480px) {
+  .navbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
   .item_list {
-    flex-direction: column;
-    width: 100%;
+    flex-direction: row;
+    width: auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
   
   .item_list li {
-    width: 100%;
-    padding: 0.8rem;
-    border-bottom: 1px solid #eee;
-    border-left: 3px solid transparent;
+    width: auto;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 3px solid transparent;
+    border-left: none;
+    flex: 0 0 auto;
   }
   
   .item_list li.active {
-    border-left: 3px solid #FACC15;
-    border-bottom: 1px solid #eee;
+    border-left: none;
+    border-bottom: 3px solid #FACC15;
   }
   
   .item_list li:hover:not(.active) {
-    border-left: 3px solid #ffd90069;
-    border-bottom: 1px solid #eee;
+    border-left: none;
+    border-bottom: 3px solid #ffd90069;
   }
 }
