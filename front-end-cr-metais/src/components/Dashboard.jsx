@@ -39,15 +39,15 @@ export default function Dashboard(){
                 </div>
                 <div className="cards_kpi">
                     <div className="card_kpi">
-                        <p className="titulo_kpi">Total de vendas:</p>
+                        <p className="titulo_kpi">Peso total:</p>
                         <div className="container_valor_card">
-                            <p className="valor_kpi">R$100.000,52</p>
+                            <p className="valor_kpi">28.586 KG</p>
                         </div>
                     </div>
                     <div className="card_kpi">
-                        <p className="titulo_kpi">Total de vendas:</p>
+                        <p className="titulo_kpi">Rendimento:</p>
                         <div className="container_valor_card">
-                            <p className="valor_kpi">R$100.000,52</p>
+                            <p className="valor_kpi">R$25.458,52</p>
                         </div>
                     </div>
                     <div className="card_kpi">
