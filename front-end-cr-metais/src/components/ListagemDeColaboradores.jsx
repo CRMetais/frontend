@@ -3,11 +3,11 @@ import "../styles/ListagemDeColaboradoresStyle.css";
 import CadastroColaboradorModal from "./CadastroColaborador";
 
 const colaboradoresIniciais = [
-  { id: 1, nome: "Carlos Almeida", email: "carlosAlmeida@gmail.com", cargo: "Vendedor", status: "Ativo" },
-  { id: 2, nome: "Cláudio Filho", email: "claudioFilho@gmail.com", cargo: "Supervisor", status: "Ativo" },
-  { id: 3, nome: "João Vitor", email: "joaoVitor@gmail.com", cargo: "Gerente", status: "Ativo" },
-  { id: 4, nome: "Wellington Souza", email: "wellSouza@gmail.com", cargo: "Analista", status: "Inativo" },
-  { id: 5, nome: "Alexandre Silva", email: "alexandreSilva@gmail.com", cargo: "Vendedor", status: "Ativo" },
+  { id: 1, nome: "Carlos Almeida", email: "carlosAlmeida@gmail.com", cargo: "Vendedor" },
+  { id: 2, nome: "Cláudio Filho", email: "claudioFilho@gmail.com", cargo: "Supervisor" },
+  { id: 3, nome: "João Vitor", email: "joaoVitor@gmail.com", cargo: "Gerente" },
+  { id: 4, nome: "Wellington Souza", email: "wellSouza@gmail.com", cargo: "Analista" },
+  { id: 5, nome: "Alexandre Silva", email: "alexandreSilva@gmail.com", cargo: "Vendedor" },
 ];
 
 const ColaboradorItem = ({ colaborador, onAcoesClick }) => {
@@ -104,8 +104,6 @@ const ListaColaboradores = () => {
                 <h3 className="modal-section-title">Informações</h3>
 
                 <div className="modal-fields">
-
-                  
                   {modoEdicao ? (
                     <input
                       type="text"
@@ -120,7 +118,6 @@ const ListaColaboradores = () => {
                     </p>
                   )}
 
-                  
                   {modoEdicao ? (
                     <input
                       type="email"
@@ -135,7 +132,6 @@ const ListaColaboradores = () => {
                     </p>
                   )}
 
-                 
                   {modoEdicao ? (
                     <input
                       type="text"
@@ -147,23 +143,6 @@ const ListaColaboradores = () => {
                   ) : (
                     <p className="modal-field">
                       <strong>Cargo:</strong> {colaboradorSelecionado.cargo}
-                    </p>
-                  )}
-
-                 
-                  {modoEdicao ? (
-                    <select
-                      name="status"
-                      value={dadosEditados.status}
-                      onChange={handleChange}
-                      className="modal-input"
-                    >
-                      <option value="Ativo">Ativo</option>
-                      <option value="Inativo">Inativo</option>
-                    </select>
-                  ) : (
-                    <p className="modal-field">
-                      <strong>Status:</strong> {colaboradorSelecionado.status}
                     </p>
                   )}
                 </div>
