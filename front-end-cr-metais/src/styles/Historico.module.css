@@ -1,118 +1,113 @@
 /* Container Principal */
-.container {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+.containerPrincipal {
+  height: 87vh;
+  background-color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", sans-serif;
 }
 
-/* Main Content */
-.main {
-  padding: 2rem;
-  max-width: 1400px;
+.conteudoPrincipal {
+  width: 95%;
   margin: 0 auto;
 }
 
-/* Title Bar */
-.titleBar {
+.barraTitulo {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+  padding-right: 3rem;
 }
 
-.title {
-  font-size: 1.75rem;
+.titulo {
+  font-size: 3rem;
   color: #333;
   font-weight: 600;
   margin: 0;
 }
 
-/* CSV Button */
-.csvButton {
-  background: transparent;
-  border: none;
-  color: #999;
+.botaoCsv {
+  background-color: #ececec !important;  
+  height: 44px;
+  border: 1px solid #d6d6d6;
+  color: #a9a9a9 !important;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
   font-size: 0.9rem;
   cursor: pointer;
   transition: color 0.2s;
-  padding: 0.5rem;
 }
 
-.csvButton:hover {
-  color: #666;
+.botaoCsv:hover {
+  color: #666 !important;
 }
 
-/* Table Wrapper */
-.tableWrapper {
+/* Wrapper da tabela */
+.wrapperTabela {
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Table */
-.table {
+/* Tabela */
+.tabela {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
 
-.table thead {
+.tabela thead {
   background-color: #4a4a4a;
   color: white;
 }
 
-.table thead th {
+.tabela thead th {
   padding: 1rem;
-  text-align: left;
+  text-align: center;
   font-weight: 500;
   white-space: nowrap;
+  color: white;
 }
 
-.table tbody tr {
+.tabela tbody tr {
   border-bottom: 1px solid #e0e0e0;
   transition: background-color 0.2s;
 }
 
-.table tbody tr:hover {
+.tabela tbody tr:hover {
   background-color: #f9f9f9;
 }
 
-.table tbody tr:last-child {
-  border-bottom: none;
-}
-
-.table tbody td {
+.tabela tbody td {
   padding: 1rem;
   color: #555;
 }
 
 /* Responsividade */
 @media (max-width: 992px) {
-  .tableWrapper {
+  .wrapperTabela {
     overflow-x: auto;
   }
-  
-  .table {
+
+  .tabela {
     min-width: 1000px;
   }
 }
 
 @media (max-width: 768px) {
-  .main {
+  .conteudoPrincipal {
     padding: 1rem;
   }
-  
-  .titleBar {
+
+  .barraTitulo {
     flex-direction: column;
     align-items: flex-start;
     gap: 1rem;
   }
-  
-  .title {
+
+  .titulo {
     font-size: 1.5rem;
   }
 }

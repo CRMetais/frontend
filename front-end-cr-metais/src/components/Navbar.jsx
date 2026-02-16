@@ -23,8 +23,8 @@ export default function Navbar({ currentPage, setCurrentPage }) {
   return (
     <nav className="navbar">
       <div className="logo">
-        <p className="texto_logo">CR Metais</p>
         <img src={logo} alt="Logo" id="logo"/>
+        <p className="texto_logo">CR Metais</p>
       </div>
       <ul className="item_list">
         {items.map(item => (

@@ -6,6 +6,8 @@ import ListaColaboradores from "./components/ListagemDeColaboradores";
 import ListaCliente from "./components/ListagemDeCliente";
 import Navbar from "./components/Navbar";
 import Login from "./components/login";
+import Historico from "./components/Historico"; 
+
 
 function App() {
   const [currentPage, setCurrentPage] = useState("Login");
@@ -15,7 +17,7 @@ function App() {
       case "Resumo":
         return <div style={{padding: "2rem", textAlign: "center"}}><h1>Resumo - Em desenvolvimento</h1></div>;
       case "Histórico":
-        return <div style={{padding: "2rem", textAlign: "center"}}><h1>Historico- Em desenvolvimento</h1></div>;
+        return <Historico />;
       case "Clientes":
         return <ListaCliente />;
       case "Tabelas Preço":
