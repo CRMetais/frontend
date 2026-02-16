@@ -15,7 +15,7 @@ function App() {
       case "Resumo":
         return <div style={{padding: "2rem", textAlign: "center"}}><h1>Resumo - Em desenvolvimento</h1></div>;
       case "Histórico":
-        return <div style={{padding: "2rem", textAlign: "center"}}><h1>Histórico - Em desenvolvimento</h1></div>;
+        return <div style={{padding: "2rem", textAlign: "center"}}><h1>Historico- Em desenvolvimento</h1></div>;
       case "Clientes":
         return <ListaCliente />;
       case "Tabelas Preço":
