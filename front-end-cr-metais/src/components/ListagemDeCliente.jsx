@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../styles/ListagemDeColaboradoresStyle.css";
+import { colors } from "@mui/material";
+import CadastroClienteContainer from "./CadastroCliente";
 
 const clientes = [
   { 
@@ -210,7 +212,7 @@ const ListaClientes = ({ lista = clientes }) => {
 
   return (
     <div className="lista-colaboradores-container">
-      <br />
+      {/* <br /> */}
 
       <div className="lista-colaboradores-grid">
         <ClienteHeader />
@@ -223,10 +225,14 @@ const ListaClientes = ({ lista = clientes }) => {
         ))}
       </div>
 
+      <CadastroClienteContainer></CadastroClienteContainer>
+
       <ClienteModal 
         cliente={clienteSelecionado}
         onClose={() => setClienteSelecionado(null)}
+        
       />
+
     </div>
   );
 };

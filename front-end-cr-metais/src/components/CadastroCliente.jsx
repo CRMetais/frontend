@@ -30,8 +30,14 @@ export default function CadastroClienteModal() {
 
   const [pertenceCliente, setPertenceCliente] = useState("sim");
 
+  const [nomeDonoConta, setNomeDonoConta] = useState("");
+  const [cpfCnpjDono, setCpfCnpjDono] = useState("");
+
+  const [tabela, setTabela] = useState("");
+  const [gestorTabela, setGestorTabela] = useState("");
+
   function nextStep() {
-    if (step < 4) setStep(step + 1);
+    if (step < 6) setStep(step + 1);
   }
 
   function prevStep() {
@@ -227,12 +233,61 @@ export default function CadastroClienteModal() {
 
       case 4:
         return (
+          <>
+            <h3 style={{ marginBottom: "12px" }}>Dados do dono da conta</h3>
+        
+            <div className="input-box">
+              <img src={info} className="icon-img" />
+              <input
+                placeholder="Nome completo"
+                value={nomeDonoConta}
+                onChange={(e) => setNomeDonoConta(e.target.value)}
+              />
+            </div>
+        
+            <div className="input-box">
+              <img src={info} className="icon-img" />
+              <input
+                placeholder="CPF / CNPJ"
+                value={cpfCnpjDono}
+                onChange={(e) => setCpfCnpjDono(e.target.value)}
+              />
+            </div>
+          </>
+        );
+
+      case 5:
+        return (
+          <>
+            <div className="input-box">
+              <img src={info} className="icon-img" />
+              <input
+                placeholder="Tabela"
+                value={tabela}
+                onChange={(e) => setTabela(e.target.value)}
+              />
+            </div>
+        
+            <div className="input-box">
+              <img src={info} className="icon-img" />
+              <input
+                placeholder="Gestor da Tabela"
+                value={gestorTabela}
+                onChange={(e) => setGestorTabela(e.target.value)}
+              />
+            </div>
+          </>
+        );
+
+      case 6:
+        return (
           <div className="final-step">
             <h2 className="final-title">Cadastro realizado com sucesso!</h2>
-
+        
             <img src={check} alt="Sucesso" className="final-check" />
           </div>
         );
+
 
       default:
         return null;
@@ -240,7 +295,7 @@ export default function CadastroClienteModal() {
   }
 
   return (
-    <div className="modal-overlay">
+    // <div className="modal-overlay">
       <div className="modal-box">
         <h1 className="title">
           <img src={logo} className="logo-img" /> CR Metais 
@@ -251,19 +306,19 @@ export default function CadastroClienteModal() {
         {renderStep()}
 
         <div className="btn-wrapper">
-          {step < 4 && (
+          {step < 6 && (
             <button className="btn-prev" onClick={nextStep}>
               Próximo
             </button>
           )}
 
-          {step > 1 && step < 4 && (
+          {step > 1 && step < 6 && (
             <button className="btn-prev" onClick={prevStep}>
               Voltar
             </button>
           )}
 
-          {step === 4 && (
+          {step === 6 && (
             <button className="btn-prev" onClick={restart}>
               Finalizar
             </button>
@@ -271,11 +326,11 @@ export default function CadastroClienteModal() {
         </div>
 
         <div className="dots-wrapper">
-          {[1, 2, 3, 4].map((i) => (
+          {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className={`dot ${step === i ? "active" : ""}`} />
           ))}
         </div>
       </div>
-    </div>
+    // </div>
   );
 }
