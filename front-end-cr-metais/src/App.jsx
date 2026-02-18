@@ -4,6 +4,7 @@ import CadastroClienteModal from "./components/CadastroCliente";
 import Dashboard from "./components/Dashboard";
 import ListaColaboradores from "./components/ListagemDeColaboradores";
 import ListaCliente from "./components/ListagemDeCliente";
+import Boleta from "./components/Boleta";
 import Navbar from "./components/Navbar";
 import Resumo from "./components/Resumo"
 import Login from "./components/login";
@@ -24,8 +25,8 @@ function App() {
         return <ListaCliente />;
       case "Tabelas Preço":
         return <div style={{padding: "2rem", textAlign: "center"}}><h1>Tabelas de Preço - Em desenvolvimento</h1></div>;
-      case "Notas":
-        return <div style={{padding: "2rem", textAlign: "center"}}><h1>Notas - Em desenvolvimento</h1></div>;
+      case "Boleta":
+        return <Boleta />;
       case "Gestão de dados":
         return <ListaColaboradores />;
       case "Dashboard":

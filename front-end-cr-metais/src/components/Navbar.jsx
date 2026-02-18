@@ -7,7 +7,7 @@ export default function Navbar({ currentPage, setCurrentPage }) {
     "Histórico",
     "Clientes",
     "Tabelas Preço",
-    "Notas",
+    "Boleta",
     "Gestão de dados",
     "Dashboard",
   ];
