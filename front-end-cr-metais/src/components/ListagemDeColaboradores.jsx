@@ -37,7 +37,7 @@ const ListaColaboradores = () => {
         cargo: u.cargo
       }));
       setColaboradores(usuariosFormatados);
-      setPaginaAtual(1); // reset ao recarregar
+      setPaginaAtual(1);
     } catch (erro) {
       console.error("Erro ao buscar usuários:", erro);
       alert("Erro ao carregar colaboradores!");
@@ -48,7 +48,6 @@ const ListaColaboradores = () => {
     carregarUsuarios();
   }, []);
 
-  // Cálculos de paginação
   const totalPaginas = Math.ceil(colaboradores.length / ITENS_POR_PAGINA);
   const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
   const colaboradoresPagina = colaboradores.slice(indiceInicio, indiceInicio + ITENS_POR_PAGINA);
@@ -106,7 +105,6 @@ const ListaColaboradores = () => {
           ))}
         </div>
 
-        {/* Paginação */}
         {totalPaginas > 1 && (
           <div className="paginacao">
             <button
