@@ -53,7 +53,7 @@
   font-size: 18px;
 }
 
-.colaborador-line{
+.colaborador-line {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -62,7 +62,7 @@
 
 .colaborador-id {
   display: flex;
-  width: 50px; 
+  width: 50px;
   text-align: left;
   align-items: center;
   font-size: 18px;
@@ -107,167 +107,7 @@
   color: rgba(255, 255, 255, 0.884);
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  padding: 20px;
-}
-
-.modal-content {
-  background-color: white;
-  border-radius: 8px;
-  padding: 30px;
-  max-width: 1200px;
-  width: 100%;
-  max-height: 90vh;
-  overflow: auto;
-  position: relative;
-}
-
-.modal-close {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 32px;
-  cursor: pointer;
-  color: #666;
-  line-height: 1;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-}
-
-.modal-close:hover {
-  color: #000;
-}
-
-.modal-title {
-  font-size: 28px;
-  margin-bottom: 10px;
-  border-bottom: 3px solid #FFD700;
-  display: inline-block;
-  padding-bottom: 5px;
-}
-
-.modal-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.modal-section-title {
-  font-size: 16px;
-  margin-bottom: 15px;
-  border-bottom: 2px solid #FFD700;
-  display: inline-block;
-  padding-bottom: 3px;
-}
-
-.modal-fields {
-  margin-top: 15px;
-}
-
-.modal-field {
-  margin: 12px 0;
-  font-size: 14px;
-}
-
-.modal-field-border {
-  border-bottom: 1px solid #e0e0e0;
-  padding-bottom: 8px;
-}
-
-.modal-field strong {
-  font-weight: 600;
-}
-
-/* Responsividade */
-@media (max-width: 1200px) {
-  .lista-colaboradores-page {
-    flex-direction: column;
-  }
-
-  .lista-colaboradores-container,
-  .cadastro-colaborador-card {
-    max-width: 100%;
-  }
-
-  .cadastro-colaborador-card {
-    position: relative;
-    top: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .lista-colaboradores-page {
-    padding: 1rem;
-  }
-
-  .lista-colaboradores-titulo {
-    font-size: 1.5rem;
-  }
-
-  .colaborador-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .colaborador-nome,
-  .colaborador-email {
-    font-size: 16px;
-  }
-
-  .btn-acoes {
-    align-self: flex-end;
-  }
-
-  .lista-colaboradores-grid {
-    width: 100% !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .lista-colaboradores-titulo {
-    font-size: 1.2rem;
-  }
-
-  .colaborador-nome,
-  .colaborador-email {
-    font-size: 14px;
-  }
-}
-
-.modal-footer {
-  margin-top: 30px;
-  text-align: center;
-}
-
-.modal-btn-editar {
-  padding: 10px 40px;
-  background-color: #4a4a4a;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.modal-btn-editar:hover {
-  background-color: #333;
-}
-
+/* ✅ Definição única e correta do modal-overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -277,7 +117,6 @@
   align-items: center;
   z-index: 1000;
 }
-
 
 .modal-content {
   width: 420px;
@@ -289,10 +128,9 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  border-top: 6px solid #facc15; 
+  border-top: 6px solid #facc15;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
 }
-
 
 .modal-close {
   position: absolute;
@@ -304,14 +142,12 @@
   cursor: pointer;
 }
 
-
 .modal-title {
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 25px;
   color: #1e293b;
 }
-
 
 .modal-grid {
   width: 100%;
@@ -321,11 +157,9 @@
   align-items: center;
 }
 
-
 .modal-section {
   width: 100%;
 }
-
 
 .modal-section-title {
   font-size: 18px;
@@ -337,7 +171,6 @@
   padding-bottom: 4px;
 }
 
-
 .modal-fields {
   display: flex;
   flex-direction: column;
@@ -345,7 +178,6 @@
   font-size: 17px;
   color: #334155;
 }
-
 
 .modal-field {
   padding: 8px 0;
@@ -417,4 +249,60 @@
 select.modal-input {
   background-color: #ffffff;
   appearance: none;
+}
+
+@media (max-width: 1200px) {
+  .lista-colaboradores-page {
+    flex-direction: column;
+  }
+
+  .lista-colaboradores-container,
+  .cadastro-colaborador-card {
+    max-width: 100%;
+  }
+
+  .cadastro-colaborador-card {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .lista-colaboradores-page {
+    padding: 1rem;
+  }
+
+  .lista-colaboradores-titulo {
+    font-size: 1.5rem;
+  }
+
+  .colaborador-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .colaborador-nome,
+  .colaborador-email {
+    font-size: 16px;
+  }
+
+  .btn-acoes {
+    align-self: flex-end;
+  }
+
+  .lista-colaboradores-grid {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .lista-colaboradores-titulo {
+    font-size: 1.2rem;
+  }
+
+  .colaborador-nome,
+  .colaborador-email {
+    font-size: 14px;
+  }
 }

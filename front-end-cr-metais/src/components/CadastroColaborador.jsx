@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/CadastroClienteStyle.css";
+import "../styles/CadastroColaboradorStyle.css";
 import info from "../styles/img/yellow-bars-img.png";
 import check from "../styles/img/check.png";
 import logo from "../styles/img/LOGO.png";
