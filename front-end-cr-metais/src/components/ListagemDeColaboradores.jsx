@@ -3,6 +3,8 @@ import "../styles/ListagemDeColaboradoresStyle.css";
 import CadastroColaboradorModal from "./CadastroColaborador";
 import { listarUsuarios, excluirUsuario, editarUsuario } from "../services/usuarioService";
 
+const ITENS_POR_PAGINA = 8;
+
 const ColaboradorItem = ({ colaborador, onAcoesClick }) => {
   return (
     <div className="colaborador-line">
@@ -23,6 +25,7 @@ const ListaColaboradores = () => {
   const [colaboradorSelecionado, setColaboradorSelecionado] = useState(null);
   const [modoEdicao, setModoEdicao] = useState(false);
   const [dadosEditados, setDadosEditados] = useState({});
+  const [paginaAtual, setPaginaAtual] = useState(1);
 
   const carregarUsuarios = async () => {
     try {
@@ -34,6 +37,7 @@ const ListaColaboradores = () => {
         cargo: u.cargo
       }));
       setColaboradores(usuariosFormatados);
+      setPaginaAtual(1); // reset ao recarregar
     } catch (erro) {
       console.error("Erro ao buscar usuários:", erro);
       alert("Erro ao carregar colaboradores!");
@@ -43,6 +47,11 @@ const ListaColaboradores = () => {
   useEffect(() => {
     carregarUsuarios();
   }, []);
+
+  // Cálculos de paginação
+  const totalPaginas = Math.ceil(colaboradores.length / ITENS_POR_PAGINA);
+  const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
+  const colaboradoresPagina = colaboradores.slice(indiceInicio, indiceInicio + ITENS_POR_PAGINA);
 
   const abrirModal = (colaborador) => {
     setColaboradorSelecionado(colaborador);
@@ -86,8 +95,9 @@ const ListaColaboradores = () => {
     <div className="lista-colaboradores-page">
       <div className="lista-colaboradores-container">
         <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
+
         <div className="lista-colaboradores-grid">
-          {colaboradores.map((colaborador) => (
+          {colaboradoresPagina.map((colaborador) => (
             <ColaboradorItem
               key={colaborador.id}
               colaborador={colaborador}
@@ -95,6 +105,37 @@ const ListaColaboradores = () => {
             />
           ))}
         </div>
+
+        {/* Paginação */}
+        {totalPaginas > 1 && (
+          <div className="paginacao">
+            <button
+              className="paginacao-btn"
+              onClick={() => setPaginaAtual((p) => p - 1)}
+              disabled={paginaAtual === 1}
+            >
+              ← Anterior
+            </button>
+
+            {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
+              <button
+                key={num}
+                className={`paginacao-btn ${paginaAtual === num ? "paginacao-btn-ativo" : ""}`}
+                onClick={() => setPaginaAtual(num)}
+              >
+                {num}
+              </button>
+            ))}
+
+            <button
+              className="paginacao-btn"
+              onClick={() => setPaginaAtual((p) => p + 1)}
+              disabled={paginaAtual === totalPaginas}
+            >
+              Próximo →
+            </button>
+          </div>
+        )}
       </div>
 
       {colaboradorSelecionado && (

@@ -306,3 +306,40 @@ select.modal-input {
     font-size: 14px;
   }
 }
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.paginacao-btn {
+  padding: 6px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #434343;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.paginacao-btn:hover:not(:disabled) {
+  background-color: #f5f5f5;
+  border-color: #facc15;
+}
+
+.paginacao-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginacao-btn-ativo {
+  background-color: #facc15 !important;
+  border-color: #facc15 !important;
+  color: #1e293b !important;
+  font-weight: 700;
+}
