@@ -98,7 +98,6 @@
   transform: translateY(0);
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
   .modal-content-colaborador {
     padding: 1.5rem;
