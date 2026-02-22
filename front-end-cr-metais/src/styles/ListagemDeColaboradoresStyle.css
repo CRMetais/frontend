@@ -33,10 +33,6 @@
   gap: 10px;
 }
 
-.colaborador-line:hover .colaborador-item {
-  background-color: #f5f5f5;
-}
-
 .colaborador-nome {
   display: flex;
   flex: 2;
@@ -44,6 +40,12 @@
   align-items: center;
   font-size: 18px;
 }
+
+.colaborador-line:hover .colaborador-item {
+  background-color: #f5f5f5;
+}
+
+
 
 .colaborador-email {
   display: flex;
@@ -107,7 +109,6 @@
   color: rgba(255, 255, 255, 0.884);
 }
 
-/* ✅ Definição única e correta do modal-overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
