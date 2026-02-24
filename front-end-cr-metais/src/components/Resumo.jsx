@@ -18,9 +18,9 @@ const EstoqueItem = ({ produto }) => {
     <div className="estoque-line">
       <div className="estoque-item">
         <span className="estoque-produto">{produto.nome}</span>
-        <span className="estoque-peso">{produto.peso || "N/A"}</span>
-        <span className="estoque-valor">{produto.valorKg || "N/A"}</span>
-        <span className="estoque-total">{produto.total || "N/A"}</span>
+        <span className="estoque-peso">{produto.peso}</span>
+        <span className="estoque-valor">{produto.valor}</span>
+        <span className="estoque-total">{produto.total}</span>
       </div>
       <div className="divisao"></div>
     </div>
@@ -37,16 +37,37 @@ const ResumoCard = ({ titulo, valor }) => {
 };
 
 const Resumo = () => {
-  const [produtos, setProdutos] = useState([]);
+  const [resumo, setResumo] = useState(null);
 
+// Quando for editar sem usar o java e o bd descomenta esse useEffect mockado e comenta o outro
+
+//   useEffect(() => {
+//   setResumo({
+//     produtos: [
+//       { nome: "Produto A", peso: 10, valor: 20, total: 200 },
+//       { nome: "Produto B", peso: 5, valor: 30, total: 150 }
+//     ],
+//     totalAplicado: 350,
+//     pesoTotal: 15,
+//     notasHoje: 2,
+//     pesoHoje: 15
+//   });
+// }, []);
+
+
+// Usa esse useEffect quando ligar o java e bd
   useEffect(() => {
-    api.get('/produtos')
+    api.get('/resumos')
       .then(res => {
         console.log('Resposta da API:', res.data);
-        setProdutos(res.data);
+        setResumo(res.data);
       })
       .catch(err => console.error('Erro ao buscar produtos:', err));
   }, []);
+  
+  if(!resumo){
+    return <p>Carregando...</p>
+  }
 
   return (
     <div className="estoque-container">
@@ -55,18 +76,18 @@ const Resumo = () => {
         <div className="estoque-grid">
           <EstoqueHeader />
           <div className="estoque-lista">
-          {produtos.map(produto => (
-            <EstoqueItem key={produto.idProduto} produto={produto} />
+          {resumo.produtos.map((produto, index) => (
+            <EstoqueItem key={index} produto={produto} />
           ))}
           </div>
         </div>
       </div>
 
       <div className="estoque-dir">
-        <ResumoCard titulo="Total Aplicado:" valor="R$ 43.231,67" />
-        <ResumoCard titulo="Peso Total:" valor="7.545,500 kg" />
-        <ResumoCard titulo="Pg Notas (hoje):" valor="R$ 12.458,32" />
-        <ResumoCard titulo="Peso Kg (hoje):" valor="1.145,200 kg" />
+        <ResumoCard titulo="Total Aplicado:" valor={`R$ ${resumo.totalAplicado}`} />
+        <ResumoCard titulo="Peso Total:" valor={`R$ ${resumo.pesoTotal}`} />
+        <ResumoCard titulo="Pg Notas (hoje):" valor={`R$ ${resumo.notasHoje}`} />
+        <ResumoCard titulo="Peso Kg (hoje):" valor={`R$ ${resumo.pesoHoje}`} />
       </div>
     </div>
   );
