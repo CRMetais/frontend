@@ -6,9 +6,9 @@ const EstoqueHeader = () => {
   return (
     <div className="estoque-header">
       <span className="estoque-produto">Produto</span>
-      <span className="estoque-peso">Peso</span>
-      <span className="estoque-valor">Valor</span>
-      <span className="estoque-total">Total</span>
+      <span className="estoque-peso">Peso (Kg)</span>
+      <span className="estoque-valor">Valor Unitário (R$)</span>
+      <span className="estoque-total">Total (R$)</span>
     </div>
   );
 };
@@ -18,9 +18,9 @@ const EstoqueItem = ({ produto }) => {
     <div className="estoque-line">
       <div className="estoque-item">
         <span className="estoque-produto">{produto.nome}</span>
-        <span className="estoque-peso">{produto.peso}</span>
-        <span className="estoque-valor">{produto.valor}</span>
-        <span className="estoque-total">{produto.total}</span>
+        <span className="estoque-peso">{produto.peso.toFixed(2)}</span>
+        <span className="estoque-valor">{produto.valor.toFixed(2)}</span>
+        <span className="estoque-total">{produto.total.toFixed(2)}</span>
       </div>
       <div className="divisao"></div>
     </div>
@@ -84,10 +84,10 @@ const Resumo = () => {
       </div>
 
       <div className="estoque-dir">
-        <ResumoCard titulo="Total Aplicado:" valor={`R$ ${resumo.totalAplicado}`} />
-        <ResumoCard titulo="Peso Total:" valor={`R$ ${resumo.pesoTotal}`} />
-        <ResumoCard titulo="Pg Notas (hoje):" valor={`R$ ${resumo.notasHoje}`} />
-        <ResumoCard titulo="Peso Kg (hoje):" valor={`R$ ${resumo.pesoHoje}`} />
+        <ResumoCard titulo="Total Aplicado:" valor={`R$ ${resumo.totalAplicado.toFixed(2)}`} />
+        <ResumoCard titulo="Peso Total:" valor={`${resumo.pesoTotal.toFixed(2)} Kg`} />
+        <ResumoCard titulo="Pg Notas (hoje):" valor={`${resumo.notasHoje.toFixed(2)} Kg`} />
+        <ResumoCard titulo="Peso Kg (hoje):" valor={`${resumo.pesoHoje.toFixed(2)}`} />
       </div>
     </div>
   );
