@@ -1,0 +1,147 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+
+.container_dash {
+  width: 100%;
+  min-height: calc(100vh - 64px);
+  padding-top: 80px; /* compensa navbar fixed */
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+.container_kpi {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.date_filter {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.date_filter > div {
+  flex: 1;
+  min-width: 150px;
+}
+
+.input {
+  background-color: #FACC15;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cards_kpi {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.card_kpi {
+  flex: 1;
+  min-width: 200px;
+  padding: 1rem;
+}
+
+.container_valor_card {
+  display: flex;
+  min-height: 80px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.3);
+  background-color: #FACC15;
+  padding: 1rem;
+}
+
+.titulo_kpi {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.valor_kpi {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: black;
+}
+
+.tit_data {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.container_graficos {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.grafico {
+  flex: 1;
+  min-width: 400px;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.titulo_grafico {
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+/* Responsividade */
+
+@media (max-width: 1200px) {
+  .container_graficos {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .container_dash {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .date_filter {
+    flex-direction: column;
+  }
+
+  .grafico {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .container_dash {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .card_kpi {
+    padding: 0.5rem;
+  }
+}
