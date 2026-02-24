@@ -1,47 +1,41 @@
-body{
-  margin: 0;
-  padding: 0;
-}
-
-.navbar{
+.navbar {
   width: 100%;
   height: 64px;
   background-color: white;
-  justify-content: space-between;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
   padding: 1rem 3rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;  
+  z-index: 1000;
 }
 
-#logo{
-  height: 40px;
-  margin-left: 1rem;
-}
-
-.texto_logo{
-  font-size: 20px;
-  font-weight: bold;
-  white-space: nowrap;
-  margin-right: 0.5rem;
-}
-
-.logo{
-  gap: 1rem;
+/* Logo */
+.logo {
   display: flex;
   align-items: center;
+  gap: 1rem;
   padding: 0.5rem;
   min-width: 150px;
 }
 
-.item_list{
+.logoImg {
+  height: 40px;
+}
+
+.texto_logo {
+  font-size: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Lista de itens */
+.item_list {
   display: flex;
-  text-decoration: none;
   list-style: none;
   align-items: center;
   flex-wrap: nowrap;
@@ -51,7 +45,7 @@ body{
   margin-right: 7vw;
 }
 
-.item_list li{
+.item_list li {
   text-align: center;
   white-space: nowrap;
   padding: 0.5rem 1rem;
@@ -60,22 +54,25 @@ body{
   transition: all 0.3s ease;
 }
 
-.item_list li:hover:not(.active){
+.item_list li:hover {
   border-bottom: 3px solid #ffd90069;
 }
 
-.item_list li.active{
+.active {
   border-bottom: 3px solid #FACC15;
 }
 
-.btn_sair{
-  background-color: #FACC15 !important;
-  color: black !important;
+/* Botão sair */
+.btn_sair {
+  background-color: #FACC15;
+  color: black;
   padding: 0.5rem 1.5rem;
   height: 44px;
   width: 136px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s;
+  border: none;
+  cursor: pointer;
   margin-right: 7vw;
 }
 
@@ -83,7 +80,10 @@ body{
   transform: scale(1.05);
 }
 
+/* ========================= */
 /* Responsividade */
+/* ========================= */
+
 @media (max-width: 1200px) {
   .item_list li {
     padding: 0.5rem 0.8rem;
@@ -93,23 +93,7 @@ body{
 
 @media (max-width: 992px) {
   .navbar {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    min-height: auto;
     padding: 0.75rem 1rem;
-    flex-wrap: nowrap;
-  }
-
-  .logo {
-    margin-bottom: 0;
-  }
-
-  .item_list {
-    justify-content: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 0;
-    flex-wrap: nowrap;
   }
 
   .item_list li {
@@ -126,11 +110,11 @@ body{
   .texto_logo {
     font-size: 18px;
   }
-  
-  #logo {
+
+  .logoImg {
     height: 35px;
   }
-  
+
   .item_list li {
     font-size: 12px;
     padding: 0.3rem 0.5rem;
@@ -138,35 +122,13 @@ body{
 }
 
 @media (max-width: 480px) {
-  .navbar {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-  }
-
   .item_list {
-    flex-direction: row;
-    width: auto;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .item_list li {
-    width: auto;
-    padding: 0.6rem 0.8rem;
-    border-bottom: 3px solid transparent;
-    border-left: none;
     flex: 0 0 auto;
+    padding: 0.6rem 0.8rem;
   }
-  
-  .item_list li.active {
-    border-left: none;
-    border-bottom: 3px solid #FACC15;
-  }
-  
-  .item_list li:hover:not(.active) {
-    border-left: none;
-    border-bottom: 3px solid #ffd90069;
-  }
-}
+} 
