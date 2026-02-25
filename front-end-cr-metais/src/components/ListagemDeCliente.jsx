@@ -1,55 +1,55 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; 
 import "../styles/ListagemDeColaboradoresStyle.css";
 import { colors } from "@mui/material";
 import CadastroClienteContainer from "./CadastroCliente";
+import { listarClientes } from "../services/clienteService";
 
-const clientes = [
-  { 
-    id: 1, 
-    nome: "Carlos Almeida", 
-    reponsavel: "carlosAlmeida@gmail.com", 
-    tabela: "Alta",
-    apelido: "Carlão",
-    telefone: "(11) 99888-0984",
-    email: "carlosAlmeida@gmail.com",
-    cpfCnpj: "543.654.654.78",
-    ie: "?",
-    rg: "-",
-    tipoPessoa: "F",
-    cidade: "São Paulo",
-    estado: "SP",
-    bairro: "Jaraguá",
-    rua: "Estrada de Taipas",
-    numero: "458",
-    cep: "02448-888",
-    responsavelConta: "Thiago Cardoso",
-    documento: "587.485.458-88",
-    chavePix: "(11) 99854-8547",
-    tipoConta: "-",
-    conta: "-",
-    agencia: "-",
-    banco: "-",
-    tabelaPreco: "Padrão",
-    gestor: "Ricardo",
-    tabelaSemanal: "Sim",
-    ultimaVenda: "02/09/2025",
-    status: "Ativo",
-    statusCadastro: "OK",
-    rendimento: "R$850,25"
-  },
-  { id: 2, nome: "Cláudio Filho", reponsavel: "claudioFilho@gmail.com", tabela: "Alta" },
-  { id: 3, nome: "João Vitor", reponsavel: "joaoVitor@gmail.com", tabela: "Alta" },
-  { id: 4, nome: "Wellington Souza", reponsavel: "wellSouza@gmail.com", tabela: "Alta" },
-  { id: 5, nome: "Alexandre Silva", reponsavel: "alexandreSilva@gmail.com", tabela: "Alta" },
-  { id: 6, nome: "Bruno Miranda", reponsavel: "brunoMiranda@gmail.com", tabela: "Alta" },
-  { id: 7, nome: "Ronaldo Ferraz", reponsavel: "ronaldoFerraz@gmail.com", tabela: "Alta" },
-  { id: 8, nome: "Jairo Torres", reponsavel: "jairoTorres@gmail.com", tabela: "Alta" },
-  { id: 9, nome: "Floriano Silveira", reponsavel: "florianoSilveira@gmail.com", tabela: "Alta" },
-  { id: 10, nome: "Luis Fernando", reponsavel: "luisFernando@gmail.com", tabela: "Alta" },
-  { id: 11, nome: "Paulo Muniz", reponsavel: "pauloMuniz@gmail.com", tabela: "Alta" },
-  { id: 12, nome: "Jorge Pereira", reponsavel: "jorgePereira@gmail.com", tabela: "Alta" },
-  { id: 13, nome: "Luis Fernando", reponsavel: "luisFernando@gmail.com", tabela: "Alta" },
-];
+
+const ListagemClientes = () => {
+  const [listaClientes, setListaClientes] = useState([]);
+  const [clienteSelecionado, setClienteSelecionado] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        const dados = await listarClientes();
+        setListaClientes(dados);
+      } catch (error) {
+        console.error("Erro ao buscar clientes:", error);
+        alert("Erro ao conectar com o servidor!");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    carregarDados();
+  }, []);
+
+
+  if (loading) return <p>Carregando clientes...</p>;
+
+  return (
+    <div className="container">
+      <ClienteHeader />
+      {listaClientes.map((cliente) => (
+        <ClienteItem 
+          key={cliente.id} 
+          cliente={cliente} 
+          onClick={setClienteSelecionado} 
+        />
+      ))}
+
+      {clienteSelecionado && (
+        <ClienteModal 
+          cliente={clienteSelecionado} 
+          onClose={() => setClienteSelecionado(null)} 
+        />
+      )}
+    </div>
+  );
+};
+
 
 const ClienteModal = ({ cliente, onClose }) => {
   if (!cliente) return null;
@@ -206,33 +206,51 @@ const ClienteItem = ({ cliente, onClick }) => {
     </div>
   );
 };
-
-const ListaClientes = ({ lista = clientes }) => {
+const ListaClientes = () => { 
+  const [listaClientes, setListaClientes] = useState([]); 
   const [clienteSelecionado, setClienteSelecionado] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        const dados = await listarClientes();
+        setListaClientes(Array.isArray(dados) ? dados : []);
+      } catch (error) {
+        console.error("Erro ao carregar clientes", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    carregarDados();
+  }, []);
+
+  if (loading) return <div style={{padding: "20px"}}>Carregando clientes do banco...</div>;
 
   return (
     <div className="lista-colaboradores-container">
-      {/* <br /> */}
-
       <div className="lista-colaboradores-grid">
         <ClienteHeader />
-        {lista.map((cliente) => (
-          <ClienteItem 
-            key={cliente.id} 
-            cliente={cliente}
-            onClick={setClienteSelecionado}
-          />
-        ))}
-      </div>
-
-      <CadastroClienteContainer></CadastroClienteContainer>
-
-      <ClienteModal 
-        cliente={clienteSelecionado}
-        onClose={() => setClienteSelecionado(null)}
         
-      />
-
+        {listaClientes.length > 0 ? (
+          listaClientes.map((cliente) => (
+            <ClienteItem 
+              key={cliente.id} 
+              cliente={cliente}
+              onClick={setClienteSelecionado}
+            />
+          ))
+        ) : (
+          <p style={{padding: "20px"}}>Nenhum cliente encontrado no banco de dados.</p>
+        )}
+      </div>
+      
+      {clienteSelecionado && (
+        <ClienteModal 
+          cliente={clienteSelecionado} 
+          onClose={() => setClienteSelecionado(null)} 
+        />
+      )}
     </div>
   );
 };
