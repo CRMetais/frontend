@@ -8,7 +8,8 @@ import Boleta from "./components/Boleta";
 import Navbar from "./components/Navbar";
 import Resumo from "./components/Resumo"
 import Login from "./components/login";
-import Historico from "./components/Historico"; 
+import Historico from "./components/Historico";
+import TabelaPreco from "./components/TabelasPreco"
 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
       case "Clientes":
         return <ListaCliente />;
       case "Tabelas Preço":
-        return <div style={{padding: "2rem", textAlign: "center"}}><h1>Tabelas de Preço - Em desenvolvimento</h1></div>;
+       return <TabelaPreco/>;
       case "Boleta":
         return <Boleta />;
       case "Gestão de dados":

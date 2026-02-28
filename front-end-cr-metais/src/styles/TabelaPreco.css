@@ -1,0 +1,174 @@
+/* ====== LAYOUT GERAL ====== */
+.page {
+  padding: 24px;
+  background: #ffffff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.card {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.headerYellow {
+  background: #f2c200;
+  color: #222;
+  font-weight: 800;
+  text-align: center;
+  padding: 14px 12px;
+  letter-spacing: 0.4px;
+  font-size: 20px;
+}
+
+/* minmax(0,1fr) evita "vazios" e overflow bugado */
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 18px;
+  padding: 16px;
+  align-items: start;
+}
+
+/* ====== AREA DA TABELA (SCROLL) ====== */
+.tableWrap {
+  position: relative;
+  border: 1px solid #e6e6e6;
+  border-radius: 6px;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  max-height: 70vh;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* status */
+.status {
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #eee;
+  background: #fff;
+}
+
+.status.error {
+  color: #b00020;
+  font-weight: 700;
+}
+
+/* ====== TABELA ====== */
+.table {
+  border-collapse: collapse;
+  width: max-content; /* cresce com as colunas */
+  min-width: 100%;    /* mas não fica menor que o container */
+}
+
+/* ====== HEADER ====== */
+.th {
+  background: #2f2f2f;
+  color: #ffffff;
+  padding: 10px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid #3d3d3d;
+  text-align: center;
+  white-space: nowrap;
+
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+/* primeira coluna sticky */
+.thLeft {
+  text-align: left;
+  min-width: 220px;
+
+  position: sticky;
+  left: 0;
+  z-index: 4;
+}
+
+/* ====== CELULAS ====== */
+.td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #ececec;
+  font-size: 13px;
+  text-align: center;
+  white-space: nowrap;
+  background: #ffffff;
+}
+
+.tdLeft {
+  text-align: left;
+
+  position: sticky;
+  left: 0;
+  z-index: 2;
+
+  background: #ffffff;
+  border-right: 1px solid #f0f0f0;
+}
+
+/* hover */
+.trHover:hover td {
+  background: #fafafa;
+}
+.trHover:hover .tdLeft {
+  background: #fafafa;
+}
+
+/* ====== TENDÊNCIA (cores automáticas) ====== */
+/* aumentou vs dia anterior */
+.cellUp {
+  color: #0b7a2a;
+  font-weight: 700;
+}
+
+/* caiu vs dia anterior */
+.cellDown {
+  color: #d10000;
+  font-weight: 700;
+}
+
+/* ====== LADO DIREITO (SELECT) ====== */
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.sideLabel {
+  font-weight: 600;
+  color: #333;
+}
+
+.select {
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid #cfcfcf;
+  padding: 0 12px;
+  font-weight: 800;
+  background: #2f2f2f;
+  color: #ffffff;
+  outline: none;
+  cursor: pointer;
+}
+
+.hint {
+  font-size: 12px;
+  color: #666;
+  padding-top: 4px;
+}
+
+/* responsivo */
+@media (max-width: 900px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+  .side {
+    padding-top: 0;
+  }
+}
