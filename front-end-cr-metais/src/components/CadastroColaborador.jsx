@@ -30,8 +30,9 @@ export default function CadastroClienteModal({ onCadastroSucesso }) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailVal.length > 0 && !regex.test(emailVal))
       novosErros.email = "Email inválido";
-    if (senhaVal.length > 0 && senhaVal.length < 8)
-      novosErros.senha = "Senha deve conter no mínimo 8 caracteres";
+    const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (senhaVal.length > 0 && !senhaForteRegex.test(senhaVal)) 
+      novosErros.senha = "Senha deve ter mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial";
     if (csenhaVal.length > 0 && senhaVal !== csenhaVal)
       novosErros.csenha = "As senhas não coincidem";
     if (cargoVal.length > 0 && cargoVal.trim().length === 0)
@@ -44,7 +45,8 @@ export default function CadastroClienteModal({ onCadastroSucesso }) {
     if (nome.trim().length <= 2) novosErros.nome = "Nome deve conter pelo menos 3 letras";
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regex.test(email)) novosErros.email = "Email inválido";
-    if (senha.length < 8) novosErros.senha = "Senha deve conter no mínimo 8 caracteres";
+    if (!senhaForteRegex.test(senha))
+      novosErros.senha = "Senha deve ter mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial";
     if (senha !== csenha) novosErros.csenha = "As senhas não coincidem";
     if (cargo.trim().length === 0) novosErros.cargo = "Informe um cargo";
     setErros(novosErros);

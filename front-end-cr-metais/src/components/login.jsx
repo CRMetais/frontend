@@ -8,6 +8,7 @@ export default function Login({ setCurrentPage }) {
   const enviar = () => {
     console.log('Login:', { email, senha });
     setCurrentPage('Dashboard');
+    console.log(email, senha)
   };
 
   return (
