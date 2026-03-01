@@ -41,7 +41,6 @@ const Boleta = () => {
       setCarregando(true);
       const endpoint = tipoNota === "ENTRADA" ? "fornecedores" : "clientes";
 
-      // 1. Busca os clientes ou fornecedores
       try {
         const resEntidades = await axios.get(`http://localhost:8080/${endpoint}`);
         setClientes(resEntidades.data?.content || resEntidades.data || []);
@@ -49,7 +48,6 @@ const Boleta = () => {
         console.error("Erro ao carregar entidades", error);
       }
 
-      // 2. Busca a tabela de preços (Apenas para ENTRADA para evitar o erro 405 no console)
       if (tipoNota === "ENTRADA") {
         try {
           const resTabelas = await axios.get(`http://localhost:8080/tabelas-precos/fornecedores`);
@@ -135,7 +133,6 @@ const Boleta = () => {
           idContaPagamento: 1
         });
       } else {
-        // Fluxo de Venda (SAÍDA)
         const resVenda = await axios.post("http://localhost:8080/vendas", {
           idCliente: idEntidade,
           datavenda: dataAtual
