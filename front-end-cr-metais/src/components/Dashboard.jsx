@@ -2,8 +2,37 @@ import { useEffect, useState } from "react";
 import styles from "../styles/DashboardStyle.module.css";
 import { BarChart } from "@mui/x-charts/BarChart";
 
-export default function Dashboard() {
-  const [chartWidth, setChartWidth] = useState(600);
+export default function Dashboard(){
+    const [chartWidth, setChartWidth] = useState(600);
+    const [topProdutos, setTopProdutos] = useState([]);
+    const [topFornecedores, setTopFornecedores] = useState([]);
+    const [carregandoGraficos, setCarregandoGraficos] = useState(false);
+    const [erroGraficos, setErroGraficos] = useState("");
+
+    const normalizarNumero = (valor) => {
+        const numero = Number(valor);
+        return Number.isNaN(numero) ? 0 : numero;
+    };
+
+    const normalizarLista = (dados) => {
+        if (Array.isArray(dados)) return dados;
+        if (Array.isArray(dados?.content)) return dados.content;
+        return [];
+    };
+
+    const formatarPeso = (valor) => {
+        return `${new Intl.NumberFormat('pt-BR', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+        }).format(valor)} KG`;
+    };
+
+    const formatarMoeda = (valor) => {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        }).format(valor);
+    };
 
   useEffect(() => {
     const handleResize = () => {
@@ -19,85 +48,177 @@ export default function Dashboard() {
       }
     };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-  return (
-    <div className={styles.container_dash}>
-      <div className={styles.container_kpi}>
-        <div className={styles.date_filter}>
-          <div>
-            <p className={styles.tit_data}>Data inicial</p>
-            <input type="date" defaultValue="2025-09-01" className={styles.input}/>
-          </div>
-          <div>
-            <p className={styles.tit_data}>Data final</p>
-            <input type="date" defaultValue="2025-10-01" className={styles.input}/>
-          </div>
-        </div>
+    useEffect(() => {
+        const carregarGraficos = async () => {
+            setCarregandoGraficos(true);
+            setErroGraficos("");
 
-        <div className={styles.cards_kpi}>
-          <div className={styles.card_kpi}>
-            <p className={styles.titulo_kpi}>Peso total:</p>
-            <div className={styles.container_valor_card}>
-              <p className={styles.valor_kpi}>28.586 KG</p>
+            try {
+                const [resProdutos, resFornecedores] = await Promise.all([
+                    fetch("http://localhost:8080/produtos/top-peso-vendido"),
+                    fetch("http://localhost:8080/fornecedores/top-rendimento"),
+                ]);
+
+                if (!resProdutos.ok || !resFornecedores.ok) {
+                    throw new Error("Falha ao carregar dados dos gráficos");
+                }
+
+                const [dadosProdutos, dadosFornecedores] = await Promise.all([
+                    resProdutos.json(),
+                    resFornecedores.json(),
+                ]);
+
+                const produtosFormatados = normalizarLista(dadosProdutos)
+                    .map((item) => ({
+                        categoria:
+                            item?.nome ||
+                            item?.nomeProduto ||
+                            item?.nome_produto ||
+                            "Sem nome",
+                        valor: normalizarNumero(
+                            item?.totalPesoVendido ??
+                            item?.total_peso_vendido ??
+                            item?.pesoTotal ??
+                            item?.total
+                        ),
+                    }))
+                    .slice(0, 10);
+
+                const fornecedoresFormatados = normalizarLista(dadosFornecedores)
+                    .map((item) => ({
+                        categoria:
+                            item?.apelido ||
+                            item?.nome ||
+                            item?.razaoSocial ||
+                            item?.razao_social ||
+                            "Sem nome",
+                        valor: normalizarNumero(
+                            item?.totalRendimento ??
+                            item?.total_rendimento ??
+                            item?.rendimentoTotal ??
+                            item?.total
+                        ),
+                    }))
+                    .slice(0, 10);
+
+                setTopProdutos(produtosFormatados);
+                setTopFornecedores(fornecedoresFormatados);
+            } catch {
+                setErroGraficos("Não foi possível carregar os gráficos.");
+                setTopProdutos([]);
+                setTopFornecedores([]);
+            } finally {
+                setCarregandoGraficos(false);
+            }
+        };
+
+        carregarGraficos();
+    }, []);
+
+    const pesoTotal = topProdutos.reduce(
+        (acumulador, item) => acumulador + normalizarNumero(item.valor),
+        0
+    );
+
+    const rendimentoTotal = topFornecedores.reduce(
+        (acumulador, item) => acumulador + normalizarNumero(item.valor),
+        0
+    );
+
+    const totalVendas = rendimentoTotal;
+
+    return(
+        <div className="container_dash">
+            <div className="container_kpi">
+                <div className="date_filter">
+                    <div>
+                        <p className="tit_data">Data inicial</p>
+                        <input type="date" defaultValue="2025-09-01"/>
+                    </div>
+                    <div>
+                        <p className="tit_data">Data final</p>
+                        <input type="date" defaultValue="2025-10-01"/>
+                    </div>
+                </div>
+                <div className="cards_kpi">
+                    <div className="card_kpi">
+                        <p className="titulo_kpi">Peso total:</p>
+                        <div className="container_valor_card">
+                            <p className="valor_kpi">
+                                {carregandoGraficos ? '...' : formatarPeso(pesoTotal)}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="card_kpi">
+                        <p className="titulo_kpi">Rendimento:</p>
+                        <div className="container_valor_card">
+                            <p className="valor_kpi">
+                                {carregandoGraficos ? '...' : formatarMoeda(rendimentoTotal)}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="card_kpi">
+                        <p className="titulo_kpi">Total de vendas:</p>
+                        <div className="container_valor_card">
+                            <p className="valor_kpi">
+                                {carregandoGraficos ? '...' : formatarMoeda(totalVendas)}
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div className="container_graficos">
+                {carregandoGraficos && <p>Carregando gráficos...</p>}
+                {!carregandoGraficos && erroGraficos && <p>{erroGraficos}</p>}
 
-          <div className={styles.card_kpi}>
-            <p className={styles.titulo_kpi}>Rendimento:</p>
-            <div className={styles.container_valor_card}>
-              <p className={styles.valor_kpi}>R$25.458,52</p>
+                <div className="grafico">
+                    <h3>TOP 10 PRODUTOS</h3>
+                    <BarChart
+                        xAxis={[
+                            {
+                                id: 'barCategories',
+                                data: topProdutos.map((item) => item.categoria),
+                                scaleType: 'band',
+                            },
+                        ]}
+                        series={[
+                            {
+                                data: topProdutos.map((item) => item.valor),
+                                color: '#FACC15',
+                            },
+                        ]}
+                        width={chartWidth}
+                        height={400}
+                    />
+                </div>
+                
+                <div className="grafico">
+                    <h3>TOP 10 FORNECEDORES</h3>
+                    <BarChart
+                        layout="horizontal"
+                        yAxis={[
+                            {
+                                id: 'barCategories',
+                                data: topFornecedores.map((item) => item.categoria),
+                                scaleType: 'band',
+                            },
+                        ]}
+                        series={[
+                            {
+                                data: topFornecedores.map((item) => item.valor),
+                                color: '#60A5FA',
+                            },
+                        ]}
+                        width={chartWidth}
+                        height={400}
+                    />
+                </div>
             </div>
-          </div>
-
-          <div className={styles.card_kpi}>
-            <p className={styles.titulo_kpi}>Total de vendas:</p>
-            <div className={styles.container_valor_card}>
-              <p className={styles.valor_kpi}>R$100.000,52</p>
-            </div>
-          </div>
         </div>
-      </div>
-
-      <div className={styles.container_graficos}>
-        <div className={styles.grafico}>
-          <h3 className={styles.titulo_grafico}>TOP 10 PRODUTOS</h3>
-          <BarChart
-            xAxis={[{
-              id: "barCategories",
-              data: ["Lata","Panela","Cobre misto","Perfil natural","Ferroso","Panela","Chaparia","Bloco Limpo","Fio misto","Bateria KG"],
-              scaleType: "band",
-            }]}
-            series={[{
-              data: [1000, 980, 920, 950, 940, 900, 950, 970, 960, 950],
-              color: "#FACC15",
-            }]}
-            width={chartWidth}
-            height={400}
-          />
-        </div>
-
-        <div className={styles.grafico}>
-          <h3 className={styles.titulo_grafico}>TOP 10 CLIENTES</h3>
-          <BarChart
-            layout="horizontal"
-            yAxis={[{
-              id: "barCategories",
-              data: ["José","Maria","Carlos","Manuel","Francisco","João","Ana","Diego","Roberto","Edson"],
-              scaleType: "band",
-            }]}
-            series={[{
-              data: [10000, 9500, 9200, 9000, 8800, 9100, 9150, 8500, 7000, 6000],
-              color: "#60A5FA",
-            }]}
-            width={chartWidth}
-            height={400}
-          />
-        </div>
-      </div>
-    </div>
-  );
+    )
 }

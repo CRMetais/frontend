@@ -1,63 +1,242 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import "../styles/BoletaStyle.css";
 
-const itensBoleta = [
-  { id: "1", produto: "Aerosol", peso: "54.00", valor: "R$ 8.00", total: "R$ 432.00", bags: "1" },
-  { id: "2", produto: "Lata", peso: "258.00", valor: "R$ 9.00", total: "R$ 2322.00", bags: "8" },
-  { id: "3", produto: "Bloco Limpo", peso: "54.00", valor: "R$ 5.50", total: "R$ 297.00", bags: "1" },
-  { id: "4", produto: "Ferroso", peso: "32.00", valor: "R$ 2.20", total: "R$ 70.40", bags: "1" },
-  { id: "5", produto: "Ferroso", peso: "32.00", valor: "R$ 2.20", total: "R$ 70.40", bags: "1" },
-  { id: "X", produto: "XXXXXXX", peso: "XX.XX", valor: "R$ X.XX", total: "R$ XX.XX", bags: "X" },
-  { id: "X", produto: "XXXXXXX", peso: "XX.XX", valor: "R$ X.XX", total: "R$ XX.XX", bags: "X" },
-  { id: "X", produto: "XXXXXXX", peso: "XX.XX", valor: "R$ X.XX", total: "R$ XX.XX", bags: "X" },
-  { id: "X", produto: "XXXXXXX", peso: "XX.XX", valor: "R$ X.XX", total: "R$ XX.XX", bags: "X" },
-  { id: "X", produto: "XXXXXXX", peso: "XX.XX", valor: "R$ X.XX", total: "R$ XX.XX", bags: "X" },
-];
-
-const camposNota = [
-  { label: "NOME", value: "JOSÉ CARLOS" },
-  { label: "TABELA", value: "ALTA" },
-  { label: "CLASSE", value: "RETIRADA" },
-  { label: "TIPO", value: "SAÍDA" },
-];
-
 const Boleta = () => {
+  const [clientes, setClientes] = useState([]);
+  const [produtos, setProdutos] = useState([]);
+  const [precosTabela, setPrecosTabela] = useState([]);
+  const [itensBoleta, setItensBoleta] = useState([]);
+  const [tabelaPorFornecedor, setTabelaPorFornecedor] = useState({});
+
+  const [clienteSelecionadoId, setClienteSelecionadoId] = useState("");
+  const [classeNota, setClasseNota] = useState("RETIRADA");
+  const [tipoNota, setTipoNota] = useState("SAÍDA");
+
+  const [carregando, setCarregando] = useState(false);
+  const [salvandoNota, setSalvandoNota] = useState(false);
+  const [pagamentoConfirmado, setPagamentoConfirmado] = useState(false);
+
+  const formatarMoeda = (valor) =>
+    new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(valor || 0);
+
+  useEffect(() => {
+    const buscarDadosIniciais = async () => {
+      try {
+        const [resProdutos, resPrecos] = await Promise.all([
+          axios.get("http://localhost:8080/produtos"),
+          axios.get("http://localhost:8080/preco-produto-tabela")
+        ]);
+        setProdutos(resProdutos.data?.content || resProdutos.data || []);
+        setPrecosTabela(resPrecos.data?.content || resPrecos.data || []);
+      } catch (error) {
+        console.error("Erro ao carregar produtos/preços", error);
+      }
+    };
+    buscarDadosIniciais();
+  }, []);
+
+  useEffect(() => {
+    const buscarEntidades = async () => {
+      setCarregando(true);
+      const endpoint = tipoNota === "ENTRADA" ? "fornecedores" : "clientes";
+
+      // 1. Busca os clientes ou fornecedores
+      try {
+        const resEntidades = await axios.get(`http://localhost:8080/${endpoint}`);
+        setClientes(resEntidades.data?.content || resEntidades.data || []);
+      } catch (error) {
+        console.error("Erro ao carregar entidades", error);
+      }
+
+      // 2. Busca a tabela de preços (Apenas para ENTRADA para evitar o erro 405 no console)
+      if (tipoNota === "ENTRADA") {
+        try {
+          const resTabelas = await axios.get(`http://localhost:8080/tabelas-precos/fornecedores`);
+          const tabelas = resTabelas.data?.content || resTabelas.data || [];
+          const mapaTabelas = {};
+          tabelas.forEach(item => {
+            const id = item.idFornecedor || item.idCliente || item.id;
+            if (id) mapaTabelas[id] = (item.nomeTabela || item.tabela || "").toUpperCase();
+          });
+          setTabelaPorFornecedor(mapaTabelas);
+        } catch (error) {
+          setTabelaPorFornecedor({});
+        }
+      } else {
+        setTabelaPorFornecedor({});
+      }
+
+      setCarregando(false);
+      setClienteSelecionadoId("");
+      setPagamentoConfirmado(false);
+    };
+
+    buscarEntidades();
+  }, [tipoNota]);
+
+  const adicionarItem = () => {
+    setItensBoleta([...itensBoleta, { idLinha: Date.now(), produtoId: "", peso: "", bags: "", valorUnitario: 0, total: 0 }]);
+  };
+
+  const atualizarItem = (idLinha, campo, valor) => {
+    setItensBoleta(itensBoleta.map(item => {
+      if (item.idLinha !== idLinha) return item;
+      const novoItem = { ...item, [campo]: valor };
+
+      if (campo === "produtoId") {
+        const precoObj = precosTabela.find(p => String(p.fkProduto || p.produtoId) === String(valor));
+        novoItem.valorUnitario = precoObj ? (precoObj.precoProduto || precoObj.preco) : 0;
+      }
+
+      novoItem.total = Number(novoItem.peso || 0) * Number(novoItem.valorUnitario || 0);
+      return novoItem;
+    }));
+  };
+
+  const removerItem = (idLinha) => setItensBoleta(itensBoleta.filter(i => i.idLinha !== idLinha));
+  const limparBoleta = () => setItensBoleta([]);
+
+  const resumo = itensBoleta.reduce((acc, item) => ({
+    total: acc.total + Number(item.total || 0),
+    peso: acc.peso + Number(item.peso || 0),
+    bags: acc.bags + Number(item.bags || 0),
+  }), { total: 0, peso: 0, bags: 0 });
+
+  const confirmarPagamento = async () => {
+    const itensValidos = itensBoleta.filter(i => i.produtoId && Number(i.peso) > 0);
+
+    if (!clienteSelecionadoId) return alert("Selecione um cliente/fornecedor.");
+    if (itensValidos.length === 0) return alert("Adicione produtos com peso válido.");
+
+    setSalvandoNota(true);
+    const dataAtual = new Date().toISOString().slice(0, 10);
+    const idEntidade = Number(clienteSelecionadoId);
+
+    try {
+      if (tipoNota === "ENTRADA") {
+        const itensPayload = itensValidos.map(item => ({
+          idProduto: Number(item.produtoId),
+          pesoKg: Number(item.peso),
+          precoUnitario: Number(item.valorUnitario),
+          rendimento: Number(item.total)
+        }));
+
+        const resCompra = await axios.post("http://localhost:8080/compra", {
+          dataCompra: dataAtual,
+          idFornecedor: idEntidade,
+          itens: itensPayload
+        });
+
+        const idCompra = resCompra.data.idCompra || resCompra.data.id;
+        await axios.post("http://localhost:8080/pagamento-compra", {
+          dataPagamento: dataAtual,
+          idCompra: Number(idCompra),
+          idContaPagamento: 1
+        });
+      } else {
+        // Fluxo de Venda (SAÍDA)
+        const resVenda = await axios.post("http://localhost:8080/vendas", {
+          idCliente: idEntidade,
+          datavenda: dataAtual
+        });
+
+        const idVenda = resVenda.data.idVenda || resVenda.data.id;
+
+        for (const item of itensValidos) {
+          await axios.post("http://localhost:8080/itens-pedido-venda", {
+            fk_venda: Number(idVenda),       
+            fk_produto: Number(item.produtoId), 
+            pesoKg: Number(item.peso),
+            precoUnitario: Number(item.valorUnitario)
+          });
+        }
+      }
+
+      limparBoleta();
+      setPagamentoConfirmado(true);
+      alert("Nota registrada com sucesso!");
+    } catch (erro) {
+      alert("Erro ao salvar nota. Verifique o console.");
+      console.error("Detalhe do erro:", erro.response?.data || erro.message);
+    } finally {
+      setSalvandoNota(false);
+    }
+  };
+
+  const clienteSelecionado = clientes.find(c => String(c.id || c.idCliente || c.idFornecedor) === clienteSelecionadoId);
+  const nomeCliente = clienteSelecionado ? (clienteSelecionado.nome || clienteSelecionado.razaoSocial) : "-";
+  const nomeTabela = clienteSelecionado ? (tabelaPorFornecedor[clienteSelecionadoId] || "-") : "-";
+
   return (
     <div className="pagina">
       <div className="conteudo_principal">
-        <div className="codigo_cliente" />
+        <div className="lista_cliente">
+          {carregando ? <span>Carregando...</span> : (
+            <select
+              className="seletor_cliente"
+              value={clienteSelecionadoId}
+              onChange={(e) => setClienteSelecionadoId(e.target.value)}
+            >
+              <option value="" disabled>Selecione o {tipoNota === "ENTRADA" ? "Fornecedor" : "Cliente"}</option>
+              {clientes.map(c => (
+                <option key={c.id || c.idCliente || c.idFornecedor} value={c.id || c.idCliente || c.idFornecedor}>
+                  {c.nome || c.razaoSocial}
+                </option>
+              ))}
+            </select>
+          )}
+        </div>
 
         <div className="card_nota">
           <div className="cabecalho_card">
             <h2>NOTA DE PAGAMENTO</h2>
-            <button type="button" className="botao_adicionar">
-              ADICIONAR PRODUTO
-            </button>
+            <div>
+              <button type="button" className="botao_adicionar" onClick={adicionarItem}>ADICIONAR PRODUTO</button>
+              <button type="button" className="botao_adicionar" onClick={limparBoleta} disabled={itensBoleta.length === 0}>REMOVER TODOS</button>
+            </div>
           </div>
 
           <div className="rolagem_tabela">
             <table className="tabela">
               <thead>
                 <tr>
-                  <th>NUM</th>
-                  <th>Produto</th>
-                  <th>Peso (Kg)</th>
-                  <th>Valor</th>
-                  <th>Total</th>
-                  <th>Qtd. Bags</th>
+                  <th>NUM</th><th>Produto</th><th>Peso (Kg)</th><th>Valor</th><th>Total</th><th>Qtd. Bags</th><th>Ações</th>
                 </tr>
               </thead>
               <tbody>
-                {itensBoleta.map((item, index) => (
-                  <tr key={`${item.id}-${index}`}>
-                    <td>{item.id}</td>
-                    <td>{item.produto}</td>
-                    <td>{item.peso}</td>
-                    <td>{item.valor}</td>
-                    <td>{item.total}</td>
-                    <td>{item.bags}</td>
-                  </tr>
-                ))}
+                {itensBoleta.length === 0 ? (
+                  <tr><td colSpan={7}>Nenhum produto adicionado.</td></tr>
+                ) : (
+                  itensBoleta.map((item, index) => (
+                    <tr key={item.idLinha}>
+                      <td>{index + 1}</td>
+                      <td>
+                        <select
+                          className="select_produto"
+                          value={item.produtoId}
+                          onChange={(e) => atualizarItem(item.idLinha, "produtoId", e.target.value)}
+                        >
+                          <option value="">Selecione</option>
+                          {produtos.map(p => (
+                            <option key={p.id || p.idProduto} value={p.id || p.idProduto}>{p.nome || p.descricao}</option>
+                          ))}
+                        </select>
+                      </td>
+                      <td>
+                        <input type="number" min="0" step="0.01" className="inputItem" value={item.peso} onChange={(e) => atualizarItem(item.idLinha, "peso", e.target.value)} />
+                      </td>
+                      <td>{formatarMoeda(item.valorUnitario)}</td>
+                      <td>{formatarMoeda(item.total)}</td>
+                      <td>
+                        <input type="number" min="0" step="1" className="inputItem" value={item.bags} onChange={(e) => atualizarItem(item.idLinha, "bags", e.target.value)} />
+                      </td>
+                      <td>
+                        <button type="button" onClick={() => removerItem(item.idLinha)}>Excluir</button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -68,37 +247,46 @@ const Boleta = () => {
         <div className="caixa_info">
           <p className="titulo_lateral">Informações da Nota</p>
           <div className="lista_info">
-            {camposNota.map((campo) => (
-              <div className="linha_info" key={campo.label}>
-                <span>{campo.label}</span>
-                <strong>{campo.value}</strong>
-              </div>
-            ))}
+            <div className="linha_info"><span>NOME</span><strong>{nomeCliente}</strong></div>
+            <div className="linha_info"><span>TABELA</span><strong>{nomeTabela}</strong></div>
+            <div className="linha_info">
+              <span>CLASSE</span>
+              <button className="botao_toggle_info" onClick={() => setClasseNota(c => c === "RETIRADA" ? "LOCAL" : "RETIRADA")}>{classeNota}</button>
+            </div>
+            <div className="linha_info">
+              <span>TIPO</span>
+              <button className="botao_toggle_info" onClick={() => setTipoNota(t => t === "SAÍDA" ? "ENTRADA" : "SAÍDA")}>{tipoNota}</button>
+            </div>
           </div>
         </div>
 
         <div className="caixa_info caixa_acoes">
-          <p className="titulo_lateral">Informações da Nota</p>
+          <p className="titulo_lateral">Ações da Nota</p>
           <div className="botoes_acao">
-            <button type="button">CONFIRMAR PAGAMENTO</button>
+            <button
+              type="button"
+              className={`botao_confirmar ${pagamentoConfirmado ? "botao_confirmar--confirmado" : ""}`}
+              onClick={pagamentoConfirmado ? () => setPagamentoConfirmado(false) : confirmarPagamento}
+              disabled={salvandoNota}
+            >
+              {salvandoNota ? "SALVANDO..." : (pagamentoConfirmado ? "PAGAMENTO CONFIRMADO ✔" : "CONFIRMAR PAGAMENTO")}
+            </button>
             <button type="button">GERAR NOTA FISCAL</button>
             <button type="button" className="botao_copiar">
               <span className="texto_copiar">Copiar Nota</span>
-              <span className="icone_copiar texto_copiar" aria-hidden="true">
-                ⧉
-              </span>
+              <span className="icone_copiar texto_copiar">⧉</span>
             </button>
           </div>
         </div>
 
         <div className="card_total">
           <p className="label_total">Valor Total</p>
-          <p className="valor_total">R$ 3.121,40</p>
+          <p className="valor_total">{formatarMoeda(resumo.total)}</p>
           <div className="divisor_total" />
           <div className="detalhes_total">
-            <span>Produtos</span>
-            <span>Bags</span>
-            <span>Peso</span>
+            <span>{itensBoleta.length} produto(s)</span>
+            <span>{resumo.bags} bag(s)</span>
+            <span>{resumo.peso.toFixed(2)} Kg</span>
           </div>
         </div>
       </aside>

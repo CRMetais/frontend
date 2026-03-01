@@ -13,12 +13,30 @@
     min-width: 700px;
 }
 
-.codigo_cliente {
-    width: 125px;
+.lista_cliente {
+    width: 250px;
     height: 42px;
     border-radius: 12px;
     background-color: #d3d3d3;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
+
+.lista_cliente span {
+    font-size: 12px;
+    color: #444;
+}
+
+.seletor_cliente {
+    width: 100%;
+    height: 28px;
+    border: 1px solid #b6b6b6;
+    border-radius: 8px;
+    background: #fff;
+    color: #3f3f3f;
 }
 
 .card_nota {
@@ -144,6 +162,21 @@
     font-weight: 700;
 }
 
+.botao_toggle_info {
+    background: #4f4f4f !important;
+    border: 1px solid #6f6f6f !important;
+    color: #facc15 !important;
+    font-size: 22px !important;
+    font-weight: 700;
+    border-radius: 6px !important;
+    padding: 4px 10px !important;
+    min-width: 140px;
+}
+
+.botao_toggle_info:hover {
+    border-color: #facc15 !important;
+}
+
 .caixa_acoes {
     padding-bottom: 12px;
 }
@@ -157,7 +190,7 @@
 .botoes_acao button {
     width: 100%;
     background-color: #5b5b5b !important;
-    color: #ededed !important;
+    color: #ffffff !important;
     border: 1px solid #6f6f6f !important;
     border-radius: 4px !important;
     font-size: 15px;
@@ -167,6 +200,28 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+}
+
+.botao_confirmar {
+    justify-content: space-around !important;
+}
+
+.botoes_acao .botao_confirmar--confirmado {
+    background-color: #15803d !important;
+    border-color: #166534 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+}
+
+.botoes_acao .botao_confirmar span,
+.botoes_acao button:not(.botao_copiar) span {
+    color: #ffffff !important;
+}
+
+.icone_ok {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 700;
 }
 
 .botao_copiar {
@@ -251,4 +306,13 @@
     .valor_total {
         font-size: 34px;
     }
+}
+
+.select_produto{
+    background-color: #ededed;
+    color: #3f3f3f;
+}
+
+.inputItem{
+    color: #3f3f3f;
 }

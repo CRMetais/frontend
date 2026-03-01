@@ -1,0 +1,179 @@
+.container_dash{
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    gap: 2rem;
+}
+
+body{
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+
+.container_kpi{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.date_filter{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    color: black;
+}
+.date_filter input{
+    color: black;
+}
+
+.date_filter > div {
+    flex: 1;
+    min-width: 150px;
+}
+
+.cards_kpi{
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.card_kpi{
+    flex: 1;
+    min-width: 200px;
+    color: black;
+    padding: 1rem;
+}
+
+.container_valor_card{
+    display: flex;
+    min-height: 80px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+    background-color: #FACC15;
+    padding: 1rem;
+}
+
+.container_graficos{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 2rem;
+    width: 100%;
+    flex-wrap: wrap;
+}   
+
+.grafico {
+    flex: 1;
+    min-width: 400px;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.grafico h3{
+    color: black;
+}
+
+h3{
+    margin: 0 0 1rem 0 !important;
+    padding: 0 !important;
+    text-align: center;
+}
+
+input{
+    background-color: #ededed;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.titulo_kpi{
+    text-align: left;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.valor_kpi{
+    font-size: 1.5em;
+    font-weight: bold;
+    color: black;
+}
+
+.tit_data{
+    font-size: 1em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    color: black;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .container_graficos {
+        flex-direction: column;
+    }
+    
+    .grafico {
+        width: 100%;
+    }
+    
+    .container_dash {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container_dash {
+        padding: 1rem;
+    }
+    
+    .date_filter {
+        flex-direction: column;
+    }
+    
+    .date_filter > div {
+        width: 100%;
+    }
+    
+    .grafico {
+        overflow-x: auto;
+    }
+    
+    .titulo_kpi {
+        font-size: 1em;
+    }
+    
+    .container_valor_card p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 480px) {
+    .container_dash {
+        padding: 0.5rem;
+    }
+    
+    h3 {
+        font-size: 1em;
+    }
+    
+    .card_kpi {
+        padding: 0.5rem;
+    }
+}
