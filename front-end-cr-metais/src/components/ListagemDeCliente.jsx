@@ -251,7 +251,9 @@ const ListaClientes = () => {
           onClose={() => setClienteSelecionado(null)} 
         />
       )}
+    <CadastroClienteContainer></CadastroClienteContainer>
     </div>
+
   );
 };
 
