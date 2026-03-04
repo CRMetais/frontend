@@ -9,6 +9,7 @@
 
 .lista-colaboradores-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   width: 100%;
   flex: 1.5;
@@ -19,6 +20,7 @@
   text-align: left;
   margin-bottom: 1.5rem;
   font-size: 2rem;
+  color: black;
 }
 
 .cadastro-colaborador-card {
@@ -83,13 +85,14 @@
 
 .lista-colaboradores-grid {
   width: calc(110vh + 10%) !important;
+  color: black;
 }
 
 .colaborador-header {
   display: flex;
   align-items: center;
   background-color: #2d2d2d;
-  color: white;
+  color: black;
   padding: 12px 15px;
   font-weight: bold;
   border-radius: 5px;
