@@ -173,10 +173,11 @@ input[type="radio"] {
   margin: 0;
   font: inherit;
   color: currentColor;
-  width: 1.15em;
-  height: 1.15em;
+  width: 25px;
+  height: 25px;
   border: 0.15em solid #ccc;
   border-radius: 50%;
+  padding: 0 !important;
   cursor: pointer;
   vertical-align: middle;
   transform: none;
@@ -193,7 +194,9 @@ input[type="radio"]::before {
 }
 
 input[type="radio"]:checked {
-  border-color: var(--accent-color, #facc15);
+  border-color: white;
+  background-color: #facc15;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 input[type="radio"]:checked::before {
@@ -209,7 +212,7 @@ input[type="radio"]:checked::before {
 
 .payment-radio-box {
   display: flex;
-  gap: 10px;
+  gap: 20px;
   justify-content: center;
 }
 

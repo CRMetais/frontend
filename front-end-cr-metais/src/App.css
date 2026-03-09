@@ -56,6 +56,9 @@
   padding: 0 16px;
   user-select: none;
   align-items: center;
+  background-color: #F8FAFC;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .input-icon span {
