@@ -137,51 +137,51 @@ export default function Dashboard() {
     const totalVendas = rendimentoTotal;
 
     return (
-        <div className="container_dash">
-            <div className="container_kpi">
-                <div className="date_filter">
+        <div className={styles.container_dash}>
+            <div className={styles.container_kpi}>
+                <div className={styles.date_filter}>
                     <div>
-                        <p className="tit_data">Data inicial</p>
-                        <input type="date" defaultValue="2025-09-01" />
+                        <p className={styles.tit_data}>Data inicial</p>
+                        <input className={styles.input} type="date" defaultValue="2025-09-01" />
                     </div>
                     <div>
-                        <p className="tit_data">Data final</p>
-                        <input type="date" defaultValue="2025-10-01" />
+                        <p className={styles.tit_data}>Data final</p>
+                        <input className={styles.input} type="date" defaultValue="2025-10-01" />
                     </div>
                 </div>
-                <div className="cards_kpi">
-                    <div className="card_kpi">
-                        <p className="titulo_kpi">Peso total:</p>
-                        <div className="container_valor_card">
-                            <p className="valor_kpi">
+                <div className={styles.cards_kpi}>
+                    <div className={styles.card_kpi}>
+                        <p className={styles.titulo_kpi}>Peso total:</p>
+                        <div className={styles.container_valor_card}>
+                            <p className={styles.valor_kpi}>
                                 {carregandoGraficos ? '...' : formatarPeso(pesoTotal)}
                             </p>
                         </div>
                     </div>
-                    <div className="card_kpi">
-                        <p className="titulo_kpi">Rendimento:</p>
-                        <div className="container_valor_card">
-                            <p className="valor_kpi">
+                    <div className={styles.card_kpi}>
+                        <p className={styles.titulo_kpi}>Rendimento:</p>
+                        <div className={styles.container_valor_card}>
+                            <p className={styles.valor_kpi}>
                                 {carregandoGraficos ? '...' : formatarMoeda(rendimentoTotal)}
                             </p>
                         </div>
                     </div>
-                    <div className="card_kpi">
-                        <p className="titulo_kpi">Total de vendas:</p>
-                        <div className="container_valor_card">
-                            <p className="valor_kpi">
+                    <div className={styles.card_kpi}>
+                        <p className={styles.titulo_kpi}>Total de vendas:</p>
+                        <div className={styles.container_valor_card}>
+                            <p className={styles.valor_kpi}>
                                 {carregandoGraficos ? '...' : formatarMoeda(totalVendas)}
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="container_graficos">
+            <div className={styles.container_graficos}>
                 {carregandoGraficos && <p>Carregando gráficos...</p>}
                 {!carregandoGraficos && erroGraficos && <p>{erroGraficos}</p>}
 
-                <div className="grafico">
-                    <h3>TOP 10 PRODUTOS</h3>
+                <div className={styles.grafico}>
+                    <h3 className={styles.titulo_grafico}>TOP 10 PRODUTOS</h3>
                     <BarChart
                         xAxis={[
                             {
@@ -201,8 +201,8 @@ export default function Dashboard() {
                     />
                 </div>
 
-                <div className="grafico">
-                    <h3>TOP 10 FORNECEDORES</h3>
+                <div className={styles.grafico}>
+                    <h3 className={styles.titulo_grafico}>TOP 10 FORNECEDORES</h3>
                     <BarChart
                         layout="horizontal"
                         yAxis={[
