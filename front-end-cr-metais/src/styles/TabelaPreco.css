@@ -1,22 +1,27 @@
 /* ====== LAYOUT GERAL ====== */
 .page {
-  padding: 24px;
-  background: #ffffff;
+  /* padding: 24px; */
+  display: flex;
+  justify-content: center;
+  /* background: #ffffff; */
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
 }
 
 .card {
-  width: 100%;
-  border: 1px solid #d9d9d9;
+  width: calc(100% - 96px);
+  border: 1px solid gainsboro;
   border-radius: 6px;
   overflow: hidden;
-  background: #fff;
+  /* background: #fff; */
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 32px;
 }
 
 .headerYellow {
   background: #f2c200;
   color: #222;
-  font-weight: 800;
+  font-weight: 700;
   text-align: center;
   padding: 14px 12px;
   letter-spacing: 0.4px;
@@ -25,11 +30,13 @@
 
 /* minmax(0,1fr) evita "vazios" e overflow bugado */
 .body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
+  display: flex;
+  /* grid-template-columns: minmax(0, 1fr) 280px; */
+  justify-content: space-between;
   gap: 18px;
   padding: 16px;
-  align-items: start;
+  /* align-items: start; */
+  /* width: 100%; */
 }
 
 /* ====== AREA DA TABELA (SCROLL) ====== */
@@ -43,6 +50,8 @@
 
   max-height: 70vh;
   -webkit-overflow-scrolling: touch;
+  color: #020618;
+  width: 80%;
 }
 
 /* status */
@@ -69,22 +78,23 @@
 .th {
   background: #2f2f2f;
   color: #ffffff;
-  padding: 10px 12px;
-  font-size: 13px;
+  /* padding: 10px 12px; */
+  height: 48px;
+  font-size: 1dvw;
   border-bottom: 1px solid #3d3d3d;
   text-align: center;
   white-space: nowrap;
-
   position: sticky;
   top: 0;
+  font-family: "IBM Plex Sans";
   z-index: 3;
 }
 
 /* primeira coluna sticky */
 .thLeft {
-  text-align: left;
+  text-align: center;
   min-width: 220px;
-
+  width: 220px;
   position: sticky;
   left: 0;
   z-index: 4;
@@ -92,31 +102,34 @@
 
 /* ====== CELULAS ====== */
 .td {
-  padding: 9px 12px;
   border-bottom: 1px solid #ececec;
-  font-size: 13px;
+  font-size: 1dvw;
   text-align: center;
   white-space: nowrap;
-  background: #ffffff;
+  /* background: #ffffff; */
+  height: 48px;
+  transition: .3s;
+  font-family: "IBM Plex Sans";
 }
 
 .tdLeft {
-  text-align: left;
+  text-align: center;
 
   position: sticky;
   left: 0;
   z-index: 2;
 
-  background: #ffffff;
+  width: 220px;
+  /* background: #ffffff; */
   border-right: 1px solid #f0f0f0;
 }
 
 /* hover */
 .trHover:hover td {
-  background: #fafafa;
+  background: rgb(238, 238, 238);
 }
 .trHover:hover .tdLeft {
-  background: #fafafa;
+  background: rgb(238, 238, 238);
 }
 
 /* ====== TENDÊNCIA (cores automáticas) ====== */
@@ -135,6 +148,7 @@
 /* ====== LADO DIREITO (SELECT) ====== */
 .side {
   display: flex;
+  width: 20%;
   flex-direction: column;
   gap: 8px;
   padding-top: 12px;
@@ -151,10 +165,17 @@
   border: 1px solid #cfcfcf;
   padding: 0 12px;
   font-weight: 800;
+  font-size: 1dvw;
   background: #2f2f2f;
   color: #ffffff;
   outline: none;
   cursor: pointer;
+}
+
+.select option {
+  color: white;
+  border: none;
+  outline: none;
 }
 
 .hint {
