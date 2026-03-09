@@ -1,8 +1,22 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import styles from "../styles/Historico.module.css";
 
 function Historico() {
+
   const [tableData] = useState([
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
+    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
     { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
     { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
     { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
@@ -16,7 +30,6 @@ function Historico() {
     { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
   ]);
 
-
   const [tipoHistorico, setTipoHistorico] = useState("Entrada");
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -24,6 +37,10 @@ function Historico() {
     console.log("Gerando CSV...");
     setModalOpen(false);
   };
+
+  useEffect(() => {
+    document.title = "CR Metais | Histórico"
+  })
 
   return (
     <div className={styles.containerPrincipal}>
@@ -39,7 +56,7 @@ function Historico() {
               value={tipoHistorico}
               onChange={(e) => setTipoHistorico(e.target.value)}
             >
-              <option value="Entrada">Entrada</option>
+              <option value="Entrada">Entrada 🢃</option>
               <option value="Saída">Saída</option>
             </select>
 
@@ -103,12 +120,12 @@ function Historico() {
             </p>
 
             <div className={styles.inputGroup}>
-              <span className={styles.inputIcon}>i</span>
+              <span className={styles.inputIcon}></span>
               <input type="date" className={styles.modalInput} />
             </div>
 
             <div className={styles.inputGroup}>
-              <span className={styles.inputIcon}>i</span>
+              <span className={styles.inputIcon}></span>
               <input type="date" className={styles.modalInput} />
             </div>
 

@@ -13,6 +13,7 @@ const EstoqueHeader = () => {
   );
 };
 
+
 const EstoqueItem = ({ produto }) => {
   return (
     <div className="estoque-line">
@@ -39,23 +40,27 @@ const ResumoCard = ({ titulo, valor }) => {
 const Resumo = () => {
   const [resumo, setResumo] = useState(null);
 
-// Quando for editar sem usar o java e o bd descomenta esse useEffect mockado e comenta o outro
+  // Quando for editar sem usar o java e o bd descomenta esse useEffect mockado e comenta o outro
 
-//   useEffect(() => {
-//   setResumo({
-//     produtos: [
-//       { nome: "Produto A", peso: 10, valor: 20, total: 200 },
-//       { nome: "Produto B", peso: 5, valor: 30, total: 150 }
-//     ],
-//     totalAplicado: 350,
-//     pesoTotal: 15,
-//     notasHoje: 2,
-//     pesoHoje: 15
-//   });
-// }, []);
+  //   useEffect(() => {
+  //   setResumo({
+  //     produtos: [
+  //       { nome: "Produto A", peso: 10, valor: 20, total: 200 },
+  //       { nome: "Produto B", peso: 5, valor: 30, total: 150 }
+  //     ],
+  //     totalAplicado: 350,
+  //     pesoTotal: 15,
+  //     notasHoje: 2,
+  //     pesoHoje: 15
+  //   });
+  // }, []);
 
 
-// Usa esse useEffect quando ligar o java e bd
+  // Usa esse useEffect quando ligar o java e bd
+
+      useEffect(() => {
+        document.title = "CR Metais | Resumo"
+    })
   useEffect(() => {
     api.get('/resumos')
       .then(res => {
@@ -64,8 +69,8 @@ const Resumo = () => {
       })
       .catch(err => console.error('Erro ao buscar produtos:', err));
   }, []);
-  
-  if(!resumo){
+
+  if (!resumo) {
     return <p>Carregando...</p>
   }
 
@@ -76,18 +81,20 @@ const Resumo = () => {
         <div className="estoque-grid">
           <EstoqueHeader />
           <div className="estoque-lista">
-          {resumo.produtos.map((produto, index) => (
-            <EstoqueItem key={index} produto={produto} />
-          ))}
+            {resumo.produtos.map((produto, index) => (
+              <EstoqueItem key={index} produto={produto} />
+            ))}
           </div>
         </div>
       </div>
 
       <div className="estoque-dir">
-        <ResumoCard titulo="Total Aplicado:" valor={`R$ ${resumo.totalAplicado.toFixed(2)}`} />
-        <ResumoCard titulo="Peso Total:" valor={`${resumo.pesoTotal.toFixed(2)} Kg`} />
-        <ResumoCard titulo="Pg Notas (hoje):" valor={`${resumo.notasHoje.toFixed(2)} Kg`} />
-        <ResumoCard titulo="Peso Kg (hoje):" valor={`${resumo.pesoHoje.toFixed(2)}`} />
+        <div className="container-cards">
+          <ResumoCard titulo="Total Aplicado:" valor={`R$ ${resumo.totalAplicado.toFixed(2)}`} />
+          <ResumoCard titulo="Peso Total:" valor={`${resumo.pesoTotal.toFixed(2)} Kg`} />
+          <ResumoCard titulo="Pg Notas (hoje):" valor={`${resumo.notasHoje.toFixed(2)} Kg`} />
+          <ResumoCard titulo="Peso Kg (hoje):" valor={`${resumo.pesoHoje.toFixed(2)}`} />
+        </div>
       </div>
     </div>
   );

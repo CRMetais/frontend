@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/DashboardStyle.module.css";
 import { BarChart } from "@mui/x-charts/BarChart";
 
-export default function Dashboard(){
+export default function Dashboard() {
     const [chartWidth, setChartWidth] = useState(600);
     const [topProdutos, setTopProdutos] = useState([]);
     const [topFornecedores, setTopFornecedores] = useState([]);
@@ -34,19 +34,23 @@ export default function Dashboard(){
         }).format(valor);
     };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 480) {
-        setChartWidth(Math.min(width - 40, 350));
-      } else if (width < 768) {
-        setChartWidth(Math.min(width - 60, 500));
-      } else if (width < 1200) {
-        setChartWidth(Math.min(width - 100, 600));
-      } else {
-        setChartWidth(630);
-      }
-    };
+    useEffect(() => {
+        document.title = "CR Metais | Dashboard"
+    })
+
+    useEffect(() => {
+        const handleResize = () => {
+            const width = window.innerWidth;
+            if (width < 480) {
+                setChartWidth(Math.min(width - 40, 350));
+            } else if (width < 768) {
+                setChartWidth(Math.min(width - 60, 500));
+            } else if (width < 1200) {
+                setChartWidth(Math.min(width - 100, 600));
+            } else {
+                setChartWidth(630);
+            }
+        };
 
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -132,17 +136,17 @@ export default function Dashboard(){
 
     const totalVendas = rendimentoTotal;
 
-    return(
+    return (
         <div className="container_dash">
             <div className="container_kpi">
                 <div className="date_filter">
                     <div>
                         <p className="tit_data">Data inicial</p>
-                        <input type="date" defaultValue="2025-09-01"/>
+                        <input type="date" defaultValue="2025-09-01" />
                     </div>
                     <div>
                         <p className="tit_data">Data final</p>
-                        <input type="date" defaultValue="2025-10-01"/>
+                        <input type="date" defaultValue="2025-10-01" />
                     </div>
                 </div>
                 <div className="cards_kpi">
@@ -196,7 +200,7 @@ export default function Dashboard(){
                         height={400}
                     />
                 </div>
-                
+
                 <div className="grafico">
                     <h3>TOP 10 FORNECEDORES</h3>
                     <BarChart

@@ -235,7 +235,7 @@
   background-color: #dc2626;
 }
 
-.modal-input {
+/* .modal-input {
   width: 100%;
   padding: 8px 10px;
   font-size: 16px;
@@ -244,7 +244,7 @@
   background-color: #ffffff;
   outline: none;
   transition: 0.2s ease;
-}
+} */
 
 .modal-input:focus {
   border: 1px solid #facc15;
@@ -252,11 +252,11 @@
   background-color: #ffffff;
 }
 
-.modal-input select,
+/* .modal-input select,
 select.modal-input {
   background-color: #ffffff;
   appearance: none;
-}
+} */
 
 @media (max-width: 1200px) {
   .lista-colaboradores-page {

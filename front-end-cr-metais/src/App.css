@@ -42,3 +42,60 @@
 .read-the-docs {
   color: #888;
 }
+.inputBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: gainsboro solid thin;
+  border-radius: 6px;
+}
+
+.input-icon {
+  display: flex;
+  height: 52px;
+  padding: 0 16px;
+  user-select: none;
+  align-items: center;
+}
+
+.input-icon span {
+  font-size: 28px;
+  user-select: none;
+}
+
+input {
+  background-color: #020618;
+  background-color: white;
+  font-size: 18px;
+  padding: 16px 0 16px 16px;
+  color: #314158;
+  width: 100%;
+  border: #FACC15 none;
+  outline: none;
+  transition: .3s;
+  border-radius: 5px;
+}
+
+input:focus {
+  border-right: #FACC15 solid 12px;
+}
+
+button {
+  width: 100%;
+  background-color: #FACC15;
+  font-size: 24px;
+  height: 53px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  transition: .3s;
+  font-weight: 600;
+}
+
+button:hover, button:focus {
+  cursor: pointer;
+  background-color: #ff9d00;
+  font-size: 28px;
+  border: none;
+  outline: none;
+}

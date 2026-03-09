@@ -63,14 +63,14 @@
   object-fit: contain;
 }
 
-.input-box-colaborador input {
+/* .input-box-colaborador input {
   flex: 1;
   border: none;
   background: transparent;
   outline: none;
   font-size: 1rem;
   padding: 0.5rem;
-}
+} */
 
 .input-box-colaborador input::placeholder {
   color: #999;
@@ -112,9 +112,9 @@
     font-size: 1rem;
   }
 
-  .input-box-colaborador input {
+  /* .input-box-colaborador input {
     font-size: 0.9rem;
-  }
+  } */
 }
 .erro {
   color: #8b0000;

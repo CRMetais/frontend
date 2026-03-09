@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import styles from '../styles/login.module.css';
+import { useEffect } from 'react';
 
 export default function Login({ setCurrentPage }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
+
+  useEffect(() => {
+    document.title = "CR Metais | Login"
+  })
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
@@ -67,28 +72,42 @@ export default function Login({ setCurrentPage }) {
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
         <div className={styles.logo}>
-          <h1>CRmetais</h1>
-          <img src="/img/LOGO.png" alt="Logo" />
+          <h1>CR Metais</h1>
+          <img src="../src/assets/logo.png" alt="Logo" />
         </div>
 
         <p className={styles.loginSubtitle}>Bem-vindo de volta!</p>
 
         <div className={styles.inputGroup}>
-          <input
-            type="email"
-            placeholder="Informe seu email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={styles.inputField}
-          />
+          <div className="inputBox">
+            <div className="input-icon">
+              <span>🔒</span>
+            </div>
 
-          <input
-            type="password"
-            placeholder="Informe sua senha"
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-            className={styles.inputField}
-          />
+            <input
+              type="email"
+              placeholder="Informe seu email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.inputField}
+            />
+          </div>
+
+          <div className="inputBox">
+            <div className="input-icon">
+              <span>
+                🔑
+              </span>
+            </div>
+
+            <input
+              type="password"
+              placeholder="Informe sua senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              className={styles.inputField}
+            />
+          </div>
         </div>
 
         {erro && <p style={{ color: '#d32f2f', marginTop: 12 }}>{erro}</p>}

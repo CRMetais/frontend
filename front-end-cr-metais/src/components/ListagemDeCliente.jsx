@@ -1,14 +1,35 @@
-import React, { useState, useEffect } from "react"; 
-import "../styles/ListagemDeColaboradoresStyle.css";
-import { colors } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import "../styles/CadastroClienteStyle.css";
 import CadastroClienteContainer from "./CadastroCliente";
 import { listarClientes } from "../services/clienteService";
 
 
 const ListagemClientes = () => {
-  const [listaClientes, setListaClientes] = useState([]);
+  // 1. Inicia com os dados mockados em vez de vazio []
+  const [listaClientes, setListaClientes] = useState(CLIENTES_MOCK);
   const [clienteSelecionado, setClienteSelecionado] = useState(null);
-  const [loading, setLoading] = useState(true);
+
+  const CLIENTES_MOCK = [
+    {
+      id: 1,
+      nome: "João Silva",
+      reponsavel: "joao@email.com",
+      tabela: "Varejo",
+      telefone: "(11) 99999-9999",
+      cidade: "São Paulo",
+      status: "Ativo"
+    },
+    {
+      id: 2,
+      nome: "Empresa ABC",
+      reponsavel: "contato@abc.com",
+      tabela: "Atacado",
+      telefone: "(21) 88888-8888",
+      cidade: "Rio de Janeiro",
+      status: "Pendente"
+    }
+  ];
+
 
   useEffect(() => {
     async function carregarDados() {
@@ -33,17 +54,17 @@ const ListagemClientes = () => {
     <div className="container">
       <ClienteHeader />
       {listaClientes.map((cliente) => (
-        <ClienteItem 
-          key={cliente.id} 
-          cliente={cliente} 
-          onClick={setClienteSelecionado} 
+        <ClienteItem
+          key={cliente.id}
+          cliente={cliente}
+          onClick={setClienteSelecionado}
         />
       ))}
 
       {clienteSelecionado && (
-        <ClienteModal 
-          cliente={clienteSelecionado} 
-          onClose={() => setClienteSelecionado(null)} 
+        <ClienteModal
+          cliente={clienteSelecionado}
+          onClose={() => setClienteSelecionado(null)}
         />
       )}
     </div>
@@ -57,16 +78,16 @@ const ClienteModal = ({ cliente, onClose }) => {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        
+
         <button onClick={onClose} className="modal-close">×</button>
 
         <h1 className="modal-title">{cliente.nome}</h1>
 
         <div className="modal-grid">
-          
+
           <div className="modal-section">
             <h3 className="modal-section-title">Informações</h3>
-            
+
             <div className="modal-fields">
               <p className="modal-field">
                 <strong>Apelido:</strong> {cliente.apelido || '-'}
@@ -94,7 +115,7 @@ const ClienteModal = ({ cliente, onClose }) => {
 
           <div className="modal-section">
             <h3 className="modal-section-title">Endereço</h3>
-            
+
             <div className="modal-fields">
               <p className="modal-field modal-field-border">
                 <strong>Cidade:</strong> {cliente.cidade || '-'}
@@ -119,7 +140,7 @@ const ClienteModal = ({ cliente, onClose }) => {
 
           <div className="modal-section">
             <h3 className="modal-section-title">Conta Bancária</h3>
-            
+
             <div className="modal-fields">
               <p className="modal-field modal-field-border">
                 <strong>Responsável:</strong> {cliente.responsavelConta || '-'}
@@ -147,7 +168,7 @@ const ClienteModal = ({ cliente, onClose }) => {
 
           <div className="modal-section">
             <h3 className="modal-section-title">Tabela de preço</h3>
-            
+
             <div className="modal-fields">
               <p className="modal-field modal-field-border">
                 <strong>Tabela:</strong> {cliente.tabelaPreco || '-'}
@@ -206,8 +227,8 @@ const ClienteItem = ({ cliente, onClick }) => {
     </div>
   );
 };
-const ListaClientes = () => { 
-  const [listaClientes, setListaClientes] = useState([]); 
+const ListaClientes = () => {
+  const [listaClientes, setListaClientes] = useState([]);
   const [clienteSelecionado, setClienteSelecionado] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -225,33 +246,38 @@ const ListaClientes = () => {
     carregarDados();
   }, []);
 
-  if (loading) return <div style={{padding: "20px"}}>Carregando clientes do banco...</div>;
+  if (loading) return <div style={{ padding: "20px" }}>Carregando clientes do banco...</div>;
 
   return (
     <div className="lista-colaboradores-container">
-      <div className="lista-colaboradores-grid">
-        <ClienteHeader />
-        
-        {listaClientes.length > 0 ? (
-          listaClientes.map((cliente) => (
-            <ClienteItem 
-              key={cliente.id} 
-              cliente={cliente}
-              onClick={setClienteSelecionado}
-            />
-          ))
-        ) : (
-          <p style={{padding: "20px"}}>Nenhum cliente encontrado no banco de dados.</p>
+      <h1>Clientes</h1>
+
+      <div className="containerInfos">
+
+        <div className="lista-colaboradores-grid">
+          <ClienteHeader />
+
+          {listaClientes.length > 0 ? (
+            listaClientes.map((cliente) => (
+              <ClienteItem
+                key={cliente.id}
+                cliente={cliente}
+                onClick={setClienteSelecionado}
+              />
+            ))
+          ) : (
+            <p style={{ padding: "20px" }}>Nenhum cliente encontrado no banco de dados.</p>
+          )}
+        </div>
+
+        {clienteSelecionado && (
+          <ClienteModal
+            cliente={clienteSelecionado}
+            onClose={() => setClienteSelecionado(null)}
+          />
         )}
+        <CadastroClienteContainer></CadastroClienteContainer>
       </div>
-      
-      {clienteSelecionado && (
-        <ClienteModal 
-          cliente={clienteSelecionado} 
-          onClose={() => setClienteSelecionado(null)} 
-        />
-      )}
-    <CadastroClienteContainer></CadastroClienteContainer>
     </div>
 
   );

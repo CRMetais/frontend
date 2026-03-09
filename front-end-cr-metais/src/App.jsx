@@ -45,7 +45,7 @@ function App() {
       <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
     )}
 
-    <div style={{ paddingTop: currentPage !== "Login" ? "88px" : "0" }}>
+    <div>
       {renderPage()}
     </div>
   </div>

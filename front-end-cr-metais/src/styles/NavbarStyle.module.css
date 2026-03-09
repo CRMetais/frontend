@@ -4,20 +4,24 @@ body {
 }
 
 .navbar {
-  width: 100%;
+  width: calc(100% - 96px);
   height: 64px;
-  background-color: white;
+  background-color: #f8fafc;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: nowrap;
-  padding: 1rem 3rem;
+  /* flex-wrap: nowrap; */
+  padding: 8px 48px;
   color: black;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   left: 0;
-  z-index: 1000;
+  /* z-index: 1000; */
+}
+
+.navbar button {
+  max-width: 150px;
 }
 
 /* Logo */
@@ -25,16 +29,20 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.5rem;
+  padding: 0;
   min-width: 150px;
+  user-select: none;
 }
 
 .logoImg {
+  user-select: none;
   height: 40px;
+  -webkit-user-drag: none;
 }
 
 .texto_logo {
   font-size: 20px;
+  user-select: none;
   font-weight: bold;
   white-space: nowrap;
 }
@@ -45,10 +53,9 @@ body {
   list-style: none;
   align-items: center;
   flex-wrap: nowrap;
-  gap: 0.5rem;
+  gap: 48px;
   padding: 0;
   margin: 0;
-  margin-right: 7vw;
   color: black;
 }
 
@@ -70,7 +77,7 @@ body {
 }
 
 /* Botão sair */
-.btn_sair {
+/* .btn_sair {
   background-color: #FACC15;
   color: black;
   padding: 0.5rem 1.5rem;
@@ -81,11 +88,11 @@ body {
   border: none;
   cursor: pointer;
   margin-right: 7vw;
-}
+} */
 
-.btn_sair:hover {
+/* .btn_sair:hover {
   transform: scale(1.05);
-}
+} */
 
 /* ========================= */
 /* Responsividade */
@@ -108,9 +115,9 @@ body {
     padding: 0.4rem 0.6rem;
   }
 
-  .btn_sair {
+  /* .btn_sair {
     width: auto;
-  }
+  } */
 }
 
 @media (max-width: 768px) {

@@ -1,13 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap");
 
-#root {
-  height: auto !important;
-}
-
-input {
-  color: black !important;
-}
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -28,7 +20,7 @@ html {
   width: 100%;
   max-width: 100%;
   font-family: "IBM Plex Sans";
-  background-color: #ffffff;
+  background-color: #f8fafc;
   background-size: cover;
 }
 
@@ -57,7 +49,7 @@ h1 {
   line-height: 1.1;
 }
 
-button {
+/* button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -69,7 +61,7 @@ button {
   padding-bottom: 2px !important;
   cursor: pointer;
   transition: border-color 0.25s;
-}
+} */
 button:hover {
   border-color: #646cff;
 }

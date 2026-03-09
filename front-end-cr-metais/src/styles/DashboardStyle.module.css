@@ -6,7 +6,6 @@ body{
 .container_dash {
   width: 100%;
   min-height: calc(100vh - 64px);
-  padding-top: 80px; /* compensa navbar fixed */
   display: flex;
   flex-direction: column;
   background-color: white;
