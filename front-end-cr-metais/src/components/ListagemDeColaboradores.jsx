@@ -90,6 +90,10 @@ const ListaColaboradores = () => {
     setDadosEditados((prev) => ({ ...prev, [name]: value }));
   };
 
+  useEffect(() => {
+    document.title = "CR Metais | Gestão de dados"
+  })
+
   return (
     <div className="lista-colaboradores-page">
       <div className="lista-colaboradores-container">

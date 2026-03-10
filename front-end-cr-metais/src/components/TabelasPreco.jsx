@@ -186,6 +186,10 @@ export default function PrecosVenda() {
 
   const { datas, produtos, valueMap } = useMemo(() => buildTableModel(rows), [rows]);
 
+  useEffect(() => {
+    document.title = "CR Metais | Tabela de preços"
+  })
+
   return (
     <div className="page">
       <div className="card">

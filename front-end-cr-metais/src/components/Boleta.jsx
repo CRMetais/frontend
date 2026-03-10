@@ -142,8 +142,8 @@ const Boleta = () => {
 
         for (const item of itensValidos) {
           await axios.post("http://localhost:8080/itens-pedido-venda", {
-            fk_venda: Number(idVenda),       
-            fk_produto: Number(item.produtoId), 
+            fk_venda: Number(idVenda),
+            fk_produto: Number(item.produtoId),
             pesoKg: Number(item.peso),
             precoUnitario: Number(item.valorUnitario)
           });
@@ -164,6 +164,10 @@ const Boleta = () => {
   const clienteSelecionado = clientes.find(c => String(c.id || c.idCliente || c.idFornecedor) === clienteSelecionadoId);
   const nomeCliente = clienteSelecionado ? (clienteSelecionado.nome || clienteSelecionado.razaoSocial) : "-";
   const nomeTabela = clienteSelecionado ? (tabelaPorFornecedor[clienteSelecionadoId] || "-") : "-";
+
+  useEffect(() => {
+    document.title = "CR Metais | Boleta"
+  })
 
   return (
     <div className="pagina">

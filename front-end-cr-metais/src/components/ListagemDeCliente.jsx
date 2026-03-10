@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/CadastroClienteStyle.css";
 import CadastroClienteContainer from "./CadastroCliente";
+import { useEffect } from "react";
 
 /* ================= MOCK ================= */
 
@@ -17,81 +18,81 @@ const CLIENTES_MOCK = [
     responsavel: "contato@abc.com",
     tabela: "Atacado",
   },
-    {
+  {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
   },
-    {
+  {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
   },
-    {
+  {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
   },
-    {
+  {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
   },
-    {
+  {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
     tabela: "Atacado",
-  },  {
+  }, {
     id: 2,
     nome: "Empresa ABC",
     responsavel: "contato@abc.com",
@@ -99,10 +100,16 @@ const CLIENTES_MOCK = [
   },
 ];
 
+
+
 /* ================= COMPONENTE ================= */
 
 export default function ListaClientes() {
   const [clientes] = useState(CLIENTES_MOCK);
+  
+  useEffect(() => {
+    document.title = "CR Metais | Clientes"
+  })
 
   return (
     <div className="lista-colaboradores-container">
