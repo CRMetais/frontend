@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "../styles/CadastroClienteStyle.css";
 import CadastroClienteContainer from "./CadastroCliente";
 import { useEffect } from "react";
+import ClienteModal from "./ClienteModal";
+
 
 /* ================= MOCK ================= */
 
@@ -9,94 +11,92 @@ const CLIENTES_MOCK = [
   {
     id: 1,
     nome: "João Silva",
-    responsavel: "joao@email.com",
-    tabela: "Varejo",
+    responsavel: "joao@empresa.com",
+    tabela: "VITAL",
   },
   {
     id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
+    nome: "Maria Oliveira",
+    responsavel: "maria@empresa.com",
+    tabela: "VITAL",
   },
   {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
+    id: 3,
+    nome: "Carlos Souza",
+    responsavel: "carlos@empresa.com",
+    tabela: "VITAL",
   },
   {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
+    id: 4,
+    nome: "Ana Pereira",
+    responsavel: "ana@empresa.com",
+    tabela: "VITAL",
   },
   {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
+    id: 5,
+    nome: "Pedro Santos",
+    responsavel: "pedro@empresa.com",
+    tabela: "VITAL",
   },
   {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
+    id: 6,
+    nome: "Fernanda Lima",
+    responsavel: "fernanda@empresa.com",
+    tabela: "VITAL",
   },
   {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
-  }, {
-    id: 2,
-    nome: "Empresa ABC",
-    responsavel: "contato@abc.com",
-    tabela: "Atacado",
+    id: 7,
+    nome: "Lucas Almeida",
+    responsavel: "lucas@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 8,
+    nome: "Juliana Costa",
+    responsavel: "juliana@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 9,
+    nome: "Ricardo Ferreira",
+    responsavel: "ricardo@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 10,
+    nome: "Patricia Gomes",
+    responsavel: "patricia@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 11,
+    nome: "Rafael Martins",
+    responsavel: "rafael@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 12,
+    nome: "Camila Rocha",
+    responsavel: "camila@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 13,
+    nome: "Bruno Ribeiro",
+    responsavel: "bruno@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 14,
+    nome: "Aline Carvalho",
+    responsavel: "aline@empresa.com",
+    tabela: "VITAL",
+  },
+  {
+    id: 15,
+    nome: "Diego Mendes",
+    responsavel: "diego@empresa.com",
+    tabela: "VITAL",
   },
 ];
 
@@ -106,10 +106,21 @@ const CLIENTES_MOCK = [
 
 export default function ListaClientes() {
   const [clientes] = useState(CLIENTES_MOCK);
-  
+  const [clienteSelecionado, setClienteSelecionado] = useState(null);
+  const [modalAberto, setModalAberto] = useState(false);
+
   useEffect(() => {
     document.title = "CR Metais | Clientes"
   })
+
+  function abrirModal(cliente) {
+    setClienteSelecionado(cliente);
+    setModalAberto(true);
+  }
+
+  function fecharModal() {
+    setModalAberto(false);
+  }
 
   return (
     <div className="lista-colaboradores-container">
@@ -141,7 +152,12 @@ export default function ListaClientes() {
           {/* LISTA */}
 
           {clientes.map((cliente) => (
-            <div key={cliente.id} className="colaborador-line">
+            <div
+              key={cliente.id}
+              className="colaborador-line"
+              onClick={() => abrirModal(cliente)}
+              style={{ cursor: "pointer" }}
+            >
 
               <div className="colaborador-item">
                 <span className="colaborador-id">{cliente.id}</span>
@@ -162,6 +178,13 @@ export default function ListaClientes() {
         <CadastroClienteContainer />
 
       </div>
+
+      {modalAberto && (
+        <ClienteModal
+          cliente={clienteSelecionado}
+          onClose={fecharModal}
+        />
+      )}
     </div>
   );
 }
