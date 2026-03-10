@@ -134,7 +134,7 @@ const ListaColaboradores = () => {
               onClick={() => setPaginaAtual((p) => p + 1)}
               disabled={paginaAtual === totalPaginas}
             >
-              Próximo →
+            → Próximo 
             </button>
           </div>
         )}

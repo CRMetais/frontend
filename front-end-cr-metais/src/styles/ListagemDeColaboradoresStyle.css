@@ -382,7 +382,7 @@ select.modal-input {
   align-items: center;
   gap: 6px;
   margin-top: 24px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .paginacao-btn {
@@ -394,21 +394,4 @@ select.modal-input {
   font-size: 14px;
   cursor: pointer;
   transition: 0.2s;
-}
-
-.paginacao-btn:hover:not(:disabled) {
-  background-color: #f5f5f5;
-  border-color: #facc15;
-}
-
-.paginacao-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.paginacao-btn-ativo {
-  background-color: #facc15 !important;
-  border-color: #facc15 !important;
-  color: #1e293b !important;
-  font-weight: 700;
 }
