@@ -395,3 +395,16 @@ select.modal-input {
   cursor: pointer;
   transition: 0.2s;
 }
+
+
+.paginacao-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.paginacao-btn-ativo {
+  background-color: #facc15 !important;
+  border-color: #facc15 !important;
+  color: #1e293b !important;
+  font-weight: 700;
+}
