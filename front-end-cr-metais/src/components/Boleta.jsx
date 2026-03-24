@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
-import axios from "axios";
 import "../styles/BoletaStyle.css";
+import api from "../services/apiClient";
 
 const Boleta = () => {
   const [clientes, setClientes] = useState([]);
@@ -24,8 +24,8 @@ const Boleta = () => {
     const buscarDadosIniciais = async () => {
       try {
         const [resProdutos, resPrecos] = await Promise.all([
-          axios.get("http://localhost:8080/produtos"),
-          axios.get("http://localhost:8080/preco-produto-tabela")
+          api.get("/produtos"),
+          api.get("/preco-produto-tabela")
         ]);
         setProdutos(resProdutos.data?.content || resProdutos.data || []);
         setPrecosTabela(resPrecos.data?.content || resPrecos.data || []);
@@ -42,7 +42,7 @@ const Boleta = () => {
       const endpoint = tipoNota === "ENTRADA" ? "fornecedores" : "clientes";
 
       try {
-        const resEntidades = await axios.get(`http://localhost:8080/${endpoint}`);
+        const resEntidades = await api.get(`/${endpoint}`);
         setClientes(resEntidades.data?.content || resEntidades.data || []);
       } catch (error) {
         console.error("Erro ao carregar entidades", error);
@@ -50,7 +50,7 @@ const Boleta = () => {
 
       if (tipoNota === "ENTRADA") {
         try {
-          const resTabelas = await axios.get(`http://localhost:8080/tabelas-precos/fornecedores`);
+          const resTabelas = await api.get("/tabelas-precos/fornecedores");
           const tabelas = resTabelas.data?.content || resTabelas.data || [];
           const mapaTabelas = {};
           tabelas.forEach(item => {
@@ -120,20 +120,20 @@ const Boleta = () => {
           rendimento: Number(item.total)
         }));
 
-        const resCompra = await axios.post("http://localhost:8080/compra", {
+        const resCompra = await api.post("/compra", {
           dataCompra: dataAtual,
           idFornecedor: idEntidade,
           itens: itensPayload
         });
 
         const idCompra = resCompra.data.idCompra || resCompra.data.id;
-        await axios.post("http://localhost:8080/pagamento-compra", {
+        await api.post("/pagamento-compra", {
           dataPagamento: dataAtual,
           idCompra: Number(idCompra),
           idContaPagamento: 1
         });
       } else {
-        const resVenda = await axios.post("http://localhost:8080/vendas", {
+        const resVenda = await api.post("/vendas", {
           idCliente: idEntidade,
           datavenda: dataAtual
         });
@@ -141,7 +141,7 @@ const Boleta = () => {
         const idVenda = resVenda.data.idVenda || resVenda.data.id;
 
         for (const item of itensValidos) {
-          await axios.post("http://localhost:8080/itens-pedido-venda", {
+          await api.post("/itens-pedido-venda", {
             fk_venda: Number(idVenda),
             fk_produto: Number(item.produtoId),
             pesoKg: Number(item.peso),

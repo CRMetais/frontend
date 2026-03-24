@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/DashboardStyle.module.css";
 import { BarChart } from "@mui/x-charts/BarChart";
+import api from "../services/apiClient";
 
 export default function Dashboard() {
     const [chartWidth, setChartWidth] = useState(600);
@@ -64,18 +65,12 @@ export default function Dashboard() {
 
             try {
                 const [resProdutos, resFornecedores] = await Promise.all([
-                    fetch("http://localhost:8080/produtos/top-peso-vendido"),
-                    fetch("http://localhost:8080/fornecedores/top-rendimento"),
+                    api.get("/produtos/top-peso-vendido"),
+                    api.get("/fornecedores/top-rendimento"),
                 ]);
 
-                if (!resProdutos.ok || !resFornecedores.ok) {
-                    throw new Error("Falha ao carregar dados dos gráficos");
-                }
-
-                const [dadosProdutos, dadosFornecedores] = await Promise.all([
-                    resProdutos.json(),
-                    resFornecedores.json(),
-                ]);
+                const dadosProdutos = resProdutos.data;
+                const dadosFornecedores = resFornecedores.data;
 
                 const produtosFormatados = normalizarLista(dadosProdutos)
                     .map((item) => ({
