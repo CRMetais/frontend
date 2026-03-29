@@ -161,6 +161,51 @@ const Boleta = () => {
     }
   };
 
+  const gerarNotaFiscal = async () => {
+  try {
+    if (!clienteSelecionadoId) {
+      alert("Selecione um cliente/fornecedor.");
+      return;
+    }
+
+    if (itensBoleta.length === 0) {
+      alert("Adicione itens na boleta.");
+      return;
+    }
+
+    const payload = {
+      idFornecedor: Number(clienteSelecionadoId),
+      tipoNota,
+      classeNota,
+      itens: itensBoleta.map(item => ({
+        produtoId: Number(item.produtoId),
+        peso: Number(item.peso),
+        valorUnitario: Number(item.valorUnitario),
+        total: Number(item.total),
+        bags: Number(item.bags)
+      }))
+    };
+
+    const resJava = await api.post("/nota-fiscal", payload);
+
+    await fetch("http://localhost:5000/receber-nf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(resJava.data)
+    });
+
+    console.log("JSON FINAL:", resJava.data);
+
+    alert("NF gerada! Veja o terminal do Python");
+
+  } catch (erro) {
+    console.error("Erro ao gerar NF:", erro);
+    alert("Erro ao gerar nota fiscal");
+  }
+};
+
   const clienteSelecionado = clientes.find(c => String(c.id || c.idCliente || c.idFornecedor) === clienteSelecionadoId);
   const nomeCliente = clienteSelecionado ? (clienteSelecionado.nome || clienteSelecionado.razaoSocial) : "-";
   const nomeTabela = clienteSelecionado ? (tabelaPorFornecedor[clienteSelecionadoId] || "-") : "-";
@@ -272,7 +317,7 @@ const Boleta = () => {
             >
               {salvandoNota ? "SALVANDO..." : (pagamentoConfirmado ? "PAGAMENTO CONFIRMADO ✔" : "CONFIRMAR PAGAMENTO")}
             </button>
-            <button type="button">GERAR NOTA FISCAL</button>
+            <button type="button" onClick={gerarNotaFiscal}>GERAR NOTA FISCAL</button>
             <button type="button" className="botao_copiar">
               <span className="texto_copiar">Copiar Nota</span>
               <span className="icone_copiar texto_copiar">⧉</span>
