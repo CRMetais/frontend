@@ -1,143 +1,106 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/Historico.module.css";
+import { buscarHistorico } from "../services/histoticoService";
 
 function Historico() {
 
-  const [tableData] = useState([
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-    { id: 1, produto: "Bronze", peso: 10, valor: 38.0, total: 380.0, rend: 89.0, status: "-", cliente: "José Silva", data: "29/09/25", balanco: "SIM", classe: "Entrega", nFiscal: "SIM" },
-  ]);
-
+  const [tableData, setTableData] = useState([]);
   const [tipoHistorico, setTipoHistorico] = useState("Entrada");
-  const [modalOpen, setModalOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const confirmarExportacao = () => {
-    console.log("Gerando CSV...");
-    setModalOpen(false);
+  const formatarData = (data) => {
+    return new Date(data).toLocaleDateString("pt-BR");
   };
 
   useEffect(() => {
-    document.title = "CR Metais | Histórico"
-  })
+    const carregarDados = async () => {
+      try {
+        setLoading(true);
+
+        const tipoApi = tipoHistorico === "Entrada" ? "COMPRA" : "VENDA";
+
+        const data = await buscarHistorico(tipoApi);
+
+        console.log("DADOS DA API:", data); // 👈 DEBUG
+
+        setTableData(data);
+
+      } catch (error) {
+        console.error("Erro no componente:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    carregarDados();
+  }, [tipoHistorico]);
 
   return (
     <div className={styles.containerPrincipal}>
       <main className={styles.conteudoPrincipal}>
+
+        {/* HEADER */}
         <div className={styles.barraTitulo}>
           <h1 className={styles.titulo}>
             Histórico de {tipoHistorico}
           </h1>
 
-          <div className={styles.areaAcoes}>
-            <select
-              className={styles.selectHistorico}
-              value={tipoHistorico}
-              onChange={(e) => setTipoHistorico(e.target.value)}
-            >
-              <option value="Entrada">Entrada 🢃</option>
-              <option value="Saída">Saída</option>
-            </select>
-
-            <button
-              className={styles.botaoCsv}
-              onClick={() => setModalOpen(true)}
-            >
-              Gerar CSV
-            </button>
-          </div>
+          <select
+            className={styles.selectHistorico}
+            value={tipoHistorico}
+            onChange={(e) => setTipoHistorico(e.target.value)}
+          >
+            <option value="Entrada">Entrada</option>
+            <option value="Saida">Saída</option>
+          </select>
         </div>
 
+        {/* TABELA */}
         <div className={styles.wrapperTabela}>
           <table className={styles.tabela}>
             <thead>
               <tr>
-                <th>Id</th>
+                <th>Id da Compra</th>
                 <th>Produto</th>
-                <th>Peso</th>
-                <th>Valor</th>
-                <th>Total</th>
-                <th>Rend</th>
-                <th>Status</th>
-                <th>Cliente</th>
+                <th>Peso(Kg)</th>
+                <th>Valor(R$)</th>
+                <th>Total(R$)</th>
+                <th>Rend(R$)</th>
+                <th>Tipo</th>
+                <th>Parceiro</th>
                 <th>Data</th>
-                <th>Balanço</th>
-                <th>Classe</th>
-                <th>N. Fiscal</th>
               </tr>
             </thead>
 
             <tbody>
-              {tableData.map((row, index) => (
-                <tr key={index}>
-                  <td>{row.id}</td>
-                  <td>{row.produto}</td>
-                  <td>{row.peso}</td>
-                  <td>{row.valor.toFixed(2)}</td>
-                  <td>{row.total.toFixed(2)}</td>
-                  <td>{row.rend.toFixed(2)}</td>
-                  <td>{row.status}</td>
-                  <td>{row.cliente}</td>
-                  <td>{row.data}</td>
-                  <td>{row.balanco}</td>
-                  <td>{row.classe}</td>
-                  <td>{row.nFiscal}</td>
+              {loading ? (
+                <tr>
+                  <td colSpan="9">Carregando...</td>
                 </tr>
-              ))}
+              ) : tableData.length === 0 ? (
+                <tr>
+                  <td colSpan="9">Nenhum dado encontrado</td>
+                </tr>
+              ) : (
+                tableData.map((row, index) => (
+                  <tr key={index}>
+                    <td>{row.id}</td>
+                    <td>{row.produto}</td>
+                    <td>{row.peso}</td>
+                    <td>{row.preco?.toFixed(2)}</td>
+                    <td>{row.total?.toFixed(2)}</td>
+                    <td>{row.rendimento ? row.rendimento.toFixed(2) : "-"}</td>
+                    <td>{row.tipo}</td>
+                    <td>{row.parceiro}</td>
+                    <td>{formatarData(row.data)}</td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
+
       </main>
-
-      {/* ===== MODAL ===== */}
-      {modalOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.csvModal}>
-            <h1 className={styles.modalMainTitle}>CR Metais</h1>
-            <p className={styles.modalSubtitle}>
-              Base de dados Históricos
-            </p>
-
-            <div className={styles.inputGroup}>
-              <span className={styles.inputIcon}></span>
-              <input type="date" className={styles.modalInput} />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <span className={styles.inputIcon}></span>
-              <input type="date" className={styles.modalInput} />
-            </div>
-
-            <button
-              className={styles.modalGenerateBtn}
-              onClick={confirmarExportacao}
-            >
-              Gerar CSV
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
