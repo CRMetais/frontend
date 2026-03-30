@@ -68,7 +68,7 @@
 
 input {
   background-color: #020618;
-  background-color: white !important;
+  /* background-color: white !important; */
   font-size: 18px;
   padding: 16px 0 16px 16px;
   color: #314158;
