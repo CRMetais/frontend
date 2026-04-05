@@ -1,23 +1,27 @@
 body {
   margin: 0;
   padding: 0;
+  padding-top: 64px; /* evita conteúdo ficar escondido atrás da navbar */
 }
 
 .navbar {
-  width: calc(100% - 96px);
-  height: 64px;
+  position: fixed;   /* fixa no topo */
+  top: 0;
+  left: 0;
+  width: 100%;       /* ocupa toda a largura */
+  height: 80px;
   background-color: #f8fafc;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* flex-wrap: nowrap; */
+
   padding: 8px 48px;
+  box-sizing: border-box; /* garante que padding não estoure largura */
+
   color: black;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  /* position: fixed; */
-  top: 0;
-  left: 0;
-  /* z-index: 1000; */
+  z-index: 1000;
 }
 
 .navbar button {
@@ -76,24 +80,6 @@ body {
   border-bottom: 3px solid #FACC15;
 }
 
-/* Botão sair */
-/* .btn_sair {
-  background-color: #FACC15;
-  color: black;
-  padding: 0.5rem 1.5rem;
-  height: 44px;
-  width: 136px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s;
-  border: none;
-  cursor: pointer;
-  margin-right: 7vw;
-} */
-
-/* .btn_sair:hover {
-  transform: scale(1.05);
-} */
-
 /* ========================= */
 /* Responsividade */
 /* ========================= */
@@ -114,10 +100,6 @@ body {
     font-size: 13px;
     padding: 0.4rem 0.6rem;
   }
-
-  /* .btn_sair {
-    width: auto;
-  } */
 }
 
 @media (max-width: 768px) {

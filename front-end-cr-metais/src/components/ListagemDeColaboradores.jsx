@@ -44,8 +44,8 @@ const ColaboradorItem = ({ colaborador, onExcluir, onEditar, editando, dadosEdit
         <span className="colaborador-email">{colaborador.email}</span>
         <span className="colaborador-cargo">{colaborador.cargo ?? "—"}</span>
         <div className="colaborador-acoes-container">
-          <button className="btn-editar-inline" onClick={() => onEditar(colaborador)} title="Editar">✏️ Editar</button>
-          <button className="btn-excluir-inline" onClick={() => onExcluir(colaborador.id)} title="Excluir">🗑️ Excluir</button>
+          <button className="btn-editar-inline" onClick={() => onEditar(colaborador)} title="Editar">✏️</button>
+          <button className="btn-excluir-inline" onClick={() => onExcluir(colaborador.id)} title="Excluir">🗑️</button>
         </div>
       </div>
     </div>
