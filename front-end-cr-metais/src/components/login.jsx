@@ -76,37 +76,51 @@ export default function Login({ setCurrentPage }) {
           <img src="../src/assets/logo.png" alt="Logo" />
         </div>
 
-        <p className={styles.loginSubtitle}>Bem-vindo de volta!</p>
+        <div className="titulo">
+          <p className={styles.loginSubtitle}>Bem-vindo de volta!</p>
+        </div>
 
         <div className={styles.inputGroup}>
-          <div className="inputBox">
-            <div className="input-icon">
-              <span>🔒</span>
-            </div>
 
-            <input
-              type="email"
-              placeholder="Informe seu email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={styles.inputField}
-            />
+          <div className="inputs">
+            <span>Insira seu email</span>
+
+            <div className="inputBox">
+              {/* <div className="input-icon"> */}
+              {/* <span>🔒</span> */}
+              {/* </div> */}
+
+              <input
+                type="email"
+                placeholder="exemplo@gmail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={styles.inputField}
+              />
+            </div>
           </div>
 
-          <div className="inputBox">
-            <div className="input-icon">
+          <div className="inputs">
+            <span>Insira sua senha</span>
+
+            <div className="inputBox">
+
+
+
+              {/* <div className="input-icon">
               <span>
                 🔑
               </span>
-            </div>
+            </div> */}
 
-            <input
-              type="password"
-              placeholder="Informe sua senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
-              className={styles.inputField}
-            />
+              <input
+                type="password"
+                placeholder="* * * * * * * *"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                className={styles.inputField}
+              />
+            </div>
           </div>
         </div>
 

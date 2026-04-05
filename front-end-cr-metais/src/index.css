@@ -19,7 +19,7 @@ body,
 html {
   width: 100%;
   max-width: 100%;
-  font-family: "IBM Plex Sans";
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   background-color: #f8fafc;
   background-size: cover;
 }
