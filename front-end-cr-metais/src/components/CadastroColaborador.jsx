@@ -5,6 +5,9 @@ import check from "../styles/img/check.png";
 import logo from "../styles/img/LOGO.png";
 import { cadastrarUsuario } from "../services/usuarioService";
 
+// Defina o Regex fora das funções para que ambas possam usar sem erro de escopo
+const SENHA_FORTE_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
 export default function CadastroClienteModal({ onCadastroSucesso }) {
   const [step, setStep] = useState(1);
   const [nome, setNome] = useState("");
@@ -14,55 +17,56 @@ export default function CadastroClienteModal({ onCadastroSucesso }) {
   const [cargo, setCargo] = useState("");
   const [erros, setErros] = useState({});
 
-  function emailValido(email) {
+  function emailValido(emailVal) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+    return regex.test(emailVal);
   }
 
+  // Validação em tempo real para feedback visual
   useEffect(() => {
-    validarTempoReal(nome, email, senha, csenha, cargo);
+    let novosErros = {};
+    if (nome.length > 0 && nome.trim().length <= 2)
+      novosErros.nome = "Nome deve conter pelo menos 3 letras";
+    
+    if (email.length > 0 && !emailValido(email))
+      novosErros.email = "Email inválido";
+    
+    if (senha.length > 0 && !SENHA_FORTE_REGEX.test(senha)) 
+      novosErros.senha = "Senha muito fraca (mín. 8 caracteres, maiúscula, minúscula, número e símbolo)";
+    
+    if (csenha.length > 0 && senha !== csenha)
+      novosErros.csenha = "As senhas não coincidem";
+    
+    if (cargo.length > 0 && cargo.trim().length === 0)
+      novosErros.cargo = "Informe um cargo";
+
+    setErros(novosErros);
   }, [nome, email, senha, csenha, cargo]);
 
-  function validarTempoReal(nomeVal, emailVal, senhaVal, csenhaVal, cargoVal) {
-    let novosErros = {};
-    if (nomeVal.length > 0 && nomeVal.trim().length <= 2)
-      novosErros.nome = "Nome deve conter pelo menos 3 letras";
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailVal.length > 0 && !regex.test(emailVal))
-      novosErros.email = "Email inválido";
-    const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    if (senhaVal.length > 0 && !senhaForteRegex.test(senhaVal)) 
-      novosErros.senha = "Senha deve ter mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial";
-    if (csenhaVal.length > 0 && senhaVal !== csenhaVal)
-      novosErros.csenha = "As senhas não coincidem";
-    if (cargoVal.length > 0 && cargoVal.trim().length === 0)
-      novosErros.cargo = "Informe um cargo";
-    setErros(novosErros);
-  }
-
+  // Validação final antes de enviar para o servidor
   function validarCampos() {
     let novosErros = {};
-    if (nome.trim().length <= 2) novosErros.nome = "Nome deve conter pelo menos 3 letras";
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(email)) novosErros.email = "Email inválido";
-    if (!senhaForteRegex.test(senha))
-      novosErros.senha = "Senha deve ter mínimo 8 caracteres, incluindo maiúscula, minúscula, número e caractere especial";
-    if (senha !== csenha) novosErros.csenha = "As senhas não coincidem";
-    if (cargo.trim().length === 0) novosErros.cargo = "Informe um cargo";
+    if (nome.trim().length <= 2) novosErros.nome = "Nome inválido";
+    if (!emailValido(email)) novosErros.email = "Email inválido";
+    if (!SENHA_FORTE_REGEX.test(senha)) novosErros.senha = "Senha inválida";
+    if (senha !== csenha) novosErros.csenha = "Senhas não coincidem";
+    if (cargo.trim().length === 0) novosErros.cargo = "Cargo obrigatório";
+    
     setErros(novosErros);
     return Object.keys(novosErros).length === 0;
   }
 
   async function enviarCadastro() {
     if (!validarCampos()) return;
+    
     const novoUsuario = { nome, email, senha, cargo };
     try {
       await cadastrarUsuario(novoUsuario);
-      setStep(2);
+      setStep(2); // Muda para a tela de sucesso
       if (onCadastroSucesso) onCadastroSucesso();
     } catch (erro) {
       console.error("Erro ao cadastrar:", erro.response?.data || erro);
-      alert("Erro ao conectar com o servidor!");
+      alert(erro.response?.data?.message || "Erro ao conectar com o servidor!");
     }
   }
 
@@ -76,82 +80,69 @@ export default function CadastroClienteModal({ onCadastroSucesso }) {
     setStep(1);
   }
 
-  function handleButtonClick() {
-    if (step === 1) {
-      enviarCadastro();
-    } else {
-      limparFormulario();
-    }
-  }
-
-  function renderStep() {
-    if (step === 1) {
-      return (
-        <>
-          <div className="input-box">
-            <img src={info} className="icon-img" /> 
-            <input placeholder="Informe seu nome" value={nome} onChange={(e) => setNome(e.target.value)} />
-          </div>
-          {erros.nome && <span className="erro">{erros.nome}</span>}
-
-          <div className="input-box">
-            <img src={info} className="icon-img" />
-            <input placeholder="Informe seu email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          {erros.email && <span className="erro">{erros.email}</span>}
-
-          <div className="input-box">
-            <img src={info} className="icon-img" />
-            <input type="password" placeholder="Informe sua senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
-          </div>
-          {erros.senha && <span className="erro">{erros.senha}</span>}
-
-          <div className="input-box">
-            <img src={info} className="icon-img" />
-            <input type="password" placeholder="Confirme sua senha" value={csenha} onChange={(e) => setCSenha(e.target.value)} />
-          </div>
-          {erros.csenha && <span className="erro">{erros.csenha}</span>}
-
-          <div className="input-box">
-            <img src={info} className="icon-img" />
-            <input placeholder="Cargo (ex: ADMIN)" value={cargo} onChange={(e) => setCargo(e.target.value)} />
-          </div>
-          {erros.cargo && <span className="erro">{erros.cargo}</span>}
-        </>
-      );
-    }
-
-    if (step === 2) {
-      return (
-        <div className="final-step">
-          <h2 className="final-title">Cadastro realizado com sucesso!</h2>
-          <img src={check} alt="Sucesso" className="final-check" />
-        </div>
-      );
-    }
-
-    return null;
-  }
-
   const step1Valido =
     nome.trim().length > 2 &&
     emailValido(email) &&
-    senha.length >= 8 &&
+    SENHA_FORTE_REGEX.test(senha) &&
     senha === csenha &&
     cargo.trim().length > 0;
 
   return (
     <div className="cadastro-box">
       <h1 className="title">
-        <img src={logo} className="logo-img" /> CR Metais
+        <img src={logo} className="logo-img" alt="Logo" /> CR Metais
       </h1>
       <p className="subtitle">Cadastro de novo colaborador</p>
-      {renderStep()}
-      <div className="btn-wrapper">
-        <button className="btn-prev" onClick={handleButtonClick} disabled={step === 1 && !step1Valido}>
-          {step === 1 ? "Próximo" : "Finalizados"}
-        </button>
-      </div>
+
+      {step === 1 ? (
+        <>
+          <div className="input-box">
+            <img src={info} className="icon-img" alt="info" /> 
+            <input placeholder="Informe seu nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+          </div>
+          {erros.nome && <span className="erro">{erros.nome}</span>}
+
+          <div className="input-box">
+            <img src={info} className="icon-img" alt="info" />
+            <input placeholder="Informe seu email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          {erros.email && <span className="erro">{erros.email}</span>}
+
+          <div className="input-box">
+            <img src={info} className="icon-img" alt="info" />
+            <input type="password" placeholder="Informe sua senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+          </div>
+          {erros.senha && <span className="erro">{erros.senha}</span>}
+
+          <div className="input-box">
+            <img src={info} className="icon-img" alt="info" />
+            <input type="password" placeholder="Confirme sua senha" value={csenha} onChange={(e) => setCSenha(e.target.value)} />
+          </div>
+          {erros.csenha && <span className="erro">{erros.csenha}</span>}
+
+          <div className="input-box">
+            <img src={info} className="icon-img" alt="info" />
+            <input placeholder="Cargo (ex: ADMIN)" value={cargo} onChange={(e) => setCargo(e.target.value)} />
+          </div>
+          {erros.cargo && <span className="erro">{erros.cargo}</span>}
+          
+          <div className="btn-wrapper">
+            <button className="btn-prev" onClick={enviarCadastro} disabled={!step1Valido}>
+              Próximo
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="final-step">
+          <h2 className="final-title">Cadastro realizado com sucesso!</h2>
+          <img src={check} alt="Sucesso" className="final-check" />
+          <div className="btn-wrapper">
+            <button className="btn-prev" onClick={limparFormulario}>
+              Finalizados
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,185 +1,193 @@
 import React, { useState, useEffect } from "react";
 import "../styles/ListagemDeColaboradoresStyle.css";
 import CadastroColaboradorModal from "./CadastroColaborador";
-import { listarUsuarios, excluirUsuario, editarUsuario } from "../services/usuarioService";
+import { listarUsuarios, excluirUsuario, editarUsuario, getUsuarioLogadoId } from "../services/usuarioService";
 
 const ITENS_POR_PAGINA = 8;
 
-const ColaboradorItem = ({ colaborador, onAcoesClick }) => {
+const ColaboradorItem = ({ colaborador, onExcluir, onEditar, editando, dadosEditados, onDadosChange, onSalvar, onCancelar }) => {
+  if (editando) {
+    return (
+      <div className="colaborador-line editando">
+        <div className="colaborador-item">
+          <input
+            className="input-inline"
+            value={dadosEditados.nome}
+            onChange={(e) => onDadosChange({ ...dadosEditados, nome: e.target.value })}
+            placeholder="Nome"
+          />
+          <input
+            className="input-inline"
+            value={dadosEditados.email}
+            onChange={(e) => onDadosChange({ ...dadosEditados, email: e.target.value })}
+            placeholder="E-mail"
+          />
+          <input
+            className="input-inline"
+            value={dadosEditados.cargo}
+            onChange={(e) => onDadosChange({ ...dadosEditados, cargo: e.target.value })}
+            placeholder="Cargo"
+          />
+          <div className="colaborador-acoes-container">
+            <button className="btn-salvar-inline" onClick={onSalvar} title="Salvar">💾 Salvar</button>
+            <button className="btn-cancelar-inline" onClick={onCancelar} title="Cancelar">✖ Cancelar</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="colaborador-line">
       <div className="colaborador-item">
         <span className="colaborador-nome">{colaborador.nome}</span>
         <span className="colaborador-email">{colaborador.email}</span>
-        <button className="btn-acoes" onClick={() => onAcoesClick(colaborador)}>
-          Ações
-        </button>
+        <span className="colaborador-cargo">{colaborador.cargo ?? "—"}</span>
+        <div className="colaborador-acoes-container">
+          <button className="btn-editar-inline" onClick={() => onEditar(colaborador)} title="Editar">✏️ Editar</button>
+          <button className="btn-excluir-inline" onClick={() => onExcluir(colaborador.id)} title="Excluir">🗑️ Excluir</button>
+        </div>
       </div>
-      <div className="divisao"></div>
     </div>
   );
 };
 
 const ListaColaboradores = () => {
   const [colaboradores, setColaboradores] = useState([]);
-  const [colaboradorSelecionado, setColaboradorSelecionado] = useState(null);
-  const [modoEdicao, setModoEdicao] = useState(false);
+  const [colaboradorParaEditar, setColaboradorParaEditar] = useState(null);
   const [dadosEditados, setDadosEditados] = useState({});
   const [paginaAtual, setPaginaAtual] = useState(1);
 
   const carregarUsuarios = async () => {
     try {
       const usuarios = await listarUsuarios();
-      const usuariosFormatados = usuarios.map(u => ({
-        id: u.idUsuario,
+      const usuariosFormatados = Array.isArray(usuarios) ? usuarios.map(u => ({
+        id: u.idUsuario || u.id,
         nome: u.nome,
         email: u.email,
-        cargo: u.cargo
-      }));
+        cargo: u.cargo ?? "—"
+      })) : [];
       setColaboradores(usuariosFormatados);
-      setPaginaAtual(1);
     } catch (erro) {
       console.error("Erro ao buscar usuários:", erro);
-      alert("Erro ao carregar colaboradores!");
     }
   };
 
   useEffect(() => {
     carregarUsuarios();
+    document.title = "CR Metais | Gestão de dados";
   }, []);
 
   const totalPaginas = Math.ceil(colaboradores.length / ITENS_POR_PAGINA);
   const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
   const colaboradoresPagina = colaboradores.slice(indiceInicio, indiceInicio + ITENS_POR_PAGINA);
 
-  const abrirModal = (colaborador) => {
-    setColaboradorSelecionado(colaborador);
-    setDadosEditados(colaborador);
-    setModoEdicao(false);
+  const prepararEdicao = (colaborador) => {
+    setColaboradorParaEditar(colaborador.id);
+    setDadosEditados({ ...colaborador });
+  };
+
+  const cancelarEdicao = () => {
+    setColaboradorParaEditar(null);
+    setDadosEditados({});
   };
 
   const excluirColaborador = async (id) => {
+    if (!window.confirm("Deseja realmente excluir este colaborador?")) return;
     try {
       await excluirUsuario(id);
+      if (id === getUsuarioLogadoId()) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+        return;
+      }
       await carregarUsuarios();
-      setColaboradorSelecionado(null);
     } catch (erro) {
-      console.error("Erro ao excluir:", erro);
       alert("Erro ao excluir colaborador!");
     }
   };
 
   const salvarAlteracoes = async () => {
     try {
-      await editarUsuario(dadosEditados.id, {
+      const usuarioLogadoId = getUsuarioLogadoId();
+      const eOMesmoUsuario = Number(dadosEditados.id) === usuarioLogadoId;
+
+      const resposta = await editarUsuario(dadosEditados.id, {
         nome: dadosEditados.nome,
         email: dadosEditados.email,
         cargo: dadosEditados.cargo
       });
+
+      // Atualiza o token se editou o próprio perfil
+      if (eOMesmoUsuario && resposta.data?.token) {
+        localStorage.setItem("token", resposta.data.token);
+      }
+
       await carregarUsuarios();
-      setColaboradorSelecionado(null);
-      setModoEdicao(false);
+      cancelarEdicao();
     } catch (erro) {
-      console.error("Erro ao editar:", erro);
-      alert("Erro ao salvar alterações!");
+      if (erro.response?.status !== 401 && erro.response?.status !== 403) {
+        alert("Erro ao salvar alterações!");
+      }
     }
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDadosEditados((prev) => ({ ...prev, [name]: value }));
-  };
-
-  useEffect(() => {
-    document.title = "CR Metais | Gestão de dados"
-  })
 
   return (
     <div className="lista-colaboradores-page">
       <div className="lista-colaboradores-container">
         <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
 
+        <div className="colaborador-header">
+          <span>Nome</span>
+          <span>E-mail</span>
+          <span>Cargo</span>
+          <span>Ações</span>
+        </div>
+
         <div className="lista-colaboradores-grid">
-          {colaboradoresPagina.map((colaborador) => (
-            <ColaboradorItem
-              key={colaborador.id}
-              colaborador={colaborador}
-              onAcoesClick={abrirModal}
-            />
-          ))}
+          {colaboradoresPagina.length === 0 ? (
+            <p style={{ padding: "1rem", opacity: 0.5 }}>Nenhum colaborador encontrado.</p>
+          ) : (
+            colaboradoresPagina.map((colaborador) => (
+              <ColaboradorItem
+                key={colaborador.id}
+                colaborador={colaborador}
+                editando={colaboradorParaEditar === colaborador.id}
+                dadosEditados={dadosEditados}
+                onDadosChange={setDadosEditados}
+                onEditar={prepararEdicao}
+                onExcluir={excluirColaborador}
+                onSalvar={salvarAlteracoes}
+                onCancelar={cancelarEdicao}
+              />
+            ))
+          )}
         </div>
 
         {totalPaginas > 1 && (
           <div className="paginacao">
             <button
               className="paginacao-btn"
-              onClick={() => setPaginaAtual((p) => p - 1)}
+              onClick={() => setPaginaAtual(p => Math.max(1, p - 1))}
               disabled={paginaAtual === 1}
-            >
-              ← Anterior
-            </button>
+            >← Anterior</button>
 
             {Array.from({ length: totalPaginas }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
                 className={`paginacao-btn ${paginaAtual === num ? "paginacao-btn-ativo" : ""}`}
                 onClick={() => setPaginaAtual(num)}
-              >
-                {num}
-              </button>
+              >{num}</button>
             ))}
 
             <button
               className="paginacao-btn"
-              onClick={() => setPaginaAtual((p) => p + 1)}
+              onClick={() => setPaginaAtual(p => Math.min(totalPaginas, p + 1))}
               disabled={paginaAtual === totalPaginas}
-            >
-            → Próximo 
-            </button>
+            >Próximo →</button>
           </div>
         )}
       </div>
-
-      {colaboradorSelecionado && (
-        <div className="modal-overlay" onClick={() => setColaboradorSelecionado(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={() => setColaboradorSelecionado(null)}>
-              ×
-            </button>
-            <h1 className="modal-title">
-              {modoEdicao ? "Editar Colaborador" : colaboradorSelecionado.nome}
-            </h1>
-            <div className="modal-fields">
-              {modoEdicao ? (
-                <>
-                  <input name="nome" value={dadosEditados.nome} onChange={handleChange} className="modal-input" />
-                  <input name="email" value={dadosEditados.email} onChange={handleChange} className="modal-input" />
-                  <input name="cargo" value={dadosEditados.cargo} onChange={handleChange} className="modal-input" />
-                </>
-              ) : (
-                <>
-                  <p><strong>Nome:</strong> {colaboradorSelecionado.nome}</p>
-                  <p><strong>Email:</strong> {colaboradorSelecionado.email}</p>
-                  <p><strong>Cargo:</strong> {colaboradorSelecionado.cargo}</p>
-                </>
-              )}
-            </div>
-            <div className="modal-footer">
-              {modoEdicao ? (
-                <>
-                  <button className="modal-btn-editar" onClick={salvarAlteracoes}>💾 Salvar</button>
-                  <button className="modal-btn-excluir" onClick={() => setModoEdicao(false)}>Cancelar</button>
-                </>
-              ) : (
-                <>
-                  <button className="modal-btn-editar" onClick={() => setModoEdicao(true)}>✏ Editar</button>
-                  <button className="modal-btn-excluir" onClick={() => excluirColaborador(colaboradorSelecionado.id)}>🗑 Excluir</button>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       <CadastroColaboradorModal onCadastroSucesso={carregarUsuarios} />
     </div>

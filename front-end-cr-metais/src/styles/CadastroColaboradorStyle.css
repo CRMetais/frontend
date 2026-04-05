@@ -125,3 +125,21 @@
   padding-left: 4px;
   display: block;
 }
+
+.btn-editar-inline, 
+.btn-excluir-inline,
+.btn-salvar-inline,
+.btn-cancelar-inline {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, border-color 0.2s; /* ✅ só cor, sem transform */
+}
