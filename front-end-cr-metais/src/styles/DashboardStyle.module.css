@@ -28,15 +28,26 @@ body{
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   padding: 1rem;
   background-color: #f9f9f9;
   border-radius: 8px;
 }
 
-.date_filter > div {
+.date_filter > div:not(.search_button_container) {
   flex: 1;
   min-width: 150px;
+}
+
+.search_button_container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.search_button {
+  width: 180px;
 }
 
 .input {
@@ -128,6 +139,14 @@ body{
 
   .date_filter {
     flex-direction: column;
+  }
+
+  .search_button_container {
+    width: 100%;
+  }
+
+  .search_button {
+    width: 100%;
   }
 
   .grafico {

@@ -9,7 +9,12 @@ export default function Dashboard() {
     const [topFornecedores, setTopFornecedores] = useState([]);
     const [carregandoGraficos, setCarregandoGraficos] = useState(false);
     const [erroGraficos, setErroGraficos] = useState("");
-
+    const [dataInicio, setDataInicio] = useState("2026-01-01");
+    const [dataFim, setDataFim] = useState("2026-03-31");
+    const [pesoTotal, setPesoTotal] = useState(0);
+    const [totalVendas, setTotalVendas] = useState(0);
+    const [totalCompras, setTotalCompras] = useState(0);
+    const [rendimentoTotal, setRendimentoTotal] = useState(0);
     const normalizarNumero = (valor) => {
         const numero = Number(valor);
         return Number.isNaN(numero) ? 0 : numero;
@@ -37,7 +42,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         document.title = "CR Metais | Dashboard"
-    })
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -55,81 +60,84 @@ export default function Dashboard() {
 
         handleResize();
         window.addEventListener('resize', handleResize);
+        
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    const carregarGraficos = async (inicio, fim) => {
+        setCarregandoGraficos(true);
+        setErroGraficos("");
+
+        try {
+            const params = { dataInicio: inicio, dataFim: fim };
+
+            const [resProdutos, resFornecedores, resEstoque, resVendas, resCompras] = await Promise.all([
+                api.get("/produtos/top-peso-vendido", { params }),
+                api.get("/fornecedores/top-rendimento", { params }),
+                api.get("/estoque/total-produtos", { params }),
+                api.get("/vendas/montante-total", { params }),
+                api.get("/compra/montante-total", { params }),
+            ]);
+
+            const dadosProdutos = resProdutos.data;
+            const dadosFornecedores = resFornecedores.data;
+            setPesoTotal(resEstoque.data);
+            setTotalVendas(resVendas.data);
+            setTotalCompras(resCompras.data);
+            setRendimentoTotal(totalVendas- totalCompras);
+            const produtosFormatados = normalizarLista(dadosProdutos)
+                .map((item) => ({
+                    categoria:
+                        item?.nome ||
+                        item?.nomeProduto ||
+                        item?.nome_produto ||
+                        "Sem nome",
+                    valor: normalizarNumero(
+                        item?.totalPesoVendido ??
+                        item?.total_peso_vendido ??
+                        item?.pesoTotal ??
+                        item?.total
+                    ),
+                }))
+                .slice(0, 10);
+
+            const fornecedoresFormatados = normalizarLista(dadosFornecedores)
+                .map((item) => ({
+                    categoria:
+                        item?.apelido ||
+                        item?.nome ||
+                        item?.razaoSocial ||
+                        item?.razao_social ||
+                        "Sem nome",
+                    valor: normalizarNumero(
+                        item?.totalRendimento ??
+                        item?.total_rendimento ??
+                        item?.rendimentoTotal ??
+                        item?.total
+                    ),
+                }))
+                .slice(0, 10);
+
+            setTopProdutos(produtosFormatados);
+            setTopFornecedores(fornecedoresFormatados);
+        } catch {
+            setErroGraficos("Não foi possível carregar os gráficos.");
+            setTopProdutos([]);
+            setTopFornecedores([]);
+            setTotalVendas(0);
+            setTotalCompras(0);
+        } finally {
+            setCarregandoGraficos(false);
+        }
+    };
+
     useEffect(() => {
-        const carregarGraficos = async () => {
-            setCarregandoGraficos(true);
-            setErroGraficos("");
-
-            try {
-                const [resProdutos, resFornecedores] = await Promise.all([
-                    api.get("/produtos/top-peso-vendido"),
-                    api.get("/fornecedores/top-rendimento"),
-                ]);
-
-                const dadosProdutos = resProdutos.data;
-                const dadosFornecedores = resFornecedores.data;
-
-                const produtosFormatados = normalizarLista(dadosProdutos)
-                    .map((item) => ({
-                        categoria:
-                            item?.nome ||
-                            item?.nomeProduto ||
-                            item?.nome_produto ||
-                            "Sem nome",
-                        valor: normalizarNumero(
-                            item?.totalPesoVendido ??
-                            item?.total_peso_vendido ??
-                            item?.pesoTotal ??
-                            item?.total
-                        ),
-                    }))
-                    .slice(0, 10);
-
-                const fornecedoresFormatados = normalizarLista(dadosFornecedores)
-                    .map((item) => ({
-                        categoria:
-                            item?.apelido ||
-                            item?.nome ||
-                            item?.razaoSocial ||
-                            item?.razao_social ||
-                            "Sem nome",
-                        valor: normalizarNumero(
-                            item?.totalRendimento ??
-                            item?.total_rendimento ??
-                            item?.rendimentoTotal ??
-                            item?.total
-                        ),
-                    }))
-                    .slice(0, 10);
-
-                setTopProdutos(produtosFormatados);
-                setTopFornecedores(fornecedoresFormatados);
-            } catch {
-                setErroGraficos("Não foi possível carregar os gráficos.");
-                setTopProdutos([]);
-                setTopFornecedores([]);
-            } finally {
-                setCarregandoGraficos(false);
-            }
-        };
-
-        carregarGraficos();
+        carregarGraficos(dataInicio, dataFim);
     }, []);
 
-    const pesoTotal = topProdutos.reduce(
-        (acumulador, item) => acumulador + normalizarNumero(item.valor),
-        0
-    );
-
-    const rendimentoTotal = topFornecedores.reduce(
-        (acumulador, item) => acumulador + normalizarNumero(item.valor),
-        0
-    );
-
-    const totalVendas = rendimentoTotal;
+    const aoPesquisar = () => {
+        carregarGraficos(dataInicio, dataFim);
+    };
 
     return (
         <div className={styles.container_dash}>
@@ -137,11 +145,31 @@ export default function Dashboard() {
                 <div className={styles.date_filter}>
                     <div>
                         <p className={styles.tit_data}>Data inicial</p>
-                        <input className={styles.input} type="date" defaultValue="2025-09-01" />
+                        <input
+                            className={styles.input}
+                            type="date"
+                            value={dataInicio}
+                            onChange={(event) => setDataInicio(event.target.value)}
+                        />
                     </div>
                     <div>
                         <p className={styles.tit_data}>Data final</p>
-                        <input className={styles.input} type="date" defaultValue="2025-10-01" />
+                        <input
+                            className={styles.input}
+                            type="date"
+                            value={dataFim}
+                            onChange={(event) => setDataFim(event.target.value)}
+                        />
+                    </div>
+                    <div className={styles.search_button_container}>
+                        <button
+                            className={`${styles.input} ${styles.search_button}`}
+                            type="button"
+                            onClick={aoPesquisar}
+                            disabled={carregandoGraficos}
+                        >
+                            Pesquisar
+                        </button>
                     </div>
                 </div>
                 <div className={styles.cards_kpi}>
@@ -166,6 +194,14 @@ export default function Dashboard() {
                         <div className={styles.container_valor_card}>
                             <p className={styles.valor_kpi}>
                                 {carregandoGraficos ? '...' : formatarMoeda(totalVendas)}
+                            </p>
+                        </div>
+                    </div>
+                    <div className={styles.card_kpi}>
+                        <p className={styles.titulo_kpi}>Total de compras:</p>
+                        <div className={styles.container_valor_card}>
+                            <p className={styles.valor_kpi}>
+                                {carregandoGraficos ? '...' : formatarMoeda(totalCompras)}
                             </p>
                         </div>
                     </div>
