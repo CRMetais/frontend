@@ -9,6 +9,7 @@ const EstoqueHeader = () => {
       <span className={styles.estoquePeso}>Peso (Kg)</span>
       <span className={styles.estoqueValor}>Valor Unitário (R$)</span>
       <span className={styles.estoqueTotal}>Total (R$)</span>
+      <span className={styles.estoqueDestino}>Destino</span>
     </div>
   );
 };
@@ -32,6 +33,9 @@ const EstoqueItem = ({ produto }) => {
             style: "currency",
             currency: "BRL",
           })}
+        </span>
+        <span className={styles.estoqueDestino}>
+          {produto.destino || ""}
         </span>
       </div>
       <div className={styles.divisao}></div>
