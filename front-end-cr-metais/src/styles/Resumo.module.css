@@ -25,17 +25,34 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  height: 80dvh;
   /* background-color: black; */
-  height: calc(100% - 110px);
+  /* background-color: red !important; */
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: column;
+  width: 78dvw;
+  height: 80dvh;
+  /* gap: 2.5rem; */
+  /* height: calc(100dvh - 80px); */
+}
+
+.rightSide {
+  /* background-color: red; */
+  height: 80dvh;
+  width: calc(22dvw - 20px - 96px);
 }
 
 .estoqueLista {
   overflow-y: auto;
   /* height: calc(100dvh - 88px - 60px - 80px); */
   background-color: #f8fafc;
+  /* height: 70dvh; */
   /* border: solid blue; */
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   border-left: thin gainsboro solid;
   border-right: thin gainsboro solid;
@@ -68,7 +85,7 @@
 
 .estoqueHeader {
   background-color: #2f2f2f;
-  border-radius: 6px 6px 0px 0px ;
+  border-radius: 1rem 1rem 0px 0px ;
 }
 
 .estoqueHeader span {
@@ -104,8 +121,9 @@
   flex-direction: column;
   justify-content: space-around;
   border: gainsboro thin solid;
-  border-radius: 6px;
-  height: calc((100dvh - 160px - 88px - 60px - 80px) / 4);
+  border-radius: 1rem;
+  /* height: calc((100dvh - 160px - 88px - 60px - 80px) / 4); */
+  height: calc((80dvh - 4rem + 4px) / 4);
   padding: 1rem;
   background-color: #f8fafc;  
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
@@ -119,9 +137,15 @@ h1 {
 .containerCards {
   display: flex;
   flex-direction: column;
-  padding-top: 88px;
   gap: 20px;
 }
+
+.containers {
+  display: flex;
+  gap: 20px;
+}
+
+
 
 .resumoCitulo {
   font-size: 1.2dvw;
@@ -144,15 +168,15 @@ h1 {
 
 *::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: #F8FAFC;
+  background-color: transparent;
 }
 
 *::-webkit-scrollbar-track:hover {
-  background-color: #F8FAFC;
+  background-color: transparent;
 }
 
 *::-webkit-scrollbar-track:active {
-  background-color: #F8FAFC;
+  background-color: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -172,4 +196,9 @@ h1 {
   display: flex;  
   /* background-color: red !important; */
   padding: 0 48px;
+  flex-direction: column;
+}
+
+.titulo {
+  width: 100%;
 }

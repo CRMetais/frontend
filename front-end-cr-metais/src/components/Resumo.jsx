@@ -79,8 +79,51 @@ const Resumo = () => {
     // </div>
 
     <div className={styles.conteudo}>
-      <div className="titulo">
-        <h1 className={styles.estoqueTitulo}>Resumo do Dia</h1>
+      <div className={styles.titulo}>
+        <h1 className={styles.estoqueTitulo}>Estoque atual</h1>
+      </div>
+
+      <div className={styles.containers}>
+        <div className={styles.leftSide}>
+          <div className={styles.estoqueGrid}>
+            <EstoqueHeader />
+
+            <div className={styles.estoqueLista}>
+              {resumo.produtos.map((produto, index) => (
+                <EstoqueItem key={index} produto={produto} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.rightSide}>
+          <div className={styles.containerCards}>
+            <ResumoCard
+              titulo="Total Aplicado:"
+              valor={resumo.totalAplicado.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            />
+            <ResumoCard
+              titulo="Peso Total:"
+              valor={`${resumo.pesoTotal.toLocaleString("pt-BR")} Kg`}
+            />
+
+            <ResumoCard
+              titulo="Pg Notas (hoje):"
+              valor={resumo.notasHoje.toLocaleString("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              })}
+            />
+
+            <ResumoCard
+              titulo="Peso Kg (hoje):"
+              valor={`${resumo.pesoHoje.toLocaleString("pt-BR")} Kg`}
+            />
+          </div>
+        </div>
       </div>
     </div>
 
