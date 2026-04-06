@@ -22,9 +22,9 @@
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 0;
+  padding: calc(2rem - 1.5px) 0;
   /* margin-bottom: 1.5rem; */
-  padding-right: 3rem;
+  /* padding-right: 3rem; */
 }
 
 .titulo {
@@ -32,6 +32,7 @@
   color: #020618;
   font-weight: 600;
   margin: 0;
+  /* border: solid red; */
 }
 
 .areaAcoes {
@@ -40,20 +41,110 @@
   align-items: center;
 }
 
+.historicoHeader {
+  background-color: #020618;
+  border-radius: 1rem 1rem 0px 0px ;
+
+}
+
+.historicoHeader,
+.item {
+  display: grid;
+  grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr;
+  align-items: center;
+  padding: 1dvh;
+  color: #020618;
+  font-size: 1dvw;
+  transition: 0.3s;
+}
+
+.historicoHeader span {
+  color: white;
+  font-weight: bold;
+}
+
+.item:hover {
+  background-color: #fef9c2;
+}
+
 .selectHistorico {
   height: 44px;
-  padding: 12px  24px;
-  background: #ffffff;
-  font-size: 0.9rem;
+  padding: 12px  2rem;
+  text-align: center;
+  display: flex;
+  background: #ffffff !important;
+  font-size: 1rem;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 1rem;
   outline: none;
-  background-color: #ececec;
-  color: #a9a9a9;
+  background-color: #020618 !important;
+  /* color: #020618; */
+  color: white;
   font-size: 0.9dvw;
+  /* border: gainsboro solid thin; */
   border: none;
   appearance: none;
-  font-weight: 800;
+  font-weight: 600;
+  transition: .2s linear;
+}
+
+.titulos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* background-color: red; */
+}
+
+.subtitulo {
+  font-size: 1.2rem;
+  color: #314158;
+}
+
+.historicoLine {
+  cursor: default;
+  border-bottom: solid gainsboro 0.1px;
+}
+
+.historicoLista {
+  overflow-y: auto;
+  /* height: calc(100dvh - 88px - 60px - 80px); */
+  background-color: #f8fafc;
+  height: calc(65dvh);
+  /* border: solid blue; */
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  border-left: thin gainsboro solid;
+  border-right: thin gainsboro solid;
+  border-bottom: thin gainsboro solid;
+}
+
+.historicoGrid {
+  /* background-color: red; */
+  height: 70dvh;
+  /* overflow-y: auto; */
+}
+
+.linhaPar {
+  background-color: #f4f4f5;
+}
+
+.linhaImpar {
+  background-color: #ffffff;
+}
+
+b {
+  color: #314158;
+}
+
+.selectHistorico option {
+  background-color: white;
+  color: #020618;
+}
+
+.selectHistorico:hover {
+  background-color: #FACC15 !important;
+  color: #020618;
 }
 
 .botaoCsv {
@@ -75,7 +166,7 @@
   font-size: 1dvw;
 }
 
-.wrapperTabela {
+/* .wrapperTabela {
   background-color: white;
   border-radius: 6px;
   overflow: hidden;
@@ -83,7 +174,7 @@
   overflow-y: auto;
   height: calc(100dvh - 160px - 42px);
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .tabela {
   width: 100%;
@@ -127,7 +218,7 @@ thead th {
   color: #020618;
 }
 
-@media (max-width: 992px) {
+/* @media (max-width: 992px) {
   .wrapperTabela {
     overflow-x: auto;
   }
@@ -135,7 +226,7 @@ thead th {
   .tabela {
     min-width: 1000px;
   }
-}
+} */
 
 @media (max-width: 768px) {
   .conteudoPrincipal {

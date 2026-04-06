@@ -14,9 +14,13 @@ const EstoqueHeader = () => {
   );
 };
 
-const EstoqueItem = ({ produto }) => {
+const EstoqueItem = ({ produto, isEven }) => {
   return (
-    <div className={styles.estoqueLine}>
+    <div
+      className={`${styles.estoqueLine} ${
+        isEven ? styles.linhaPar : styles.linhaImpar
+      }`}
+    >
       <div className={styles.estoqueItem}>
         <span className={styles.estoqueProduto}>{produto.nome}</span>
         <span className={styles.estoquePeso}>
@@ -91,7 +95,7 @@ const Resumo = () => {
 
             <div className={styles.estoqueLista}>
               {resumo.produtos.map((produto, index) => (
-                <EstoqueItem key={index} produto={produto} />
+                <EstoqueItem key={index} produto={produto} isEven={index % 2 === 0} />
               ))}
             </div>
           </div>

@@ -50,7 +50,7 @@
   /* height: calc(100dvh - 88px - 60px - 80px); */
   background-color: #f8fafc;
   /* height: 70dvh; */
-  /* border: solid blue; */
+  /* border: solid blue; */ 
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
@@ -71,11 +71,12 @@
 }
 
 .estoqueItem:hover {
-  background-color: rgb(238, 238, 238);
+  background-color: #fef9c2;
 }
 
 .estoqueHeader {
-  background-color: #2f2f2f;
+  /* background-color: #2f2f2f; */
+  background-color: #020618;
   border-radius: 1rem 1rem 0px 0px ;
 }
 
@@ -97,7 +98,7 @@
 
 .estoqueDir {
   width: 20dvw;
-  border: solid red;
+  /* border: solid red; */
   display: flex;
   flex-direction: column;
   /* gap: 2.5rem; */
@@ -190,7 +191,9 @@ h1 {
   /* border: solid; */
   padding: 0;
   /* border: solid red; */
-  color: black;
+  color: #020618;
+  line-height: 1.7dvw;
+  /* border: solid red; */
   font-weight: bold;
 }
 
@@ -200,4 +203,12 @@ h1 {
   font-size: 1.2rem;
   /* border: solid red; */
   color: #314158;
+}
+
+.linhaPar {
+  background-color: #f4f4f5;
+}
+
+.linhaImpar {
+  background-color: #ffffff;
 }
