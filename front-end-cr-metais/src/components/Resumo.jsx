@@ -74,48 +74,58 @@ const Resumo = () => {
   }
 
   return (
-    <div className={styles.estoqueContainer}>
-      <div className={styles.estoqueEsq}>
-        <h1 className={styles.estoqueTitulo}>Estoque Atual</h1>
+    // <div className="titulo">
+    //   <h1 className={styles.estoqueTitulo}>Resumo do Dia</h1>
+    // </div>
 
-        <div className={styles.estoqueGrid}>
-          <EstoqueHeader />
-
-          <div className={styles.estoqueLista}>
-            {resumo.produtos.map((produto, index) => (
-              <EstoqueItem key={index} produto={produto} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.estoqueDir}>
-        <div className={styles.containerCards}>
-          <ResumoCard
-            titulo="Total Aplicado:"
-            valor={resumo.totalAplicado.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          />
-          <ResumoCard
-            titulo="Peso Total:"
-            valor={`${resumo.pesoTotal.toLocaleString("pt-BR")} Kg`}
-          />
-          <ResumoCard
-            titulo="Pg Notas (hoje):"
-            valor={resumo.notasHoje.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          />
-          <ResumoCard
-            titulo="Peso Kg (hoje):"
-            valor={`${resumo.pesoHoje.toLocaleString("pt-BR")} Kg`}
-          />
-        </div>
+    <div className={styles.conteudo}>
+      <div className="titulo">
+        <h1 className={styles.estoqueTitulo}>Resumo do Dia</h1>
       </div>
     </div>
+
+    // <div className={styles.estoqueContainer}>
+    //   <div className={styles.estoqueEsq}>
+    //     <h1 className={styles.estoqueTitulo}>Estoque Atual</h1>
+
+    //     <div className={styles.estoqueGrid}>
+    //       <EstoqueHeader />
+
+    //       <div className={styles.estoqueLista}>
+    //         {resumo.produtos.map((produto, index) => (
+    //           <EstoqueItem key={index} produto={produto} />
+    //         ))}
+    //       </div>
+    //     </div>
+    //   </div>
+
+    //   <div className={styles.estoqueDir}>
+    //     <div className={styles.containerCards}>
+    //       <ResumoCard
+    //         titulo="Total Aplicado:"
+    //         valor={resumo.totalAplicado.toLocaleString("pt-BR", {
+    //           style: "currency",
+    //           currency: "BRL",
+    //         })}
+    //       />
+    //       <ResumoCard
+    //         titulo="Peso Total:"
+    //         valor={`${resumo.pesoTotal.toLocaleString("pt-BR")} Kg`}
+    //       />
+    //       <ResumoCard
+    //         titulo="Pg Notas (hoje):"
+    //         valor={resumo.notasHoje.toLocaleString("pt-BR", {
+    //           style: "currency",
+    //           currency: "BRL",
+    //         })}
+    //       />
+    //       <ResumoCard
+    //         titulo="Peso Kg (hoje):"
+    //         valor={`${resumo.pesoHoje.toLocaleString("pt-BR")} Kg`}
+    //       />
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

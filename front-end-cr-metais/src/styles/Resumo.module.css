@@ -1,3 +1,12 @@
+#root {
+  /* height: auto; */
+  height: 100dvh;
+  display: flex;
+  width: 100%;
+  margin-top: 96px;
+  flex-direction: column;
+}
+
 .estoqueContainer {
   display: flex;
   gap: 2.5rem;
@@ -80,11 +89,13 @@
 
 .estoqueDir {
   width: 20dvw;
-  /* border: solid red; */
+  border: solid red;
   display: flex;
   flex-direction: column;
   /* gap: 2.5rem; */
-  height: calc(100dvh - 80px);
+  /* height: calc(100dvh - 80px); */
+  height: calc(89dvh - 80px);
+  margin-top: 56px;
   color: black;
 }
 
@@ -154,4 +165,11 @@ h1 {
 
 *::-webkit-scrollbar-thumb:active {
   background-color: #FACC15;
+}
+
+.conteudo {
+  /* border: solid red; */
+  display: flex;  
+  /* background-color: red !important; */
+  padding: 0 48px;
 }

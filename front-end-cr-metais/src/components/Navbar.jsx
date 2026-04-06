@@ -1,5 +1,6 @@
 import styles from "../styles/NavbarStyle.module.css";
 import logo from "../styles/img/LOGO.png";
+import logout from "../styles/img/icon-logout.png";
 
 export default function Navbar({ currentPage, setCurrentPage }) {
   const items = [
@@ -39,9 +40,10 @@ export default function Navbar({ currentPage, setCurrentPage }) {
         ))}
       </ul>
 
-      <button className={styles.btn_sair} onClick={handleLogout}>
+      <div className={styles.btn_sair} onClick={handleLogout}>
         Sair
-      </button>
+        <img className={styles.btn_logout} src={logout} alt="Ícone de Sair" />
+      </div>
     </nav>
   );
 }

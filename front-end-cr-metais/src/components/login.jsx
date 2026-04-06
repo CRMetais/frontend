@@ -127,7 +127,7 @@ export default function Login({ setCurrentPage }) {
         {erro && <p style={{ color: '#d32f2f', marginTop: 12 }}>{erro}</p>}
 
         <button onClick={enviar} className={styles.loginButton} disabled={carregando}>
-          {carregando ? 'Entrando...' : 'Entrar'}
+          {carregando ? 'Entrando' : 'Entrar'}
         </button>
       </div>
     </div>

@@ -5,11 +5,12 @@ body {
 }
 
 .navbar {
-  position: fixed;   /* fixa no topo */
+  /* position: fixed;   fixa no topo */
   top: 0;
   left: 0;
   width: 100%;       /* ocupa toda a largura */
-  height: 80px;
+  height: 8dvh;
+  /* min-height: 80px; */
   background-color: #f8fafc;
 
   display: flex;
@@ -47,7 +48,7 @@ body {
 .texto_logo {
   font-size: 20px;
   user-select: none;
-  font-weight: bold;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -70,6 +71,35 @@ body {
   cursor: pointer;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
+}
+
+.btn_sair {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #020618;
+  /* background-color: transparent; */
+  font-size: 20px;
+  /* min-width: 180px; */
+  padding: 8px;
+  height: fit-content;
+  text-wrap: nowrap;
+  font-weight: 400;
+  padding: 8px 20px;
+  border-radius: 1rem;
+  transition: all 0.5s ease;
+}
+
+.btn_sair:hover {
+  background-color: #FACC15;
+  color: #020618;
+  cursor: pointer;
+}
+
+.btn_logout {
+  width: 24px;
+  height: 24px;
+  transition: all 0.2s ease;
 }
 
 .item_list li:hover {
