@@ -80,7 +80,8 @@ const Resumo = () => {
 
     <div className={styles.conteudo}>
       <div className={styles.titulo}>
-        <h1 className={styles.estoqueTitulo}>Estoque atual</h1>
+        <span className={styles.estoqueTitulo}>Estoque atual</span>
+        <span className={styles.subtitulo}>Visão geral dos produtos em estoque</span>
       </div>
 
       <div className={styles.containers}>

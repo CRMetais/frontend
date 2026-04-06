@@ -25,7 +25,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 80dvh;
+  height: 70dvh;
   /* background-color: black; */
   /* background-color: red !important; */
 }
@@ -34,14 +34,14 @@
   display: flex;
   flex-direction: column;
   width: 78dvw;
-  height: 80dvh;
+  height: 70dvh;
   /* gap: 2.5rem; */
   /* height: calc(100dvh - 80px); */
 }
 
 .rightSide {
   /* background-color: red; */
-  height: 80dvh;
+  height: 70dvh;
   width: calc(22dvw - 20px - 96px);
 }
 
@@ -72,15 +72,6 @@
 
 .estoqueItem:hover {
   background-color: rgb(238, 238, 238);
-}
-
-.estoqueTitulo {
-  font-size: 1.7dvw;
-  text-align: left;
-  /* margin-top: 30px; */
-  /* border: solid; */
-  padding: 0;
-  color: black;
 }
 
 .estoqueHeader {
@@ -123,7 +114,7 @@
   border: gainsboro thin solid;
   border-radius: 1rem;
   /* height: calc((100dvh - 160px - 88px - 60px - 80px) / 4); */
-  height: calc((80dvh - 4rem + 4px) / 4);
+  height: calc((70dvh - 4rem + 4px) / 4);
   padding: 1rem;
   background-color: #f8fafc;  
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
@@ -144,8 +135,6 @@ h1 {
   display: flex;
   gap: 20px;
 }
-
-
 
 .resumoCitulo {
   font-size: 1.2dvw;
@@ -187,5 +176,28 @@ h1 {
 }
 
 .titulo {
+  display: flex;
+  flex-direction: column;
   width: 100%;
+  /* border: solid blue; */
+  padding: 2rem 0;
+}
+
+.estoqueTitulo {
+  font-size: 1.7dvw;
+  text-align: left;
+  /* margin-top: 30px; */
+  /* border: solid; */
+  padding: 0;
+  /* border: solid red; */
+  color: black;
+  font-weight: bold;
+}
+
+
+.subtitulo {
+  text-align: left;
+  font-size: 1.2rem;
+  /* border: solid red; */
+  color: #314158;
 }
