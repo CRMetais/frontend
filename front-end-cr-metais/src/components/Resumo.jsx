@@ -14,6 +14,8 @@ const EstoqueHeader = () => {
   );
 };
 
+
+
 const EstoqueItem = ({ produto, isEven }) => {
   return (
     <div
@@ -39,7 +41,7 @@ const EstoqueItem = ({ produto, isEven }) => {
           })}
         </span>
         <span className={styles.estoqueDestino}>
-          {produto.destino || ""}
+          {produto.destino || " - "}
         </span>
       </div>
       <div className={styles.divisao}></div>

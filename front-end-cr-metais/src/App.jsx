@@ -15,6 +15,8 @@ import TabelaPreco from "./components/TabelasPreco"
 function App() {
   const [currentPage, setCurrentPage] = useState("Login");
 
+  const [resumoData, setResumoData] = useState(null);
+
   const renderPage = () => {
     switch(currentPage) {
       case "Resumo":
