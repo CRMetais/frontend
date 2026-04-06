@@ -161,34 +161,21 @@ h1 {
   font-weight: 500;
 }
 
-*::-webkit-scrollbar {
-  height: 10px;
+::-webkit-scrollbar {
   width: 10px;
 }
 
-*::-webkit-scrollbar-track {
-  border-radius: 5px;
-  background-color: transparent;
+::-webkit-scrollbar-track {
+  background: transparent;
+
+  /* 👇 cria o espaço nas pontas */
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-*::-webkit-scrollbar-track:hover {
-  background-color: transparent;
-}
-
-*::-webkit-scrollbar-track:active {
-  background-color: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background-color: #FFDC4F;
-}
-
-*::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb {
   background-color: #FACC15;
-}
-
-*::-webkit-scrollbar-thumb:active {
-  background-color: #FACC15;
+  border-radius: 10px;
 }
 
 .conteudo {

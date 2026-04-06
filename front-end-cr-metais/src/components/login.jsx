@@ -60,7 +60,7 @@ export default function Login({ setCurrentPage }) {
       }
 
       localStorage.setItem('usuario', JSON.stringify(dados));
-      setCurrentPage('Dashboard');
+      setCurrentPage('Resumo');
     } catch {
       setErro('Erro de conexão com o servidor.');
     } finally {
