@@ -294,43 +294,43 @@ export default function CadastroClienteModal() {
     }
   }
 
-  return (
-    // <div className="modal-overlay">
-      <div className="modal-box">
-        <h1 className="title">
-          <img src={logo} className="logo-img" /> CR Metais 
-        </h1>
+  // return (
+  //   // <div className="modal-overlay">
+  //     <div className="modal-box">
+  //       <h1 className="title">
+  //         <img src={logo} className="logo-img" /> CR Metais 
+  //       </h1>
 
-        <p className="subtitle">Cadastro de novo cliente</p>
+  //       <p className="subtitle">Cadastro de novo cliente</p>
 
-        {renderStep()}
+  //       {renderStep()}
 
-        <div className="btn-wrapper">
-          {step < 6 && (
-            <button className="btn-prev" onClick={nextStep}>
-              Próximo
-            </button>
-          )}
+  //       <div className="btn-wrapper">
+  //         {step < 6 && (
+  //           <button className="btn-prev" onClick={nextStep}>
+  //             Próximo
+  //           </button>
+  //         )}
 
-          {step > 1 && step < 6 && (
-            <button className="btn-prev" onClick={prevStep}>
-              Voltar
-            </button>
-          )}
+  //         {step > 1 && step < 6 && (
+  //           <button className="btn-prev" onClick={prevStep}>
+  //             Voltar
+  //           </button>
+  //         )}
 
-          {step === 6 && (
-            <button className="btn-prev" onClick={restart}>
-              Finalizar
-            </button>
-          )}
-        </div>
+  //         {step === 6 && (
+  //           <button className="btn-prev" onClick={restart}>
+  //             Finalizar
+  //           </button>
+  //         )}
+  //       </div>
 
-        <div className="dots-wrapper">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className={`dot ${step === i ? "active" : ""}`} />
-          ))}
-        </div>
-      </div>
-    // </div>
-  );
+  //       <div className="dots-wrapper">
+  //         {[1, 2, 3, 4, 5, 6].map((i) => (
+  //           <div key={i} className={`dot ${step === i ? "active" : ""}`} />
+  //         ))}
+  //       </div>
+  //     </div>
+  //   // </div>
+  // );
 }

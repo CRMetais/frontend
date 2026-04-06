@@ -133,7 +133,7 @@ function Historico() {
             onChange={(e) => setTipoHistorico(e.target.value)}
           >
             <option value="Entrada">Entrada</option>
-            <option value="Saida">Saída</option>
+            <option value="Saída">Saída</option>
           </select>
         </div>
 
