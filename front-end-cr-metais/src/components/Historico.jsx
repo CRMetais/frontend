@@ -89,8 +89,15 @@ function Historico() {
     );
   };
 
+    useEffect(() => {
+    })
+  
+
   useEffect(() => {
     const carregarDados = async () => {
+
+      document.title = "CR Metais | Histórico"
+
       try {
         setLoading(true);
 

@@ -68,14 +68,14 @@
 }
 
 .selectHistorico {
-  height: 44px;
-  padding: 12px  2rem;
+  padding: 1rem 2rem;
   text-align: center;
   display: flex;
+  align-items: center;
   background: #ffffff !important;
   font-size: 1rem;
   cursor: pointer;
-  border-radius: 1rem;
+  border-radius: 0.9rem;
   outline: none;
   background-color: #020618 !important;
   /* color: #020618; */
@@ -84,6 +84,7 @@
   /* border: gainsboro solid thin; */
   border: none;
   appearance: none;
+  width: 200px;
   font-weight: 600;
   transition: .2s linear;
 }
@@ -137,14 +138,20 @@ b {
   color: #314158;
 }
 
-.selectHistorico option {
+/* .selectHistorico option {
+  display: flex;
+  text-align: start;
   background-color: white;
+  padding: 1rem;
   color: #020618;
-}
+} */
 
 .selectHistorico:hover {
-  background-color: #FACC15 !important;
+  /* background-color: #FACC15 !important; */
+  background-color: #f8fafc !important;
   color: #020618;
+  /* border: solid #020618 thin; */
+    box-shadow: inset 0 0 0 3px #020618;
 }
 
 .botaoCsv {
@@ -325,4 +332,15 @@ thead th {
 
 .modalGenerateBtn:hover {
   background: #3a3a3a;
+}
+
+.selectContainer {
+  position: relative;
+  /* width: 200px; */
+}
+
+
+
+.selectContainer {
+  position: relative;
 }
