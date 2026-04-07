@@ -1,9 +1,9 @@
 import api from "./apiClient";
 
-export const buscarHistorico = async (tipo) => {
+export const buscarHistorico = async (tipo, pagina = 0, tamanho = 10) => {
   try {
     const response = await api.get("/historico", {
-      params: { tipo }
+      params: { tipo, pagina, tamanho }
     });
 
     return response.data;
