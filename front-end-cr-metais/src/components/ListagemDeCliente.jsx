@@ -207,50 +207,287 @@ export default function ListaClientes() {
 
         <button
           onClick={async () => {
-            const { value: formValues } = await Swal.fire({
-              didOpen: (btns) => {
-                const popup = Swal.getPopup();
-                popup.style.borderRadius = '1rem'; // Altere o valor aqui
-                popup.style.color = '#020618';
-                
-                const btn_confirmar = Swal.getConfirmButton();
-                btn_confirmar.style.backgroundColor = '#020618';
-                btn_confirmar.style.color = '#f8fafc';
-                btn_confirmar.style.borderRadius = '0.9rem';
 
-                const btn_cancelar = Swal.getCancelButton();
-                btn_cancelar.style.backgroundColor = '#ffffff';
-                btn_cancelar.style.boxShadow = 'inset 0 0 0 3px #020618';
-                btn_cancelar.style.color = '#020618';
-                btn_cancelar.style.borderRadius = '0.9rem';
-              },
-              title: "Cadastro",
-              html: `
-              <p>djsadakjdsa</p>
-        <input id="nome" class="swal2-input" placeholder="Nome">
-        <input id="email" class="swal2-input" placeholder="Email">
-        <input id="telefone" class="swal2-input" placeholder="Telefone">
-      `,
-              showCancelButton: true,
-               confirmButtonText: "Salvar",
-              preConfirm: () => {
-                const nome = document.getElementById("nome").value;
-                const email = document.getElementById("email").value;
-                const telefone = document.getElementById("telefone").value;
+            let pagina = 1;
+            let formData = {};
 
-                if (!nome || !email || !telefone) {
-                  Swal.showValidationMessage("Preencha tudo");
-                  return false;
+            function renderPagina() {
+              if (pagina === 1) {
+                return `
+                  <h1 style="font-size: 1.5rem; margin: 0">Cadastro de novo cliente</h1>
+
+                  <br>
+
+                  <label>CPF ou CNPJ</label>
+                  <input id="cpf" class="swal2-input">
+
+                  <label>Nome completo</label>
+                  <input id="nome" class="swal2-input">
+
+                  <label>Telefone</label>
+                  <input id="telefone" class="swal2-input">
+
+                  <label>Apelido</label>
+                  <input id="apelido" class="swal2-input">
+
+                  <label>Tipo pessoa</label>
+                  <div id="tipoPessoa" class="custom-select" style="display: flex; justify-content: space-between; padding-bottom: 0.5rem;">
+
+                    <div data-value="Fisica" style="background-color: #facc15; padding: 10px 20px; color: white; border-radius: 0.8rem; width: 49%">Física</div>
+                    <div data-value="Juridica" style="background-color: #facc15; padding: 10px 20px; color: white; border-radius: 0.8rem; width: 49%">Jurídica</div>
+                  </div>
+
+                  <label>Email</label>
+                  <input id="email" class="swal2-input">
+                `;
+              }
+
+              if (pagina === 2) {
+                return `
+                <label>CEP</label>
+                <input id="cep" class="swal2-input">
+
+                <label>Bairro</label>
+                <input id="bairro" class="swal2-input">
+
+                <label>Número</label>
+                <input id="numero" class="swal2-input">
+
+                <label>Município</label>
+                <input id="cidade" class="swal2-input">
+
+                <label>UF</label>
+                <input id="uf" class="swal2-input">
+                `;
+              }
+
+              if (pagina === 3) {
+                return `
+                <label>Forma de pagamento</label>
+                <div id="tipoPagamento" style="display: flex; justify-content: space-between; padding-bottom: 0.5rem;"">
+                  <div data-value="pix" style="background-color: #facc15; padding: 10px 20px; color: white; border-radius: 0.8rem; width: 49%">Pix</div>
+                  <div data-value="banco" style="background-color: #facc15; padding: 10px 20px; color: white; border-radius: 0.8rem; width: 49%">Dados Bancários</div>
+                </div>
+
+                <div id="dadosPagamento"></div>
+                 `;
+              }
+
+              if (pagina === 4) {
+                return `
+                  <h1 style="font-size: 1.5rem; margin: 0">Dados do Dono da Conta</h1>
+
+                  <br>
+
+                  <label>Nome completo</label>
+                  <input id="nomeDono" class="swal2-input">
+
+                  <label>CPF ou CNPJ</label>
+                  <input id="cpfDono" class="swal2-input">
+
+                  <label>Tabela</label>
+                  <input id="tabela" class="swal2-input">
+
+                  <label>Gestor da Tabela</label>
+                  <input id="gestor" class="swal2-input">
+
+                  <label>Tabela semanal?</label>
+                  <div id="tabelaSemanal" style="display: flex; justify-content: space-between; padding-bottom: 0.5rem;">
+                    <div data-value="sim">Sim</div>
+                    <div data-value="nao">Não</div>
+                  </div>
+                  `;
+              }
+            }
+
+            async function abrirModal() {
+              while (true) {
+                const { isConfirmed, isDenied } = await Swal.fire({
+                  html: renderPagina(),
+                  showCancelButton: true,
+                  confirmButtonText: pagina === 4 ? "Finalizar" : "Próxima",
+                  cancelButtonText: "Cancelar",
+                  showDenyButton: pagina > 1,
+                  denyButtonText: "Página anterior",
+
+                  didOpen: () => {
+                    aplicarEventos();
+
+                    const janela = Swal.getPopup();
+                    const container = Swal.getHtmlContainer();
+                    const btn_proxima_pagina = Swal.getConfirmButton();
+                    const btn_cancelar = Swal.getCancelButton();
+                    const btn_pagina_anterior = Swal.getDenyButton();
+                    const actions = document.querySelector(".swal2-actions");
+
+                    // console.log("actions:", actions);
+
+                    // actions.style.border = "solid red thin";
+                    actions.style.width = "calc(100% - 3rem)";
+                    actions.style.alignSelf = "center";
+                    actions.style.padding = "0";
+                    actions.style.margin = "0";
+                    actions.style.gap = "0.5rem";
+
+
+                    btn_proxima_pagina.style.backgroundColor = "#020618";
+                    btn_proxima_pagina.style.height = "2.5rem";
+                    btn_cancelar.style.height = "2.5rem";
+                    btn_pagina_anterior.style.height = "2.5rem";
+                    btn_proxima_pagina.style.borderRadius = "0.8rem";
+                    btn_cancelar.style.borderRadius = "0.8rem";
+                    btn_pagina_anterior.style.borderRadius = "0.8rem";
+                    btn_proxima_pagina.style.margin = "0";
+                    btn_cancelar.style.backgroundColor = "white";
+                    btn_cancelar.style.boxShadow = " 0 0 0 2px #020618 inset";
+                    btn_cancelar.style.color = "#020618";
+                    btn_cancelar.style.margin = "0 0 1rem 0";
+                    actions.style.display = "flex";
+                    // actions.backgrounColor = "red";
+
+                    container.style.display = "flex";
+                    container.style.flexDirection = "column";
+                    container.style.margin = "0";
+
+                    janela.style.padding = "1rem 1rem";
+                    janela.style.borderRadius = "1rem";
+                    janela.style.display = "flex";
+                    janela.style.flexDirection = "column";
+                    janela.style.justifyContent = "center";
+                    janela.style.alingItems = "center";
+                    janela.style.fontFamily = `
+                      -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+                      "Oxygen", "Ubuntu", "Cantarell", sans-serif
+                      `;
+
+                    document.querySelectorAll(".swal2-input").forEach(input => {
+                      input.style.borderRadius = "8px";
+                      input.style.border = "1px solid #cbd5f5";
+                      input.style.padding = "20px";
+                      input.style.height = "2.5rem";
+                      input.style.width = "100%";
+                      input.style.margin = "0 0 1rem 0"
+                      input.style.borderRadius = "0.8rem"
+                      // input.style.outline = "#facc15 none"
+                      // input.style.border = "#facc15 none"
+                    });
+
+                    const labels = document.querySelectorAll("label");
+
+                    labels.forEach(label => {
+                      console.log(label);
+
+                      label.style.alignSelf = "start";
+                      label.style.padding = "0.2rem 0 0.4rem 0"
+                      // label.style.padding = "0 3rem";
+                    });
+                  }
+                });
+
+                if (isDenied) {
+                  pagina--;
+                  continue;
                 }
 
-                return { nome, email, telefone };
-              }
-            });
+                if (!isConfirmed) break;
 
-            if (formValues) {
-              console.log(formValues);
+                salvarDados();
+
+                if (pagina < 4) {
+                  pagina++;
+                } else {
+                  // console.log("DADOS FINAIS:", formData);
+
+                  console.log("DADOS FINAIS:");
+                  console.table(formData);
+
+                  break;
+                }
+              }
             }
+
+            function salvarDados() {
+              document.querySelectorAll("input").forEach(input => {
+                formData[input.id] = input.value;
+              });
+            }
+
+            function aplicarEventos() {
+              // SELECT CUSTOM
+              document.querySelectorAll(".custom-select div").forEach(el => {
+                el.addEventListener("click", () => {
+                  const parent = el.parentElement;
+                  parent.querySelectorAll("div").forEach(d => d.classList.remove("active"));
+                  el.classList.add("active");
+
+                  formData[parent.id] = el.dataset.value;
+
+                  // PIX / BANCO
+                  if (parent.id === "tipoPagamento") {
+                    const container = document.getElementById("dadosPagamento");
+
+                    if (el.dataset.value === "pix") {
+                      container.innerHTML = `
+            <label>Chave Pix</label>
+            <input id="pix" class="swal2-input">
+
+            <label>Pertence ao cliente?</label>
+            <div id="pertencePix" style="display: flex; justify-content: space-between; padding-bottom: 0.5rem;">
+              <div data-value="sim" >Sim</div>
+              <div data-value="nao" >Não</div>
+            </div>
+          `;
+                    } else {
+                      container.innerHTML = `
+            <label>Banco</label>
+            <input id="banco" class="swal2-input">
+
+            <label>Agência</label>
+            <input id="agencia" class="swal2-input">
+
+            <label>Conta</label>
+            <input id="conta" class="swal2-input">
+
+            <label>Tipo Conta</label>
+            <div id="tipoConta" class="custom-select">
+              <div data-value="corrente">Corrente</div>
+              <div data-value="poupanca">Poupança</div>
+            </div>
+          `;
+                    }
+
+                    aplicarEventos();
+                  }
+                });
+              });
+
+              // VIA CEP
+              const cepInput = document.getElementById("cep");
+              if (cepInput) {
+                cepInput.addEventListener("blur", async () => {
+                  const cep = cepInput.value.replace(/\D/g, "");
+
+                  if (cep.length === 8) {
+                    const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await res.json();
+
+                    document.getElementById("bairro").value = data.bairro || "";
+                    document.getElementById("cidade").value = data.localidade || "";
+                    document.getElementById("uf").value = data.uf || "";
+                  }
+                });
+              }
+            }
+
+            if (formData) {
+              console.log(formData);
+            }
+
+
+            await abrirModal();
           }}
+
+
         >
           Cadastrar novo cliente
         </button>
@@ -293,5 +530,7 @@ export default function ListaClientes() {
         )
       }
     </div >
+
+
   );
 }
