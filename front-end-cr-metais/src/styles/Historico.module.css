@@ -71,6 +71,7 @@
   padding: 1rem 2rem;
   text-align: center;
   display: flex;
+  justify-content: center;
   align-items: center;
   background: #ffffff !important;
   font-size: 1rem;
@@ -84,7 +85,7 @@
   /* border: gainsboro solid thin; */
   border: none;
   appearance: none;
-  width: 200px;
+  width: 250px;
   font-weight: 600;
   transition: .2s linear;
 }

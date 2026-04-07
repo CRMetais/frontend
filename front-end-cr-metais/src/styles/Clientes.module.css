@@ -128,3 +128,29 @@ img {
 .tooltip:hover {
     opacity: 1;
 }
+
+.cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cabecalho button {
+    width: 250px;
+    background-color: #020618;
+    font-weight: 600;
+    font-size: 0.9dvw;
+}
+
+.cabecalho button:hover {
+  /* background-color: #FACC15 !important; */
+  background-color: #f8fafc !important;
+  color: #020618;
+  /* border: solid #020618 thin; */
+    box-shadow: inset 0 0 0 3px #020618;
+}
+
+.swal2-popup {
+  border-radius: 10rem !important; /* Ajuste o valor como quiser */
+  background-color: red;
+}

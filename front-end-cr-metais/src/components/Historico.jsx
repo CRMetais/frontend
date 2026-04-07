@@ -89,9 +89,9 @@ function Historico() {
     );
   };
 
-    useEffect(() => {
-    })
-  
+  useEffect(() => {
+  })
+
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -131,17 +131,25 @@ function Historico() {
               Histórico de {tipoHistorico}
             </h1>
 
-            <span className={styles.subtitulo}>Alterne a visualização clicando em <b>{tipoHistorico}</b></span>
+            {/* <span className={styles.subtitulo}>Alterne a visualização clicando em <b>Alternar para {tipoHistorico}</b></span> */}
+            <span className={styles.subtitulo}>
+              Alterne a visualização clicando em{" "}
+              <b>
+                Alternar para {tipoHistorico === "Entrada" ? "Saída" : "Entrada"}
+              </b>
+            </span>
           </div>
 
-          <select
+          <button
             className={styles.selectHistorico}
-            value={tipoHistorico}
-            onChange={(e) => setTipoHistorico(e.target.value)}
+            onClick={() =>
+              setTipoHistorico((prev) =>
+                prev === "Entrada" ? "Saída" : "Entrada"
+              )
+            }
           >
-            <option value="Entrada">Entrada</option>
-            <option value="Saída">Saída</option>
-          </select>
+            Alternar para {tipoHistorico === "Entrada" ? "Saída" : "Entrada"}
+          </button>
         </div>
 
 

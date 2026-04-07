@@ -5,6 +5,7 @@ import CadastroClienteContainer from "./CadastroCliente";
 import { useEffect } from "react";
 import ClienteModal from "./ClienteModal";
 import { listarClientes } from "../services/clienteService";
+import Swal from "sweetalert2";
 
 
 /* ================= MOCK ================= */
@@ -196,11 +197,63 @@ export default function ListaClientes() {
   return (
     <div className={styles.listaClientesContainer}>
 
-      <div className={styles.titulos}>
-        <span className={styles.titulo}>Clientes</span>
-        <span className={styles.subtitulo}>
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        </span>
+      <div className={styles.cabecalho}>
+        <div className={styles.titulos}>
+          <span className={styles.titulo}>Clientes</span>
+          <span className={styles.subtitulo}>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          </span>
+        </div>
+
+        <button
+          onClick={async () => {
+            const { value: formValues } = await Swal.fire({
+              didOpen: (btns) => {
+                const popup = Swal.getPopup();
+                popup.style.borderRadius = '1rem'; // Altere o valor aqui
+                popup.style.color = '#020618';
+                
+                const btn_confirmar = Swal.getConfirmButton();
+                btn_confirmar.style.backgroundColor = '#020618';
+                btn_confirmar.style.color = '#f8fafc';
+                btn_confirmar.style.borderRadius = '0.9rem';
+
+                const btn_cancelar = Swal.getCancelButton();
+                btn_cancelar.style.backgroundColor = '#ffffff';
+                btn_cancelar.style.boxShadow = 'inset 0 0 0 3px #020618';
+                btn_cancelar.style.color = '#020618';
+                btn_cancelar.style.borderRadius = '0.9rem';
+              },
+              title: "Cadastro",
+              html: `
+              <p>djsadakjdsa</p>
+        <input id="nome" class="swal2-input" placeholder="Nome">
+        <input id="email" class="swal2-input" placeholder="Email">
+        <input id="telefone" class="swal2-input" placeholder="Telefone">
+      `,
+              showCancelButton: true,
+               confirmButtonText: "Salvar",
+              preConfirm: () => {
+                const nome = document.getElementById("nome").value;
+                const email = document.getElementById("email").value;
+                const telefone = document.getElementById("telefone").value;
+
+                if (!nome || !email || !telefone) {
+                  Swal.showValidationMessage("Preencha tudo");
+                  return false;
+                }
+
+                return { nome, email, telefone };
+              }
+            });
+
+            if (formValues) {
+              console.log(formValues);
+            }
+          }}
+        >
+          Cadastrar novo cliente
+        </button>
       </div>
 
       <div className={styles.containerInfos}>
