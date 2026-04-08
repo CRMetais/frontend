@@ -17,6 +17,9 @@ const EstoqueHeader = () => {
 
 
 const EstoqueItem = ({ produto, isEven }) => {
+
+  const total = produto.peso * produto.valor;
+
   return (
     <div
       className={`${styles.estoqueLine} ${
@@ -35,7 +38,7 @@ const EstoqueItem = ({ produto, isEven }) => {
           })}
         </span>
         <span className={styles.estoqueTotal}>
-          {produto.total.toLocaleString("pt-BR", {
+          {total.toLocaleString("pt-BR", {
             style: "currency",
             currency: "BRL",
           })}

@@ -188,7 +188,7 @@ const Boleta = () => {
 
     const resJava = await api.post("/nota-fiscal", payload);
 
-    await fetch("http://localhost:5000/receber-nf", {
+    await fetch("http://localhost:5000/gerar-nf", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
