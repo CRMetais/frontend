@@ -4,13 +4,16 @@ import { buscarHistorico } from "../services/histoticoService";
 
 function Historico() {
 
+  const PAGE_SIZE = 10;
+
   const [tableData, setTableData] = useState([]);
   const [tipoHistorico, setTipoHistorico] = useState("Entrada");
   const [loading, setLoading] = useState(false);
   const [pagina, setPagina] = useState(0);
   const [temMais, setTemMais] = useState(true);
 
-  const observer = useRef();
+  const observer = useRef(null);
+  const loadingRef = useRef(false);
 
   const HistoricoHeader = () => (
     <div className={styles.historicoHeader}>
@@ -76,58 +79,65 @@ function Historico() {
     </div>
   );
 
-  const carregarDados = async () => {
-    if (loading || !temMais) return;
+  // 🔥 FUNÇÃO DE CARREGAMENTO
+  const carregarDados = useCallback(async (paginaAtual) => {
+    if (loadingRef.current) return;
+
+    loadingRef.current = true;
+    setLoading(true);
 
     try {
-      setLoading(true);
-
       const tipoApi = tipoHistorico === "Entrada" ? "COMPRA" : "VENDA";
 
-      const data = await buscarHistorico(tipoApi, pagina, 10);
-
+      const data = await buscarHistorico(tipoApi, paginaAtual, PAGE_SIZE);
       const novosDados = data.content;
 
-      setTableData(prev => [...prev, ...novosDados]);
+      setTableData(prev =>
+        paginaAtual === 0 ? novosDados : [...prev, ...novosDados]
+      );
 
-      // 🔥 CORREÇÃO CRÍTICA (não usa mais "last")
-      setTemMais(novosDados.length === 10);
+      setTemMais(novosDados.length === PAGE_SIZE);
 
       setPagina(prev => prev + 1);
 
     } catch (error) {
       console.error("Erro no componente:", error);
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
-  };
+  }, [tipoHistorico]);
 
+  // 🔥 OBSERVER
   const lastElementRef = useCallback(node => {
-    if (loading) return;
+    if (loadingRef.current) return;
 
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && temMais) {
-        carregarDados();
+        carregarDados(pagina);
       }
     });
 
     if (node) observer.current.observe(node);
-  }, [loading, temMais]);
+  }, [temMais, carregarDados, pagina]);
 
-  // reset ao trocar tipo
+  // 🔥 RESET TOTAL AO TROCAR TIPO
   useEffect(() => {
     document.title = "CR Metais | Histórico";
 
     setTableData([]);
     setPagina(0);
     setTemMais(true);
-  }, [tipoHistorico]);
 
-  // primeira carga
-  useEffect(() => {
-    carregarDados();
+    loadingRef.current = false;
+
+    // 🔥 garante execução após reset
+    setTimeout(() => {
+      carregarDados(0);
+    }, 0);
+
   }, [tipoHistorico]);
 
   return (
@@ -168,7 +178,7 @@ function Historico() {
               if (index === tableData.length - 1) {
                 return (
                   <HistoricoList
-                    key={index}
+                    key={`${produto.id}-${index}`}
                     produto={produto}
                     isEven={index % 2 === 0}
                     refProp={lastElementRef}
@@ -178,7 +188,7 @@ function Historico() {
 
               return (
                 <HistoricoList
-                  key={index}
+                  key={`${produto.id}-${index}`}
                   produto={produto}
                   isEven={index % 2 === 0}
                 />
