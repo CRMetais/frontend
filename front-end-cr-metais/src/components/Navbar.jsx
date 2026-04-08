@@ -6,7 +6,7 @@ export default function Navbar({ currentPage, setCurrentPage }) {
   const items = [
     "Resumo",
     "Histórico",
-    "Clientes",
+    "Fornecedores",
     "Tabelas Preço",
     "Boleta",
     "Gestão de dados",

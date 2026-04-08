@@ -5,9 +5,9 @@ import CadastroClienteContainer from "./CadastroCliente";
 import { useEffect } from "react";
 import ClienteModal from "./ClienteModal";
 import { listarClientes } from "../services/clienteService";
+import CustomSelect from "./BoxSelects";
 
-
-/* ================= MOCK ================= */
+/* ================= MOCK ================ */
 
 // const CLIENTES_MOCK = [
 //   {
@@ -112,7 +112,7 @@ export default function ListaClientes() {
   const [modalAberto, setModalAberto] = useState(false);
 
   useEffect(() => {
-    document.title = "CR Metais | Clientes"
+    document.title = "CR Metais | Fornecedores"
   })
 
   function abrirModal(cliente) {
@@ -128,18 +128,18 @@ export default function ListaClientes() {
     const carregarClientes = async () => {
       try {
         const data = await listarClientes();
-        console.log("CLIENTES:", data); // debug
+        // console.log("CLIENTES:", data); // debug
         setClientes(data || []);
       } catch (error) {
         console.error("Erro ao buscar clientes:", error);
       }
 
       const data = await listarClientes();
-      console.log("DADOS:", data);
+      // console.log("DADOS:", data);
       setClientes(data || []);
 
-      console.log("DATA COMPLETA:", data);
-      console.log("CONTENT:", data.content);
+      // console.log("DATA COMPLETA:", data);
+      // console.log("CONTENT:", data.content);
     };
 
     carregarClientes();
@@ -200,16 +200,76 @@ export default function ListaClientes() {
     );
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  
+
+  const handleClose = () => {
+    setIsClosing(true);
+
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsClosing(false);
+    }, 300); // mesmo tempo da animação
+  };
+
   return (
     <div className={styles.listaClientesContainer}>
 
       <div className={styles.cabecalho}>
         <div className={styles.titulos}>
-          <span className={styles.titulo}>Clientes</span>
+          <span className={styles.titulo}>Fornecedores</span>
           <span className={styles.subtitulo}>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+            Veja aqui todos os fornecedores cadastrados e clique para cadastrar, editar ou excluir um fornecedor existente.
           </span>
         </div>
+
+        <button onClick={() => setIsModalOpen(true)}>
+          Cadastrar fornecedor
+        </button>
+
+        {isModalOpen && (
+          <div className={styles.modalOverlay}>
+            <div className={`${styles.modal} ${isClosing ? styles.closing : ""}`}>
+              <h2 className={styles.modalTitle}>✏️ Novo fornecedor ✏️</h2>
+
+              <div className={styles.campos}>
+                <span>Nome completo</span>
+                <input className={styles.inputs} type="text" placeholder="Fulano de Tal" />
+              </div>
+
+              <div className={styles.campos}>
+                <span>CPF ou CNPJ</span>
+                <input className={styles.inputs} type="text" placeholder="123.456.789-00" />
+              </div>
+
+              <div className={styles.campos}>
+                <span>Telefone para contato</span>
+                <input className={styles.inputs} type="text" placeholder="(11) 99999-9999" />
+              </div>
+
+              <div className={styles.campos}>
+                <span>Apelido</span>
+                <input className={styles.inputs} type="text" placeholder="Fulano da Região Tal" />
+              </div>
+
+              <div className={styles.campos}>
+                <span>Pessoa Física / Jurídica</span>
+                  <CustomSelect />
+              </div>
+
+              <button className={styles.btn_proxima_pagina} onClick={handleClose}>
+                Próxima página
+              </button>
+
+              <button className={styles.btn_fechar} onClick={handleClose}>
+                Fechar
+              </button>
+
+            </div>
+          </div>
+        )}
+
       </div>
 
       <div className={styles.containerInfos}>

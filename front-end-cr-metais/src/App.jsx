@@ -24,7 +24,7 @@ function App() {
         return <Resumo />;
       case "Histórico":
         return <Historico />;
-      case "Clientes":
+      case "Fornecedores":
         return <ListaCliente />;
       case "Tabelas Preço":
        return <TabelaPreco/>;
