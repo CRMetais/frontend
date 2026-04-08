@@ -7,7 +7,7 @@ export const cadastrarCliente = async (dadosCliente) => {
 
 // 2. Listar todos os Clientes (GET)
 export async function listarClientes() {
-  const response = await api.get("/clientes");
+  const response = await api.get("/fornecedores");
   return response.data; // Retorna o JSON com a lista que vem do Spring
 }
 
