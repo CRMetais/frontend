@@ -1,8 +1,10 @@
 import styles from "../styles/NavbarStyle.module.css";
 import logo from "../styles/img/LOGO.png";
 import logout from "../styles/img/icon-logout.png";
+import { isUsuarioComum } from "../services/usuarioService";
 
 export default function Navbar({ currentPage, setCurrentPage }) {
+  const usuarioComum = isUsuarioComum();
   const items = [
     "Resumo",
     "Histórico",
@@ -12,12 +14,17 @@ export default function Navbar({ currentPage, setCurrentPage }) {
     "Gestão de dados",
     "Dashboard",
   ];
+  const itensVisiveis = usuarioComum
+    ? items.filter((item) => item !== "Gestão de dados" && item !== "Dashboard")
+    : items;
 
   const handleItemClick = (item) => {
     setCurrentPage(item);
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
     setCurrentPage("Login");
   };
 
@@ -29,7 +36,7 @@ export default function Navbar({ currentPage, setCurrentPage }) {
       </div>
 
       <ul className={styles.item_list}>
-        {items.map((item) => (
+        {itensVisiveis.map((item) => (
           <li
             key={item}
             className={currentPage === item ? styles.active : ""}

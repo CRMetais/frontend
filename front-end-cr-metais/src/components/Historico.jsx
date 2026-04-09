@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../styles/Historico.module.css";
 import { buscarHistorico } from "../services/histoticoService";
+import { isUsuarioComum } from "../services/usuarioService";
 
 function Historico() {
 
@@ -14,15 +15,20 @@ function Historico() {
 
   const observer = useRef(null);
   const loadingRef = useRef(false);
+  const usuarioComum = isUsuarioComum();
+  const mostrarRendimento = !usuarioComum;
+  const colunasGrid = mostrarRendimento
+    ? "0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr"
+    : "0.5fr 0.7fr 0.6fr 0.7fr 0.7fr 0.6fr 0.8fr 0.7fr";
 
   const HistoricoHeader = () => (
-    <div className={styles.historicoHeader}>
+    <div className={styles.historicoHeader} style={{ gridTemplateColumns: colunasGrid }}>
       <span className={styles.idCompra}>Id</span>
       <span className={styles.produto}>Produto</span>
       <span className={styles.peso}>Peso</span>
       <span className={styles.valor}>Valor</span>
       <span className={styles.total}>Total</span>
-      <span className={styles.rendimento}>Rendimento</span>
+      {mostrarRendimento && <span className={styles.rendimento}>Rendimento</span>}
       <span className={styles.tipo}>Tipo</span>
       <span className={styles.parceiro}>Parceiro</span>
       <span className={styles.data}>Data</span>
@@ -38,7 +44,7 @@ function Historico() {
       ref={refProp}
       className={`${styles.historicoLine} ${isEven ? styles.linhaPar : styles.linhaImpar}`}
     >
-      <div className={styles.item}>
+      <div className={styles.item} style={{ gridTemplateColumns: colunasGrid }}>
         <span className={styles.idCompra}>{produto.id}</span>
         <span className={styles.produto}>{produto.produto}</span>
 
@@ -60,14 +66,16 @@ function Historico() {
           })}
         </span>
 
-        <span className={styles.rendimento}>
-          {produto.rendimento
-            ? produto.rendimento.toLocaleString("pt-BR", {
-                style: "currency",
-                currency: "BRL",
-              })
-            : "-"}
-        </span>
+        {mostrarRendimento && (
+          <span className={styles.rendimento}>
+            {produto.rendimento
+              ? produto.rendimento.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })
+              : "-"}
+          </span>
+        )}
 
         <span className={styles.tipo}>{produto.tipo}</span>
         <span className={styles.parceiro}>{produto.parceiro}</span>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/ListagemDeColaboradoresStyle.css";
 import CadastroColaboradorModal from "./CadastroColaborador";
-import { listarUsuarios, excluirUsuario, editarUsuario, getUsuarioLogadoId } from "../services/usuarioService";
+import { listarUsuarios, excluirUsuario, editarUsuario, getUsuarioLogadoId, isUsuarioComum, buscarUsuarioPorId, salvarUsuarioLogado } from "../services/usuarioService";
 
 const ITENS_POR_PAGINA = 8;
 
@@ -53,6 +53,7 @@ const ColaboradorItem = ({ colaborador, onExcluir, onEditar, editando, dadosEdit
 };
 
 const ListaColaboradores = () => {
+  const usuarioComum = isUsuarioComum();
   const [colaboradores, setColaboradores] = useState([]);
   const [colaboradorParaEditar, setColaboradorParaEditar] = useState(null);
   const [dadosEditados, setDadosEditados] = useState({});
@@ -123,6 +124,20 @@ const ListaColaboradores = () => {
         localStorage.setItem("token", resposta.data.token);
       }
 
+      if (eOMesmoUsuario) {
+        try {
+          const usuarioCompleto = await buscarUsuarioPorId(dadosEditados.id);
+          salvarUsuarioLogado(usuarioCompleto);
+        } catch {
+          salvarUsuarioLogado({
+            idUsuario: dadosEditados.id,
+            nome: dadosEditados.nome,
+            email: dadosEditados.email,
+            cargo: dadosEditados.cargo,
+          });
+        }
+      }
+
       await carregarUsuarios();
       cancelarEdicao();
     } catch (erro) {
@@ -131,6 +146,10 @@ const ListaColaboradores = () => {
       }
     }
   };
+
+  if (usuarioComum) {
+    return null;
+  }
 
   return (
     <div className="lista-colaboradores-page">

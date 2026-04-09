@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import styles from "../styles/DashboardStyle.module.css";
 import { BarChart } from "@mui/x-charts/BarChart";
 import api from "../services/apiClient";
+import { isUsuarioComum } from "../services/usuarioService";
 
 export default function Dashboard() {
+    const usuarioComum = isUsuarioComum();
+
     const [chartWidth, setChartWidth] = useState(600);
     const [topProdutos, setTopProdutos] = useState([]);
     const [topFornecedores, setTopFornecedores] = useState([]);
@@ -39,6 +42,10 @@ export default function Dashboard() {
             currency: 'BRL',
         }).format(valor);
     };
+
+    if (usuarioComum) {
+        return null;
+    }
 
     useEffect(() => {
         document.title = "CR Metais | Dashboard"

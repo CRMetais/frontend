@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "../styles/TabelaPreco.css";
+import { isUsuarioComum } from "../services/usuarioService";
 
 
 const TABELAS = ["VITAL", "TOCANTINS"];
@@ -148,6 +149,7 @@ function getTrendClass(currentStr, prevStr) {
 }
 
 export default function PrecosVenda() {
+  const usuarioComum = isUsuarioComum();
   const [tabela, setTabela] = useState(TABELAS[0]);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -226,7 +228,7 @@ export default function PrecosVenda() {
                       const prevDate = datas[idx + 1]; // mais antigo
                       const prev = prevDate ? (valueMap.get(`${nome}__${prevDate}`) ?? "—") : null;
 
-                      const trendClass = prevDate ? getTrendClass(current, prev) : "";
+                      const trendClass = !usuarioComum && prevDate ? getTrendClass(current, prev) : "";
 
                       return (
                         <td key={d} className={`td ${trendClass}`}>

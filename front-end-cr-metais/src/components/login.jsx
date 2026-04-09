@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from '../styles/login.module.css';
 import { useEffect } from 'react';
+import { buscarUsuarioPorId, extrairUsuarioPersistivel, salvarUsuarioLogado } from '../services/usuarioService';
 
 export default function Login({ setCurrentPage }) {
   const [email, setEmail] = useState('');
@@ -59,7 +60,20 @@ export default function Login({ setCurrentPage }) {
         localStorage.setItem('token', token);
       }
 
-      localStorage.setItem('usuario', JSON.stringify(dados));
+      const usuarioPersistivel = extrairUsuarioPersistivel(dados);
+      const idUsuario = usuarioPersistivel?.idUsuario || usuarioPersistivel?.id || dados?.userId;
+
+      if (idUsuario) {
+        try {
+          const usuarioCompleto = await buscarUsuarioPorId(idUsuario);
+          salvarUsuarioLogado(usuarioCompleto);
+        } catch {
+          salvarUsuarioLogado(usuarioPersistivel || dados);
+        }
+      } else {
+        salvarUsuarioLogado(usuarioPersistivel || dados);
+      }
+
       setCurrentPage('Resumo');
     } catch {
       setErro('Erro de conexão com o servidor.');

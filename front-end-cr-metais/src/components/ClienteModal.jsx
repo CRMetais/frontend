@@ -1,9 +1,12 @@
 import React from "react";
 import "../styles/ClienteModalStyle.css"
+import { isUsuarioComum } from "../services/usuarioService";
 
 
 export default function ClienteModal({ cliente, onClose }) {
   if (!cliente) return null;
+
+  const usuarioComum = isUsuarioComum();
 
   return (
     <div className="modal-overlay">
@@ -80,7 +83,7 @@ export default function ClienteModal({ cliente, onClose }) {
             <input placeholder="Última venda" />
             <input placeholder="Status" />
             <input placeholder="Status Cadastro" />
-            <input placeholder="Rendimento" />
+            {!usuarioComum && <input placeholder="Rendimento" />}
 
           </div>
 
