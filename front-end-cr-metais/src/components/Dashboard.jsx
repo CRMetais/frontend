@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import styles from "../styles/DashboardStyle.module.css";
 import { BarChart } from "@mui/x-charts/BarChart";
 import api from "../services/apiClient";
@@ -71,6 +71,10 @@ export default function Dashboard() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+            useEffect(() => {
+                setRendimentoTotal(totalVendas - totalCompras);
+            }, [totalVendas, totalCompras]);
+
     const carregarGraficos = async (inicio, fim) => {
         setCarregandoGraficos(true);
         setErroGraficos("");
@@ -91,7 +95,7 @@ export default function Dashboard() {
             setPesoTotal(resEstoque.data);
             setTotalVendas(resVendas.data);
             setTotalCompras(resCompras.data);
-            setRendimentoTotal(totalVendas- totalCompras);
+            
             const produtosFormatados = normalizarLista(dadosProdutos)
                 .map((item) => ({
                     categoria:
@@ -133,6 +137,7 @@ export default function Dashboard() {
             setTopFornecedores([]);
             setTotalVendas(0);
             setTotalCompras(0);
+            setRendimentoTotal(0);
         } finally {
             setCarregandoGraficos(false);
         }
