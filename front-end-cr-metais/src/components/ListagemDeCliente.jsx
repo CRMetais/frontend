@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import ClienteModal from "./ClienteModal";
 import { listarClientes } from "../services/clienteService";
 import CustomSelect from "./BoxSelects";
+import { deleteUser } from "../services/clienteService";
+import NovoFornecedorModal from "./NovoFornecedorModal";
 
 /* ================= MOCK ================ */
 
@@ -120,6 +122,14 @@ export default function ListaClientes() {
     setModalAberto(true);
   }
 
+  function abrirEdicao() {
+    alert("Em desenvolvimento");
+  }
+
+  function excluirCliente(cliente) {
+    alert("Em desenvolvimento");
+  }
+
   function fecharModal() {
     setModalAberto(false);
   }
@@ -163,7 +173,7 @@ export default function ListaClientes() {
       <div
         className={`${styles.clienteLine} ${isEven ? styles.linhaPar : styles.linhaImpar
           }`}
-        onClick={() => abrirModal(cliente)}
+      // onClick={() => abrirModal(cliente)}
       >
         <div className={styles.clienteItem}>
           <span className={styles.clienteId}>
@@ -183,12 +193,12 @@ export default function ListaClientes() {
           </span>
 
           <div className={styles.clienteEdicao}>
-            <div className={styles.editar}>
+            <div className={styles.editar} onClick={abrirEdicao}>
               <img src="../src/styles/img/icon-edit.png" alt="Editar" />
               <span className={styles.tooltip}>Editar</span>
 
             </div>
-            <div className={styles.excluir}>
+            <div className={styles.excluir} onClick={() => deleteUser(cliente.idFornecedor)}>
               <img src="../src/styles/img/icon-lixeira.png" alt="Excluir" />
               <span className={styles.tooltip}>Excluir</span>
             </div>
@@ -202,7 +212,7 @@ export default function ListaClientes() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  
+
 
   const handleClose = () => {
     setIsClosing(true);
@@ -228,47 +238,11 @@ export default function ListaClientes() {
           Cadastrar fornecedor
         </button>
 
-        {isModalOpen && (
-          <div className={styles.modalOverlay}>
-            <div className={`${styles.modal} ${isClosing ? styles.closing : ""}`}>
-              <h2 className={styles.modalTitle}>✏️ Novo fornecedor ✏️</h2>
-
-              <div className={styles.campos}>
-                <span>Nome completo</span>
-                <input className={styles.inputs} type="text" placeholder="Fulano de Tal" />
-              </div>
-
-              <div className={styles.campos}>
-                <span>CPF ou CNPJ</span>
-                <input className={styles.inputs} type="text" placeholder="123.456.789-00" />
-              </div>
-
-              <div className={styles.campos}>
-                <span>Telefone para contato</span>
-                <input className={styles.inputs} type="text" placeholder="(11) 99999-9999" />
-              </div>
-
-              <div className={styles.campos}>
-                <span>Apelido</span>
-                <input className={styles.inputs} type="text" placeholder="Fulano da Região Tal" />
-              </div>
-
-              <div className={styles.campos}>
-                <span>Pessoa Física / Jurídica</span>
-                  <CustomSelect />
-              </div>
-
-              <button className={styles.btn_proxima_pagina} onClick={handleClose}>
-                Próxima página
-              </button>
-
-              <button className={styles.btn_fechar} onClick={handleClose}>
-                Fechar
-              </button>
-
-            </div>
-          </div>
-        )}
+        <NovoFornecedorModal
+          isOpen={isModalOpen}
+          isClosing={isClosing}
+          onClose={handleClose}
+        />
 
       </div>
 
