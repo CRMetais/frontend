@@ -99,6 +99,7 @@
 .clienteLine {
   cursor: default;
   border-bottom: solid gainsboro 0.1px;
+  user-select: none;
 }
 
 .clienteEdicao {

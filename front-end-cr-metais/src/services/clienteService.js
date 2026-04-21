@@ -1,4 +1,6 @@
 import api from "./apiClient";
+import axios from "axios";
+
 
 // 1. Cadastrar Cliente (POST)
 export const cadastrarCliente = async (dadosCliente) => {
@@ -20,3 +22,15 @@ export async function excluirCliente(id) {
 export async function editarCliente(id, dados) {
   return await api.put(`/clientes/${id}`, dados);
 }
+
+
+// A que fizemos
+export const deleteUser = async (id) => {
+  try {
+    await axios.delete(`http://localhost:8080/fornecedores/${id}`);
+    alert("Fornecedor removido!");
+    // Atualize sua lista local após o sucesso
+  } catch (error) {
+    console.error("Erro ao deletar:", error);
+  }
+};
