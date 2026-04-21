@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/DashboardStyle.module.css";
 import { BarChart } from "@mui/x-charts/BarChart";
 import api from "../services/apiClient";
@@ -12,8 +12,14 @@ export default function Dashboard() {
     const [topFornecedores, setTopFornecedores] = useState([]);
     const [carregandoGraficos, setCarregandoGraficos] = useState(false);
     const [erroGraficos, setErroGraficos] = useState("");
-    const [dataInicio, setDataInicio] = useState("2026-01-01");
-    const [dataFim, setDataFim] = useState("2026-03-31");
+    const [dataInicio, setDataInicio] = useState(() => {
+        const hoje = new Date();
+        return `${hoje.getFullYear()}-01-01`;
+    });
+    const [dataFim, setDataFim] = useState(() => {
+        const hoje = new Date();
+        return hoje.toISOString().slice(0, 10);
+    });
     const [pesoTotal, setPesoTotal] = useState(0);
     const [totalVendas, setTotalVendas] = useState(0);
     const [totalCompras, setTotalCompras] = useState(0);
@@ -43,10 +49,6 @@ export default function Dashboard() {
         }).format(valor);
     };
 
-    if (usuarioComum) {
-        return null;
-    }
-
     useEffect(() => {
         document.title = "CR Metais | Dashboard"
     }, []);
@@ -71,9 +73,13 @@ export default function Dashboard() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-            useEffect(() => {
-                setRendimentoTotal(totalVendas - totalCompras);
-            }, [totalVendas, totalCompras]);
+    useEffect(() => {
+        setRendimentoTotal(totalVendas - totalCompras);
+    }, [totalVendas, totalCompras]);
+
+    if (usuarioComum) {
+        return null;
+    }
 
     const carregarGraficos = async (inicio, fim) => {
         setCarregandoGraficos(true);
