@@ -126,7 +126,7 @@ export default function ListaClientes() {
     alert("Em desenvolvimento");
   }
 
-  function excluirCliente(cliente) {
+  function excluirCliente(/* cliente */) {
     alert("Em desenvolvimento");
   }
 
@@ -198,7 +198,7 @@ export default function ListaClientes() {
               <span className={styles.tooltip}>Editar</span>
 
             </div>
-            <div className={styles.excluir} onClick={() => deleteUser(cliente.idFornecedor)}>
+            <div className={styles.excluir} onClick={/*(*/excluirCliente /*) => deleteUser(cliente.idFornecedor)*/}>
               <img src="../src/styles/img/icon-lixeira.png" alt="Excluir" />
               <span className={styles.tooltip}>Excluir</span>
             </div>
