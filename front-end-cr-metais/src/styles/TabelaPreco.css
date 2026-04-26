@@ -626,3 +626,50 @@
 .status.success {
   color: #16a34a;
 }
+
+.btnNovaTabela {
+  width: 100%;
+  padding: 8px 14px;
+  border: 1px solid #2f2f2f;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  color: #2f2f2f;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+ 
+.btnNovaTabela:hover:not(:disabled) {
+  background: #2f2f2f;
+  color: white;
+}
+ 
+.btnNovaTabela:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+ 
+.btnCompra {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #020618;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  color: #020618;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+ 
+.btnCompra:hover {
+  background: #020618;
+  color: white;
+}
+ 
+.status.success {
+  color: #16a34a;
+}

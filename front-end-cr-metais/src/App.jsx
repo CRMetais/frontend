@@ -9,7 +9,7 @@ import Navbar from "./components/Navbar";
 import Resumo from "./components/Resumo"
 import Login from "./components/login";
 import Historico from "./components/Historico";
-import TabelaPreco from "./components/TabelasPreco"
+import TabelaPreco from "./components/TabelasPrecoVenda"
 import { isUsuarioComum } from "./services/usuarioService";
 
 const PAGINAS_RESTRITAS_COMUM = ["Gestão de dados", "Dashboard"];

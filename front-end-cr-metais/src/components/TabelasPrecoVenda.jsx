@@ -8,6 +8,7 @@ import {
   fetchTodosProdutos,
   salvarPrecosEmLote,
 } from "../services/tabelaPrecoService";
+import TabelasPrecoCompra from "./TabelasPrecoCompra";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -21,20 +22,14 @@ function parseBRL(valor) {
   if (valor === null || valor === undefined || valor === "—" || valor === "") return null;
   if (typeof valor === "number") return valor;
   const cleaned = String(valor)
-    .replace("R$", "")
-    .replace(/\s/g, "")
-    .replace(/\./g, "")
-    .replace(",", ".");
+    .replace("R$", "").replace(/\s/g, "").replace(/\./g, "").replace(",", ".");
   const n = Number(cleaned);
   return Number.isFinite(n) ? n : null;
 }
 
 function formatBRL(valor) {
   if (valor === null || valor === undefined) return "—";
-  return `R$ ${Number(valor)
-    .toFixed(2)
-    .replace(".", ",")
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+  return `R$ ${Number(valor).toFixed(2).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
 }
 
 function getTrendClass(current, prev) {
@@ -46,13 +41,8 @@ function getTrendClass(current, prev) {
   return "";
 }
 
-function hojeISO() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function hojeDDMM() {
-  return isoParaDDMM(hojeISO());
-}
+function hojeISO() { return new Date().toISOString().slice(0, 10); }
+function hojeDDMM() { return isoParaDDMM(hojeISO()); }
 
 function buildTableModel(rows, todosProdutos = [], tabelaNova = false) {
   const dateSet = new Set();
@@ -68,7 +58,6 @@ function buildTableModel(rows, todosProdutos = [], tabelaNova = false) {
     const preco = r.precoProduto ?? null;
     const versao = r.versao ?? null;
     if (!nome || !ddmm) continue;
-
     dateSet.add(ddmm);
     productSet.add(nome);
     valueMap.set(`${nome}__${ddmm}`, preco);
@@ -78,29 +67,20 @@ function buildTableModel(rows, todosProdutos = [], tabelaNova = false) {
 
   if (tabelaNova) {
     const hoje = hojeDDMM();
-    const iso = hojeISO();
     dateSet.add(hoje);
-    isoMap.set(hoje, iso);
+    isoMap.set(hoje, hojeISO());
     versaoMap.set(hoje, 1.0);
-    for (const p of todosProdutos) {
-      productSet.add(p.nome);
-    }
+    for (const p of todosProdutos) productSet.add(p.nome);
   }
 
-  const datas = Array.from(dateSet).sort((a, b) => {
-    const ia = isoMap.get(a) ?? a;
-    const ib = isoMap.get(b) ?? b;
-    return ib.localeCompare(ia);
-  });
-
-  const produtos = Array.from(productSet).sort((a, b) =>
-    a.localeCompare(b, "pt-BR")
+  const datas = Array.from(dateSet).sort((a, b) =>
+    (isoMap.get(b) ?? b).localeCompare(isoMap.get(a) ?? a)
   );
-
+  const produtos = Array.from(productSet).sort((a, b) => a.localeCompare(b, "pt-BR"));
   return { datas, produtos, valueMap, versaoMap };
 }
 
-// ─── Modal ───────────────────────────────────────────────────────────────────
+// ─── Modal nova tabela ───────────────────────────────────────────────────────
 
 function ModalNovaTabela({ onConfirmar, onCancelar, salvando }) {
   const [nome, setNome] = useState("");
@@ -121,24 +101,16 @@ function ModalNovaTabela({ onConfirmar, onCancelar, salvando }) {
             Nova tabela de venda
           </h2>
         </div>
-
-        <div className="modalBody" style={{ padding: "20px 0" }}>
+        <div style={{ padding: "20px 0" }}>
           <label style={{ fontSize: "0.85rem", color: "#314158", fontWeight: 500 }}>
             Nome da tabela
           </label>
           <input
             style={{
-              width: "100%",
-              padding: "10px 12px",
-              border: "1px solid #ccc",
-              borderRadius: "6px",
-              fontSize: "0.95rem",
-              fontFamily: "inherit",
-              color: "#020618",
-              outline: "none",
-              boxSizing: "border-box",
-              textTransform: "uppercase",
-              marginTop: "6px",
+              width: "100%", padding: "10px 12px", border: "1px solid #ccc",
+              borderRadius: "6px", fontSize: "0.95rem", fontFamily: "inherit",
+              color: "#020618", outline: "none", boxSizing: "border-box",
+              textTransform: "uppercase", marginTop: "6px",
             }}
             placeholder="Ex: TOCANTINS"
             value={nome}
@@ -146,37 +118,19 @@ function ModalNovaTabela({ onConfirmar, onCancelar, salvando }) {
             onKeyDown={(e) => e.key === "Enter" && handleConfirmar()}
             autoFocus
           />
-          {erro && (
-            <span style={{ color: "#dc2626", fontSize: "0.85rem" }}>{erro}</span>
-          )}
+          {erro && <span style={{ color: "#dc2626", fontSize: "0.85rem" }}>{erro}</span>}
           <span style={{ color: "#6b7280", fontSize: "0.8rem", lineHeight: 1.5, display: "block", marginTop: "6px" }}>
             Sera criada com tipo Venda, versao 1.0 e data de inicio hoje.
           </span>
         </div>
-
         <div className="modal-footer">
           <button
-            style={{
-              padding: "10px 20px",
-              background: "#dc2626",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              fontSize: "0.9rem",
-              fontWeight: 500,
-              cursor: "pointer",
-              marginRight: "8px",
-            }}
-            onClick={onCancelar}
-            disabled={salvando}
+            style={{ padding: "10px 20px", background: "#dc2626", color: "white", border: "none", borderRadius: "6px", fontSize: "0.9rem", fontWeight: 500, cursor: "pointer", marginRight: "8px" }}
+            onClick={onCancelar} disabled={salvando}
           >
             Fechar
           </button>
-          <button
-            className="modal-save"
-            onClick={handleConfirmar}
-            disabled={salvando}
-          >
+          <button className="modal-save" onClick={handleConfirmar} disabled={salvando}>
             {salvando ? "Criando..." : "Criar tabela"}
           </button>
         </div>
@@ -189,18 +143,26 @@ function ModalNovaTabela({ onConfirmar, onCancelar, salvando }) {
 
 export default function PrecosVenda() {
   const usuarioComum = isUsuarioComum();
+  const [view, setView] = useState("venda"); // "venda" | "compra"
 
+  // Se trocou para compra, renderiza o outro componente
+  if (view === "compra") {
+    return <TabelasPrecoCompra onVoltar={() => setView("venda")} />;
+  }
+
+  return <TabelaVendaView usuarioComum={usuarioComum} onIrParaCompra={() => setView("compra")} />;
+}
+
+function TabelaVendaView({ usuarioComum, onIrParaCompra }) {
   const [tabelas, setTabelas] = useState([]);
   const [tabela, setTabela] = useState("");
   const [rows, setRows] = useState([]);
   const [todosProdutos, setTodosProdutos] = useState([]);
   const [tabelaNova, setTabelaNova] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const [criandoTabela, setCriandoTabela] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
   const [erro, setErro] = useState("");
   const [sucesso, setSucesso] = useState("");
   const [edits, setEdits] = useState({});
@@ -210,26 +172,17 @@ export default function PrecosVenda() {
       const nomes = await fetchNomesTabelasVenda();
       setTabelas(nomes);
       if (nomes.length > 0 && !tabela) setTabela(nomes[0]);
-    } catch {
-      setTabelas([]);
-    }
+    } catch { setTabelas([]); }
   }, [tabela]);
 
   useEffect(() => { carregarTabelas(); }, []);
-
   useEffect(() => {
-    fetchTodosProdutos()
-      .then((data) => setTodosProdutos(Array.isArray(data) ? data : []))
-      .catch(() => setTodosProdutos([]));
+    fetchTodosProdutos().then((d) => setTodosProdutos(Array.isArray(d) ? d : [])).catch(() => setTodosProdutos([]));
   }, []);
 
   const carregarDados = useCallback(async (t) => {
     if (!t) return;
-    setLoading(true);
-    setErro("");
-    setSucesso("");
-    setEdits({});
-    setTabelaNova(false);
+    setLoading(true); setErro(""); setSucesso(""); setEdits({}); setTabelaNova(false);
     try {
       const data = await fetchPrecosPorTabela(t);
       setRows(Array.isArray(data) ? data : []);
@@ -237,9 +190,7 @@ export default function PrecosVenda() {
     } catch (e) {
       setRows([]);
       setErro(e?.response?.data?.message || e?.message || "Erro ao carregar dados");
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { if (tabela) carregarDados(tabela); }, [tabela, carregarDados]);
@@ -257,9 +208,8 @@ export default function PrecosVenda() {
   }
 
   function handleCellBlur(nome, valorDigitado) {
-    const valorOriginal = valueMap.get(`${nome}__${dataMaisRecente}`);
     const nDigitado = parseBRL(valorDigitado);
-    const nOriginal = parseBRL(valorOriginal);
+    const nOriginal = parseBRL(valueMap.get(`${nome}__${dataMaisRecente}`));
     if (nDigitado === null || nDigitado === nOriginal) {
       setEdits((prev) => { const next = { ...prev }; delete next[nome]; return next; });
       return;
@@ -268,46 +218,35 @@ export default function PrecosVenda() {
   }
 
   async function handleSalvar() {
-    setSalvando(true);
-    setErro("");
-    setSucesso("");
+    setSalvando(true); setErro(""); setSucesso("");
     try {
       const itens = produtos
         .map((nome) => {
-          const valorEditado = edits[nome];
-          const valorAtual = valueMap.get(`${nome}__${dataMaisRecente}`);
-          const valorFinal = valorEditado !== undefined ? valorEditado : valorAtual;
-          const preco = parseBRL(valorFinal);
-          return { nomeProduto: nome, preco };
+          const valorFinal = edits[nome] !== undefined ? edits[nome] : valueMap.get(`${nome}__${dataMaisRecente}`);
+          return { nomeProduto: nome, preco: parseBRL(valorFinal) };
         })
         .filter((i) => i.preco !== null && i.preco > 0);
-
       await salvarPrecosEmLote(tabela, itens);
-      setSucesso("Precos salvos com sucesso. Nova versao criada.");
+      setSucesso("Precos salvos. Nova versao criada.");
       setTabelaNova(false);
       await carregarDados(tabela);
     } catch (e) {
-      setErro(e?.response?.data?.message || e?.message || "Erro ao salvar precos");
-    } finally {
-      setSalvando(false);
-    }
+      setErro(e?.response?.data?.message || e?.message || "Erro ao salvar");
+    } finally { setSalvando(false); }
   }
 
   async function handleCriarTabela(nomeTabela) {
-    setCriandoTabela(true);
-    setErro("");
+    setCriandoTabela(true); setErro("");
     try {
       await cadastrarTabelaVenda(nomeTabela);
       await carregarTabelas();
       setTabela(nomeTabela);
       setShowModal(false);
-      setSucesso(`Tabela "${nomeTabela}" criada. Preencha os precos abaixo.`);
+      setSucesso(`Tabela "${nomeTabela}" criada.`);
     } catch (e) {
       setErro(e?.response?.data?.message || e?.message || "Erro ao criar tabela");
       setShowModal(false);
-    } finally {
-      setCriandoTabela(false);
-    }
+    } finally { setCriandoTabela(false); }
   }
 
   const temEdicoes = Object.keys(edits).length > 0;
@@ -325,22 +264,16 @@ export default function PrecosVenda() {
       )}
 
       <div className="card">
-        {/* Header amarelo */}
         <div className="headerYellow">
           PRECOS VENDA - {tabela}
-          {versaoAtual && (
-            <span className="versaoBadge">v{versaoAtual}</span>
-          )}
+          {versaoAtual && <span className="versaoBadge">v{versaoAtual}</span>}
         </div>
 
         <div className="body">
-          {/* ── TABELA ── */}
           <div className="tableWrap">
             {loading && <div className="status">Carregando...</div>}
             {!loading && erro && <div className="status error">{erro}</div>}
-            {!loading && sucesso && (
-              <div className="status" style={{ color: "#16a34a" }}>{sucesso}</div>
-            )}
+            {!loading && sucesso && <div className="status" style={{ color: "#16a34a" }}>{sucesso}</div>}
 
             {!loading && (
               <table className="table">
@@ -348,47 +281,26 @@ export default function PrecosVenda() {
                   <tr>
                     <th className="th thLeft">Produto</th>
                     {datas.map((d, idx) => (
-                      <th
-                        key={d}
-                        className="th"
-                        style={idx === 0 ? { borderBottom: "2px solid #FACC15" } : {}}
-                      >
+                      <th key={d} className="th" style={idx === 0 ? { borderBottom: "2px solid #FACC15" } : {}}>
                         {d}
                       </th>
                     ))}
                   </tr>
                 </thead>
-
                 <tbody>
                   {produtos.map((nome, i) => (
-                    <tr
-                      key={nome}
-                      className="trHover"
-                      style={{ background: i % 2 === 0 ? "#ffffff" : "#f4f4f5" }}
-                    >
+                    <tr key={nome} className="trHover" style={{ background: i % 2 === 0 ? "#ffffff" : "#f4f4f5" }}>
                       <td className="td tdLeft">{nome}</td>
-
                       {datas.map((d, idx) => {
                         const current = valueMap.get(`${nome}__${d}`) ?? null;
                         const prevDate = datas[idx + 1];
-                        const prev = prevDate
-                          ? (valueMap.get(`${nome}__${prevDate}`) ?? null)
-                          : null;
-
-                        const trendClass =
-                          !usuarioComum && prevDate ? getTrendClass(current, prev) : "";
-
+                        const prev = prevDate ? (valueMap.get(`${nome}__${prevDate}`) ?? null) : null;
+                        const trendClass = !usuarioComum && prevDate ? getTrendClass(current, prev) : "";
                         const isEditavel = idx === 0 && !usuarioComum;
                         const valorEdit = edits[nome];
-                        const displayValue =
-                          valorEdit !== undefined ? valorEdit : formatBRL(current);
-
+                        const displayValue = valorEdit !== undefined ? valorEdit : formatBRL(current);
                         return (
-                          <td
-                            key={d}
-                            className={`td ${trendClass}`}
-                            style={idx === 0 ? { background: "rgba(250,204,21,0.04)" } : {}}
-                          >
+                          <td key={d} className={`td ${trendClass}`} style={idx === 0 ? { background: "rgba(250,204,21,0.04)" } : {}}>
                             {isEditavel ? (
                               <input
                                 className={`cellInput ${valorEdit !== undefined ? "cellInputDirty" : ""}`}
@@ -397,9 +309,7 @@ export default function PrecosVenda() {
                                 onFocus={(e) => e.target.select()}
                                 onBlur={(e) => handleCellBlur(nome, e.target.value)}
                               />
-                            ) : (
-                              displayValue
-                            )}
+                            ) : displayValue}
                           </td>
                         );
                       })}
@@ -410,19 +320,10 @@ export default function PrecosVenda() {
             )}
           </div>
 
-          {/* ── PAINEL LATERAL ── */}
           <div className="side">
             <div className="sideLabel">Selecione a tabela:</div>
-
-            <select
-              className="select"
-              value={tabela}
-              onChange={(e) => setTabela(e.target.value)}
-              disabled={loading}
-            >
-              {tabelas.map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
+            <select className="select" value={tabela} onChange={(e) => setTabela(e.target.value)} disabled={loading}>
+              {tabelas.map((t) => <option key={t} value={t}>{t}</option>)}
             </select>
 
             {!usuarioComum && (
@@ -432,9 +333,7 @@ export default function PrecosVenda() {
             )}
 
             <div className="hint">
-              {loading
-                ? "Atualizando..."
-                : `${produtos.length} produto(s) · ${datas.length} versao(oes)`}
+              {loading ? "Atualizando..." : `${produtos.length} produto(s) · ${datas.length} versao(oes)`}
             </div>
 
             {!usuarioComum && (
@@ -446,22 +345,19 @@ export default function PrecosVenda() {
                 >
                   {salvando ? "Salvando..." : "Salvar precos de hoje"}
                 </button>
-
-                {temEdicoes && (
-                  <div className="hint hintWarning">
-                    {qtdEdicoes} preco(s) alterado(s)
-                  </div>
-                )}
-
-                <button
-                  className="btnCancelar"
-                  onClick={() => setEdits({})}
-                  disabled={!temEdicoes || salvando}
-                >
+                {temEdicoes && <div className="hint hintWarning">{qtdEdicoes} preco(s) alterado(s)</div>}
+                <button className="btnCancelar" onClick={() => setEdits({})} disabled={!temEdicoes || salvando}>
                   Cancelar edicoes
                 </button>
               </>
             )}
+
+            {/* Botão para ir para Tabelas Cliente */}
+            <div style={{ marginTop: "auto", paddingTop: "16px", borderTop: "1px solid gainsboro" }}>
+              <button className="btnCompra" onClick={onIrParaCompra}>
+                Tabelas Cliente
+              </button>
+            </div>
           </div>
         </div>
       </div>

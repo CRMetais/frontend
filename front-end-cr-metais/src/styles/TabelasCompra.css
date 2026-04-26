@@ -1,0 +1,466 @@
+/* TabelasCompra.css — adicionar em src/styles/ */
+
+/* ── Layout das duas colunas ── */
+.compraLayout {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  align-items: flex-start;
+}
+
+.compraColuna {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Sub-tabela ── */
+.compraSubTabela {
+  border: 1px solid gainsboro;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.compraSubHeader {
+  background: #FACC15;
+  color: #020618;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+  font-size: 1dvw;
+  letter-spacing: 0.3px;
+}
+
+.compraTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compraTh {
+  background: #020618;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9dvw;
+  padding: 10px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.compraTthLeft {
+  text-align: left;
+  padding-left: 12px;
+  width: 60%;
+}
+
+.compraTd {
+  padding: 8px;
+  font-size: 0.9dvw;
+  text-align: center;
+  border-bottom: 1px solid #ececec;
+  color: #020618;
+  height: 40px;
+}
+
+.compraTdLeft {
+  text-align: left;
+  padding-left: 12px;
+}
+
+.compraRow:hover td {
+  background: #fef9c2 !important;
+}
+
+/* ── Botão copiar tabela ── */
+.btnCopiarTabela {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #020618;
+  color: white;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+
+.btnCopiarTabela:hover:not(:disabled) {
+  background: #1e293b;
+}
+
+.btnCopiarTabela:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Botão alternar venda/compra ── */
+.btnCompra {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #020618;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  color: #020618;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.btnCompra:hover {
+  background: #020618;
+  color: white;
+}
+
+/* ── Modal de preview ── */
+.previewModal {
+  background: white;
+  width: 780px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+}
+
+.previewModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid gainsboro;
+}
+
+/* ── Conteúdo capturado como imagem ── */
+.previewConteudo {
+  background: white;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.previewHeaderImg {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #FACC15;
+}
+
+.previewLogo {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.previewTabelas {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.previewColunaDireita {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.previewSubTabela {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.previewSubHeader {
+  background: #FACC15;
+  color: #020618;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.previewTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.previewTh {
+  background: #020618;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 6px;
+  text-align: center;
+}
+
+.previewThLeft {
+  text-align: left;
+  padding-left: 8px;
+}
+
+.previewTd {
+  padding: 6px;
+  font-size: 11px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+  color: #020618;
+}
+
+.previewTdLeft {
+  text-align: left;
+  padding-left: 8px;
+}
+
+/* ── Layout das duas colunas ── */
+.compraLayout {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  align-items: flex-start;
+}
+ 
+.compraColuna {
+  flex: 1;
+  min-width: 0;
+}
+ 
+/* ── Sub-tabela ── */
+.compraSubTabela {
+  border: 1px solid gainsboro;
+  border-radius: 8px;
+  overflow: hidden;
+}
+ 
+.compraSubHeader {
+  background: #FACC15;
+  color: #020618;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+  font-size: 1dvw;
+  letter-spacing: 0.3px;
+}
+ 
+.compraTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+ 
+.compraTh {
+  background: #020618;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9dvw;
+  padding: 10px 8px;
+  text-align: center;
+  white-space: nowrap;
+}
+ 
+.compraTthLeft {
+  text-align: left;
+  padding-left: 12px;
+  width: 60%;
+}
+ 
+.compraTd {
+  padding: 8px;
+  font-size: 0.9dvw;
+  text-align: center;
+  border-bottom: 1px solid #ececec;
+  color: #020618;
+  height: 40px;
+}
+ 
+.compraTdLeft {
+  text-align: left;
+  padding-left: 12px;
+}
+ 
+.compraRow:hover td {
+  background: #fef9c2 !important;
+}
+ 
+/* ── Botão copiar tabela ── */
+.btnCopiarTabela {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #020618;
+  color: white;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 700;
+  transition: all 0.2s;
+}
+ 
+.btnCopiarTabela:hover:not(:disabled) {
+  background: #1e293b;
+}
+ 
+.btnCopiarTabela:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+ 
+/* ── Botão alternar venda/compra ── */
+.btnCompra {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #020618;
+  border-radius: 6px;
+  cursor: pointer;
+  background: transparent;
+  color: #020618;
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+ 
+.btnCompra:hover {
+  background: #020618;
+  color: white;
+}
+ 
+/* ── Modal de preview ── */
+.previewModal {
+  background: white;
+  width: 780px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+}
+ 
+.previewModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid gainsboro;
+}
+ 
+/* ── Conteúdo capturado como imagem ── */
+.previewConteudo {
+  background: white;
+  padding: 24px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+ 
+.previewHeaderImg {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #FACC15;
+}
+ 
+.previewLogo {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+ 
+.previewTabelas {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+ 
+.previewColunaDireita {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+ 
+.previewSubTabela {
+  flex: 1;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+ 
+.previewSubHeader {
+  background: #FACC15;
+  color: #020618;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+ 
+.previewTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+ 
+.previewTh {
+  background: #020618;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 7px 6px;
+  text-align: center;
+}
+ 
+.previewThLeft {
+  text-align: left;
+  padding-left: 8px;
+}
+ 
+.previewTd {
+  padding: 6px;
+  font-size: 11px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+  color: #020618;
+}
+ 
+.previewTdLeft {
+  text-align: left;
+  padding-left: 8px;
+}
+ 
+/* ── Legenda de margem ── */
+.margemLegenda {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+ 
+.margemLegendaTitulo {
+  font-size: 11px;
+  font-weight: 600;
+  color: #314158;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 2px;
+}
+ 
+.margemItem {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+}
