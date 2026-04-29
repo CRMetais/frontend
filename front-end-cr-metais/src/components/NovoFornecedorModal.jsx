@@ -4,7 +4,7 @@ import CustomSelect from "./BoxSelects";
 
 const TOTAL_STEPS = 6;
 
-export default function NovoFornecedorModal({ isOpen, isClosing, onClose }) {
+export default function NovoFornecedorModal({ isOpen, isClosing, onClose, onSuccess }) {
   const [step, setStep] = useState(1);
   const [cepLoading, setCepLoading] = useState(false);
   const [cepErro, setCepErro] = useState("");
@@ -20,7 +20,14 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose }) {
     setDadosBancarios({ banco: "", agencia: "", numeroConta: "", tipoConta: "" });
     setResponsavel({ nomeCompleto: "", cpfCnpj: "" });
     setTabela({ idTabela: null, nomeTabela: "" });
+    setResponsavelSelecionado({ idUsuario: null, nomeUsuario: "" });
   };
+
+  const [usuariosDisponiveis, setUsuariosDisponiveis] = useState([]);
+  const [responsavelSelecionado, setResponsavelSelecionado] = useState({
+    idUsuario: null,
+    nomeUsuario: "",
+  });
 
   const [dadosPessoais, setDadosPessoais] = useState({
     nomeCompleto: "",
@@ -67,30 +74,33 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose }) {
 
   useEffect(() => {
     if (isOpen) {
-      fetch("http://localhost:8080/tabelas-precos")
-        .then((res) => {
-          if (!res.ok) throw new Error("Erro ao buscar tabelas");
-          return res.json();
-        })
-        .then((data) => {
-          const tabelas = Array.isArray(data) ? data : [];
-
+      Promise.all([
+        fetch("http://localhost:8080/tabelas-precos").then((r) => {
+          if (!r.ok) throw new Error("Erro ao buscar tabelas");
+          return r.json();
+        }),
+        fetch("http://localhost:8080/usuarios", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }).then((r) => {
+          if (!r.ok) throw new Error("Erro ao buscar usuários");
+          return r.json();
+        }),
+      ])
+        .then(([tabelasData, usuariosData]) => {
+          const tabelas = Array.isArray(tabelasData) ? tabelasData : [];
           const maisRecentes = Object.values(
             tabelas.reduce((acc, tabela) => {
               const nome = tabela.nomeTabela;
-              if (!acc[nome] || tabela.versao > acc[nome].versao) {
-                acc[nome] = tabela;
-              }
+              if (!acc[nome] || tabela.versao > acc[nome].versao) acc[nome] = tabela;
               return acc;
             }, {})
           );
-
           setTabelasDisponiveis(maisRecentes);
+          setUsuariosDisponiveis(Array.isArray(usuariosData) ? usuariosData : []);
         })
         .catch((err) => {
           console.error(err);
-          setTabelasDisponiveis([]);
-          alert("Erro ao carregar tabelas de preço");
+          alert("Erro ao carregar dados iniciais");
         });
     }
   }, [isOpen]);
@@ -197,7 +207,10 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose }) {
         tipoFornecedor: dadosPessoais.tipoPessoa,
         idEndereco: enderecoSalvo.idEndereco,
         idTabelaPreco: tabela.idTabela,
+        idUsuario: responsavelSelecionado.idUsuario,
       };
+
+      console.log("Payload fornecedor:", JSON.stringify(fornecedorPayload));
 
       const resFornecedor = await fetch("http://localhost:8080/fornecedores", {
         method: "POST",
@@ -255,12 +268,15 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose }) {
       }
 
       resetarEstados();
+      onSuccess?.();
       onClose();
 
     } catch (err) {
       console.error(err);
       alert(err.message);
     }
+
+    console.log("idUsuario enviado:", responsavelSelecionado.idUsuario);
   };
 
   const handleClose = () => {
@@ -645,34 +661,40 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose }) {
             <h2 className={styles.modalTitle}>✏️ Novo fornecedor ✏️</h2>
 
             <div className={styles.campos}>
+              <span>Responsável</span>
+              <CustomSelect
+                placeholder="Selecione o responsável"
+                options={usuariosDisponiveis.map((u) => u.nome)}
+                value={responsavelSelecionado.nomeUsuario}
+                onChange={(nomeUsuario) => {
+                  const selecionado = usuariosDisponiveis.find((u) => u.nome === nomeUsuario);
+                  setResponsavelSelecionado({
+                    nomeUsuario,
+                    idUsuario: selecionado?.idUsuario ?? null,
+                  });
+                }}
+              />
+            </div>
+
+            <div className={styles.campos}>
               <span>Tabela de preço</span>
               <CustomSelect
                 placeholder="Selecione a tabela"
                 options={tabelasDisponiveis.map((t) => t.nomeTabela)}
                 value={tabela.nomeTabela}
                 onChange={(nomeTabela) => {
-                  const selecionada = tabelasDisponiveis.find(
-                    (t) => t.nomeTabela === nomeTabela
-                  );
+                  const selecionada = tabelasDisponiveis.find((t) => t.nomeTabela === nomeTabela);
                   setTabela({ nomeTabela, idTabela: selecionada?.idTabela });
                 }}
               />
             </div>
 
             <div className={styles.btns_back_prox}>
-              <button className={styles.btn_fechar} onClick={handleBack}>
-                Voltar
-              </button>
-
-              <button className={styles.btn_proxima_pagina} onClick={handleNext}>
-                Próx. página
-              </button>
-
+              <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+              <button className={styles.btn_proxima_pagina} onClick={handleFinish}>Finalizar</button>
             </div>
 
-            <button className={styles.btn_fechar} onClick={handleClose}>
-              Fechar
-            </button>
+            <button className={styles.btn_fechar} onClick={handleClose}>Fechar</button>
           </>
         )}
 

@@ -63,16 +63,16 @@ export default function ListaClientes() {
     setModalAberto(false);
   }
 
-  useEffect(() => {
-    const carregarClientes = async () => {
-      try {
-        const data = await listarClientes();
-        setClientes(data || []);
-      } catch (error) {
-        console.error("Erro ao buscar clientes:", error);
-      }
-    };
+  const carregarClientes = async () => {
+    try {
+      const data = await listarClientes();
+      setClientes(data || []);
+    } catch (error) {
+      console.error("Erro ao buscar clientes:", error);
+    }
+  };
 
+  useEffect(() => {
     carregarClientes();
   }, []);
 
@@ -103,7 +103,7 @@ export default function ListaClientes() {
           </span>
 
           <span className={styles.clienteResponsavel}>
-            {cliente.telContato || "-"}
+            {cliente.responsavel?.nome || "-"}
           </span>
 
           <span className={styles.clienteTabela}>
@@ -158,6 +158,7 @@ export default function ListaClientes() {
           isOpen={isModalOpen}
           isClosing={isClosing}
           onClose={handleClose}
+          onSuccess={carregarClientes}
         />
 
         <EditarFornecedorModal

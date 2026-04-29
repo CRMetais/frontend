@@ -186,3 +186,7 @@ input:focus {
 button {
   color: white;
 }
+
+.loginCard input {
+  height: 5vh !important;
+}

@@ -343,8 +343,12 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 onChange={(e) => setEndereco({ ...endereco, uf: e.target.value.toUpperCase() })} />
                         </div>
 
-                        <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próxima página</button>
-                        <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                        <div className={styles.btns_back_prox}>
+                            <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                            <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
+                        </div>
+                        <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
+
                     </>
                 )}
 
@@ -366,8 +370,11 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 onChange={(val) => setPagamento({ ...pagamento, pertenceCliente: val })} />
                         </div>
 
-                        <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próxima página</button>
-                        <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                        <div className={styles.btns_back_prox}>
+                            <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                            <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
+                        </div>
+                        <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
 
@@ -382,8 +389,11 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 onChange={(e) => setDadosPix({ chavePix: e.target.value })} />
                         </div>
 
-                        <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próxima página</button>
-                        <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                        <div className={styles.btns_back_prox}>
+                            <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                            <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
+                        </div>
+                        <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
 
@@ -414,8 +424,11 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 onChange={(val) => setDadosBancarios({ ...dadosBancarios, tipoConta: val })} />
                         </div>
 
-                        <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próxima página</button>
-                        <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                        <div className={styles.btns_back_prox}>
+                            <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                            <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
+                        </div>
+                        <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
 
@@ -435,8 +448,11 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 onChange={(e) => setResponsavel({ ...responsavel, cpfCnpj: e.target.value })} />
                         </div>
 
-                        <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próxima página</button>
-                        <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                        <div className={styles.btns_back_prox}>
+                            <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                            <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
+                        </div>
+                        <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
 
@@ -455,8 +471,12 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 }} />
                         </div>
 
-                        <button className={styles.btn_proxima_pagina} onClick={handleFinish}>Salvar alterações</button>
-                        <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                        <div className={styles.btns_back_prox}>
+                            <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
+                            <button className={styles.btn_proxima_pagina} onClick={handleFinish}>Salvar</button>
+                        </div>
+
+                        <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
 
