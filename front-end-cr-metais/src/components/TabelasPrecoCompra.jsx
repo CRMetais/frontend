@@ -238,30 +238,30 @@ function PreviewImagem({ produtos, valueMap, onFechar }) {
   // Data de hoje formatada para exibir na imagem
   const dataHoje = isoParaExtenso(hojeISO());
 
-  async function handleCopiar() {
-    if (!previewRef.current) return;
-    setCopiando(true);
-    try {
-      const html2canvas = (await import("html2canvas")).default;
-      const canvas = await html2canvas(previewRef.current, {
-        scale: 2,
-        backgroundColor: "#ffffff",
-        useCORS: true,
-      });
-      canvas.toBlob(async (blob) => {
-        if (!blob) return;
-        await navigator.clipboard.write([
-          new ClipboardItem({ "image/png": blob }),
-        ]);
-        setCopiado(true);
-        setTimeout(() => setCopiado(false), 3000);
-      }, "image/png");
-    } catch (e) {
-      console.error("Erro ao copiar imagem:", e);
-    } finally {
-      setCopiando(false);
-    }
-  }
+  // async function handleCopiar() {
+  //   if (!previewRef.current) return;
+  //   setCopiando(true);
+  //   try {
+  //     const html2canvas = (await import("html2canvas")).default;
+  //     const canvas = await html2canvas(previewRef.current, {
+  //       scale: 2,
+  //       backgroundColor: "#ffffff",
+  //       useCORS: true,
+  //     });
+  //     canvas.toBlob(async (blob) => {
+  //       if (!blob) return;
+  //       await navigator.clipboard.write([
+  //         new ClipboardItem({ "image/png": blob }),
+  //       ]);
+  //       setCopiado(true);
+  //       setTimeout(() => setCopiado(false), 3000);
+  //     }, "image/png");
+  //   } catch (e) {
+  //     console.error("Erro ao copiar imagem:", e);
+  //   } finally {
+  //     setCopiando(false);
+  //   }
+  // }
 
   return (
     <div className="modalOverlay">

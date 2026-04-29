@@ -196,7 +196,7 @@ img {
   background-color: #ff6467 !important;
   color: #82181a;
   width: 100% !important;
-  height: 3.5rem;
+  height: 3rem;
   font-size: 20px !important;
 }
 
@@ -210,7 +210,7 @@ img {
   /* background-color: #020618 !important; */
   /* color: white; */
   width: 100% !important;
-  height: 3.5rem;
+  height: 3rem;
   font-size: 20px !important;
 }
 
@@ -263,4 +263,14 @@ input:focus {
 
 .modalTitle {
   font-size: 1.8rem;
+}
+
+.btns_back_prox {
+  display: flex;
+  width: 100%;
+  gap: 20px;
+}
+
+input {
+  height: 1vh !important;
 }

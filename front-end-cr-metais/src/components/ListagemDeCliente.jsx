@@ -8,126 +8,55 @@ import { listarClientes } from "../services/clienteService";
 import CustomSelect from "./BoxSelects";
 import { deleteUser } from "../services/clienteService";
 import NovoFornecedorModal from "./NovoFornecedorModal";
-
-/* ================= MOCK ================ */
-
-// const CLIENTES_MOCK = [
-//   {
-//     id: 1,
-//     nome: "João Silva",
-//     responsavel: "joao@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 2,
-//     nome: "Maria Oliveira",
-//     responsavel: "maria@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 3,
-//     nome: "Carlos Souza",
-//     responsavel: "carlos@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 4,
-//     nome: "Ana Pereira",
-//     responsavel: "ana@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 5,
-//     nome: "Pedro Santos",
-//     responsavel: "pedro@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 6,
-//     nome: "Fernanda Lima",
-//     responsavel: "fernanda@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 7,
-//     nome: "Lucas Almeida",
-//     responsavel: "lucas@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 8,
-//     nome: "Juliana Costa",
-//     responsavel: "juliana@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 9,
-//     nome: "Ricardo Ferreira",
-//     responsavel: "ricardo@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 10,
-//     nome: "Patricia Gomes",
-//     responsavel: "patricia@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 11,
-//     nome: "Rafael Martins",
-//     responsavel: "rafael@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 12,
-//     nome: "Camila Rocha",
-//     responsavel: "camila@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 13,
-//     nome: "Bruno Ribeiro",
-//     responsavel: "bruno@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 14,
-//     nome: "Aline Carvalho",
-//     responsavel: "aline@empresa.com",
-//     tabela: "VITAL",
-//   },
-//   {
-//     id: 15,
-//     nome: "Diego Mendes",
-//     responsavel: "diego@empresa.com",
-//     tabela: "VITAL",
-//   },
-// ];
-
-
-
-/* ================= COMPONENTE ================= */
+import EditarFornecedorModal from "./EditarFornecedorModal";
 
 export default function ListaClientes() {
   const [clientes, setClientes] = useState([]);
   const [clienteSelecionado, setClienteSelecionado] = useState(null);
   const [modalAberto, setModalAberto] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditClosing, setIsEditClosing] = useState(false);
+  const [fornecedorEditandoId, setFornecedorEditandoId] = useState(null);
 
   useEffect(() => {
-    document.title = "CR Metais | Fornecedores"
-  })
+    document.title = "CR Metais | Fornecedores";
+  });
 
   function abrirModal(cliente) {
     setClienteSelecionado(cliente);
     setModalAberto(true);
   }
 
-  function abrirEdicao() {
-    alert("Em desenvolvimento");
+  function abrirEdicao(id) {
+    setFornecedorEditandoId(id);
+    setIsEditModalOpen(true);
   }
 
-  function excluirCliente(/* cliente */) {
-    alert("Em desenvolvimento");
+  function fecharEdicao() {
+    setIsEditClosing(true);
+    setTimeout(() => {
+      setIsEditModalOpen(false);
+      setIsEditClosing(false);
+      setFornecedorEditandoId(null);
+    }, 300);
+  }
+
+  async function excluirCliente(id) {
+    const confirmado = window.confirm("Tem certeza que deseja excluir este fornecedor?");
+    if (!confirmado) return;
+
+    try {
+      const res = await fetch(`http://localhost:8080/fornecedores/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Erro ao excluir fornecedor");
+
+      setClientes((prev) => prev.filter((c) => c.idFornecedor !== id));
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao excluir fornecedor. Tente novamente.");
+    }
   }
 
   function fecharModal() {
@@ -138,18 +67,10 @@ export default function ListaClientes() {
     const carregarClientes = async () => {
       try {
         const data = await listarClientes();
-        // console.log("CLIENTES:", data); // debug
         setClientes(data || []);
       } catch (error) {
         console.error("Erro ao buscar clientes:", error);
       }
-
-      const data = await listarClientes();
-      // console.log("DADOS:", data);
-      setClientes(data || []);
-
-      // console.log("DATA COMPLETA:", data);
-      // console.log("CONTENT:", data.content);
     };
 
     carregarClientes();
@@ -167,13 +88,10 @@ export default function ListaClientes() {
     );
   };
 
-
   const ClienteItem = ({ cliente, isEven }) => {
     return (
       <div
-        className={`${styles.clienteLine} ${isEven ? styles.linhaPar : styles.linhaImpar
-          }`}
-      // onClick={() => abrirModal(cliente)}
+        className={`${styles.clienteLine} ${isEven ? styles.linhaPar : styles.linhaImpar}`}
       >
         <div className={styles.clienteItem}>
           <span className={styles.clienteId}>
@@ -193,14 +111,13 @@ export default function ListaClientes() {
           </span>
 
           <div className={styles.clienteEdicao}>
-            <div className={styles.editar} onClick={abrirEdicao}>
+            <div className={styles.editar} onClick={() => abrirEdicao(cliente.idFornecedor)}>
               <img src="../src/styles/img/icon-edit.png" alt="Editar" />
-              <span className={styles.tooltip}>Editar</span>
-
+              {/* <span className={styles.tooltip}>Editar</span> */}
             </div>
-            <div className={styles.excluir} onClick={/*(*/excluirCliente /*) => deleteUser(cliente.idFornecedor)*/}>
+            <div className={styles.excluir} onClick={() => excluirCliente(cliente.idFornecedor)}>
               <img src="../src/styles/img/icon-lixeira.png" alt="Excluir" />
-              <span className={styles.tooltip}>Excluir</span>
+              {/* <span className={styles.tooltip}>Excluir</span> */}
             </div>
           </div>
         </div>
@@ -213,14 +130,13 @@ export default function ListaClientes() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
-
   const handleClose = () => {
     setIsClosing(true);
 
     setTimeout(() => {
       setIsModalOpen(false);
       setIsClosing(false);
-    }, 300); // mesmo tempo da animação
+    }, 300);
   };
 
   return (
@@ -244,12 +160,17 @@ export default function ListaClientes() {
           onClose={handleClose}
         />
 
+        <EditarFornecedorModal
+          isOpen={isEditModalOpen}
+          isClosing={isEditClosing}
+          onClose={fecharEdicao}
+          fornecedorId={fornecedorEditandoId}
+        />
       </div>
 
       <div className={styles.containerInfos}>
 
         {/* TABELA ESQUERDA */}
-
         <div className={styles.listaClientesGrid}>
           <ClientesHeader />
 
@@ -269,21 +190,17 @@ export default function ListaClientes() {
         </div>
 
         {/* LADO DIREITO */}
-
         <CadastroClienteContainer />
 
       </div>
 
-      {
-        modalAberto && (
-          <ClienteModal
-            cliente={clienteSelecionado}
-            onClose={fecharModal}
-          />
-        )
-      }
-    </div >
+      {modalAberto && (
+        <ClienteModal
+          cliente={clienteSelecionado}
+          onClose={fecharModal}
+        />
+      )}
 
-
+    </div>
   );
 }
