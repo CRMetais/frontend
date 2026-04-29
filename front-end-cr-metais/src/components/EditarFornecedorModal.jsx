@@ -40,6 +40,12 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
         idTabela: null, nomeTabela: "",
     });
 
+    const [usuariosDisponiveis, setUsuariosDisponiveis] = useState([]);
+    const [responsavelSelecionado, setResponsavelSelecionado] = useState({
+        idUsuario: null,
+        nomeUsuario: "",
+    });
+
     // ─── Carrega todos os dados ao abrir ───
     useEffect(() => {
         if (!isOpen || !fornecedorId) return;
@@ -47,21 +53,28 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
         setLoading(true);
         setStep(1);
 
+        // fetch("http://localhost:8080/usuarios", {
+        //     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        // }).then((r) => r.json()),
+
         Promise.all([
             fetch("http://localhost:8080/tabelas-precos").then((r) => r.json()),
             fetch(`http://localhost:8080/fornecedores/${fornecedorId}`).then((r) => r.json()),
             fetch("http://localhost:8080/contas-pagamentos").then((r) => r.ok ? r.json() : []),
+            fetch("http://localhost:8080/usuarios", {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            }).then((r) => r.json()),
         ])
-            .then(([tabelasData, fornecedor, todasContas]) => {
+            .then(([tabelasData, fornecedor, todasContas, usuariosData]) => {
 
-                // Tabelas — pega apenas a versão mais recente de cada nome
-                const tabelas = Array.isArray(tabelasData) ? tabelasData : [];
-                const maisRecentes = Object.values(
-                    tabelas.reduce((acc, t) => {
-                        if (!acc[t.nomeTabela] || t.versao > acc[t.nomeTabela].versao) acc[t.nomeTabela] = t;
-                        return acc;
-                    }, {})
-                );
+                // 🔹 usuários
+                setUsuariosDisponiveis(Array.isArray(usuariosData) ? usuariosData : []);
+
+                // 🔹 responsável selecionado
+                setResponsavelSelecionado({
+                    idUsuario: fornecedor.usuario?.idUsuario ?? null,
+                    nomeUsuario: fornecedor.usuario?.nome ?? "",
+                });
                 setTabelasDisponiveis(maisRecentes);
 
                 // Dados pessoais
@@ -126,7 +139,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
             })
             .catch((err) => {
                 console.error(err);
-                alert("Erro ao carregar dados do fornecedor.");
+                // alert("Erro ao carregar dados do fornecedor.");
             })
             .finally(() => setLoading(false));
 
@@ -460,6 +473,22 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                 {step === 6 && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
+
+                        <div className={styles.campos}>
+                            <span>Responsável</span>
+                            <CustomSelect
+                                placeholder="Selecione o responsável"
+                                options={usuariosDisponiveis.map((u) => u.nome)}
+                                value={responsavelSelecionado.nomeUsuario}
+                                onChange={(nomeUsuario) => {
+                                    const selecionado = usuariosDisponiveis.find((u) => u.nome === nomeUsuario);
+                                    setResponsavelSelecionado({
+                                        nomeUsuario,
+                                        idUsuario: selecionado?.idUsuario ?? null,
+                                    });
+                                }}
+                            />
+                        </div>
 
                         <div className={styles.campos}>
                             <span>Tabela de preço</span>
