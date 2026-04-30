@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../styles/Historico.module.css";
 import { buscarHistorico } from "../services/histoticoService";
 import { isUsuarioComum } from "../services/usuarioService";
+import { baixarHistoricoCsv } from "../services/histoticoService";  
 
 function Historico() {
 
@@ -20,6 +21,10 @@ function Historico() {
   const colunasGrid = mostrarRendimento
     ? "0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr 0.5fr"
     : "0.5fr 0.7fr 0.6fr 0.7fr 0.7fr 0.6fr 0.8fr 0.7fr";
+
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [dataInicio, setDataInicio] = useState("");
+  const [dataFim, setDataFim] = useState("");
 
   const HistoricoHeader = () => (
     <div className={styles.historicoHeader} style={{ gridTemplateColumns: colunasGrid }}>
@@ -131,6 +136,28 @@ function Historico() {
     if (node) observer.current.observe(node);
   }, [temMais, carregarDados, pagina]);
 
+  const baixarCsv = async () => {
+  try {
+    const tipo = tipoHistorico === "Entrada" ? "COMPRA" : "VENDA";
+
+    const urlDownload = await baixarHistoricoCsv(tipo, dataInicio, dataFim);
+
+    const link = document.createElement("a");
+    link.href = urlDownload;
+    link.download = `historico-${tipo}-${dataInicio}-a-${dataFim}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setMostrarModal(false);
+
+  } catch (error) {
+    console.error("Erro ao gerar CSV:", error);
+    alert("Não foi possível gerar o CSV. Tente novamente.");
+  }
+};
+
+
   // 🔥 RESET TOTAL AO TROCAR TIPO
   useEffect(() => {
     document.title = "CR Metais | Histórico";
@@ -166,16 +193,26 @@ function Historico() {
             </span>
           </div>
 
-          <button
-            className={styles.selectHistorico}
-            onClick={() =>
-              setTipoHistorico(prev =>
-                prev === "Entrada" ? "Saída" : "Entrada"
-              )
-            }
-          >
-            Alternar para {tipoHistorico === "Entrada" ? "Saída" : "Entrada"}
-          </button>
+          <div className={styles.containerBotoes}>
+            <button 
+              className={styles.botaoCsv}
+              onClick={() => setMostrarModal(true)}
+            >
+              Baixar CSV
+            </button>
+
+            <button
+              className={styles.selectHistorico}
+              onClick={() =>
+                setTipoHistorico(prev =>
+                  prev === "Entrada" ? "Saída" : "Entrada"
+                )
+              }
+            >
+              Alternar para {tipoHistorico === "Entrada" ? "Saída" : "Entrada"}
+            </button>
+          
+          </div>          
         </div>
 
         <div className={styles.historicoGrid}>
@@ -206,6 +243,50 @@ function Historico() {
 
           {loading && <p>Carregando...</p>}
         </div>
+
+      {mostrarModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalCalendario}>
+
+            <h2 className={styles.modalTitulo}>Selecionar período</h2>
+
+            <div className={styles.date_filter}>
+              <div>
+                <p className={styles.tit_data}>Data inicial</p>
+                <input
+                  className={styles.input}
+                  type="date"
+                  value={dataInicio}
+                  onChange={(e) => setDataInicio(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <p className={styles.tit_data}>Data final</p>
+                <input
+                  className={styles.input}
+                  type="date"
+                  value={dataFim}
+                  onChange={(e) => setDataFim(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div className={styles.modalBotoes}>
+              <button onClick={() => setMostrarModal(false)}>
+                Cancelar
+              </button>
+
+              <button onClick={() => baixarCsv()}>
+                Confirmar
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+
       </main>
     </div>
   );
