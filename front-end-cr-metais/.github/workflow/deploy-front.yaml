@@ -1,0 +1,45 @@
+name: Deploy Frontend Dist
+
+on:
+  push:
+    branches:
+      - main # Roda sempre que alguém der push na main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código fonte
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Mude para a versão que você usa
+
+      - name: Instalar dependências e Build
+        run: |
+          npm install
+          npm run build # Geralmente gera a pasta 'dist'
+
+      - name: Clonar repositório de destino, copiar e dar push
+        env:
+          TARGET_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+        run: |
+          # Clona o repositório destino
+          git clone https://x-access-token:${TARGET_TOKEN}@github.com/SEU_USUARIO/SEU_REPO_DESTINO.git destino
+          
+          # Copia os arquivos do dist para a pasta certa no destino
+          # Ajuste "pasta-do-front" para o nome correto dentro do seu repo destino
+          mkdir -p destino/pasta-do-front
+          cp -r dist/* destino/pasta-do-front/
+          
+          # Entra na pasta, commita e dá push
+          cd destino
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add .
+          
+          # Se não houver mudanças, ele não dá erro
+          git commit -m "feat: atualiza build do frontend" || echo "Nenhuma mudança para commitar"
+          git push origin main
