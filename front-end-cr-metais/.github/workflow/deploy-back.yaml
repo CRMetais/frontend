@@ -1,0 +1,40 @@
+name: Deploy Backend JAR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código fonte
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17' # Mude para a versão do seu Java
+          distribution: 'temurin'
+
+      - name: Build com Maven (Gera o .jar)
+        run: mvn clean package -DskipTests
+        # Se usar Gradle, mude para: ./gradlew build -x test
+
+      - name: Clonar repositório de destino, copiar e dar push
+        env:
+          TARGET_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
+        run: |
+          git clone https://x-access-token:${TARGET_TOKEN}@github.com/Felipe-Ortega/SEU_REPO_DESTINO.git destino
+          
+          mkdir -p destino/pasta-do-back
+          # Copia o .jar gerado na pasta target (Maven) ou build/libs (Gradle)
+          cp target/*.jar destino/pasta-do-back/
+          
+          cd destino
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "feat: atualiza build do backend java" || echo "Nenhuma mudança"
+          git push origin main

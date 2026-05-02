@@ -1,45 +1,45 @@
-name: Deploy Frontend Dist
+name: Deploy Frontend to Root
 
 on:
   push:
     branches:
-      - main # Roda sempre que alguém der push na main
+      - main
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do código fonte
+      - name: Checkout Source
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # Mude para a versão que você usa
+          node-version: '20' # Versão estável do Node
 
-      - name: Instalar dependências e Build
+      - name: Build
         run: |
           npm install
-          npm run build # Geralmente gera a pasta 'dist'
+          npm run build
 
-      - name: Clonar repositório de destino, copiar e dar push
+      - name: Push to Target Repo
         env:
           TARGET_TOKEN: ${{ secrets.TARGET_REPO_TOKEN }}
         run: |
-          # Clona o repositório destino
-          git clone https://x-access-token:${TARGET_TOKEN}@github.com/SEU_USUARIO/SEU_REPO_DESTINO.git destino
+          git clone https://x-access-token:${TARGET_TOKEN}@github.com/CRMetais/TF.git destino
           
-          # Copia os arquivos do dist para a pasta certa no destino
-          # Ajuste "pasta-do-front" para o nome correto dentro do seu repo destino
-          mkdir -p destino/pasta-do-front
-          cp -r dist/* destino/pasta-do-front/
-          
-          # Entra na pasta, commita e dá push
+          # Move para a pasta do repo destino
           cd destino
+          
+          # Remove arquivos antigos da raiz para não acumular lixo
+          # Mantemos a pasta 'backend' e o '.git'
+          find . -maxdepth 1 ! -name 'backend' ! -name '.git' ! -name '.' -exec rm -rf {} +
+          
+          # Copia o conteúdo de DIST (que está um nível acima) para a raiz atual
+          cp -r ../dist/* .
+          
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add .
-          
-          # Se não houver mudanças, ele não dá erro
-          git commit -m "feat: atualiza build do frontend" || echo "Nenhuma mudança para commitar"
+          git commit -m "chore: update frontend dist in root" || echo "No changes"
           git push origin main
