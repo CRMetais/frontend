@@ -15,9 +15,11 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20' # Versão estável do Node
+          node-version: '20'
 
       - name: Build
+        # Diz ao Actions para rodar os comandos dentro da pasta do projeto
+        working-directory: ./front-end-cr-metais
         run: |
           npm install
           npm run build
@@ -28,21 +30,18 @@ jobs:
         run: |
           git clone https://x-access-token:${TARGET_TOKEN}@github.com/CRMetais/TF.git destino
           
-          # Cria a pasta dist no destino (se não existir)
+          # Cria a pasta dist no destino e limpa arquivos antigos
           mkdir -p destino/dist
-          
-          # Limpa o conteúdo antigo da pasta dist no destino para não acumular lixo
           rm -rf destino/dist/*
           
-          # Copia o conteúdo gerado no build para a pasta dist do destino
-          cp -r dist/* destino/dist/
+          # Copia os arquivos gerados de dentro da pasta do projeto
+          # Atenção: Se o seu projeto gerar uma pasta 'build' em vez de 'dist', troque a palavra abaixo!
+          cp -r front-end-cr-metais/dist/* destino/dist/
           
-          # Move para o repositório destino para fazer o commit
           cd destino
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           
-          # Adiciona apenas as alterações da pasta dist
           git add dist/
           git commit -m "chore: update frontend in dist folder" || echo "No changes"
           git push origin main
