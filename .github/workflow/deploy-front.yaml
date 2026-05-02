@@ -1,4 +1,4 @@
-name: Deploy Frontend to Root
+name: Deploy Frontend to Dist Folder
 
 on:
   push:
@@ -28,18 +28,21 @@ jobs:
         run: |
           git clone https://x-access-token:${TARGET_TOKEN}@github.com/CRMetais/TF.git destino
           
-          # Move para a pasta do repo destino
+          # Cria a pasta dist no destino (se não existir)
+          mkdir -p destino/dist
+          
+          # Limpa o conteúdo antigo da pasta dist no destino para não acumular lixo
+          rm -rf destino/dist/*
+          
+          # Copia o conteúdo gerado no build para a pasta dist do destino
+          cp -r dist/* destino/dist/
+          
+          # Move para o repositório destino para fazer o commit
           cd destino
-          
-          # Remove arquivos antigos da raiz para não acumular lixo
-          # Mantemos a pasta 'backend' e o '.git'
-          find . -maxdepth 1 ! -name 'backend' ! -name '.git' ! -name '.' -exec rm -rf {} +
-          
-          # Copia o conteúdo de DIST (que está um nível acima) para a raiz atual
-          cp -r ../dist/* .
-          
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add .
-          git commit -m "chore: update frontend dist in root" || echo "No changes"
+          
+          # Adiciona apenas as alterações da pasta dist
+          git add dist/
+          git commit -m "chore: update frontend in dist folder" || echo "No changes"
           git push origin main
