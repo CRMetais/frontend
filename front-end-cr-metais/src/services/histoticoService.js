@@ -21,10 +21,8 @@ export const buscarHistorico = async (tipo, pagina = 0, tamanho = 10) => {
 export const baixarHistoricoCsv = async (tipo, dataInicio, dataFim) => {
   try {
 
-    // URL da Lambda — após deploy, coloque no .env:
-    // REACT_APP_LAMBDA_URL=https://xxxxxx.lambda-url.us-east-1.on.aws/
+    // Chama a Lambda via API Gateway
     const lambdaUrl = import.meta.env.VITE_LAMBDA_URL;
-
     const url = `${lambdaUrl}?tipo=${tipo}&dataInicio=${dataInicio}&dataFim=${dataFim}`;
 
     const response = await fetch(url, { method: "GET" });
