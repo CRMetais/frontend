@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Clientes.module.css";
 import CustomSelect from "./BoxSelects";
+import { API_URL } from "../services/apiClient";
 
 const TOTAL_STEPS = 6;
 
@@ -75,11 +76,11 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose, onSucc
   useEffect(() => {
     if (isOpen) {
       Promise.all([
-        fetch("http://localhost:8080/tabelas-precos").then((r) => {
+        fetch(`${API_URL}/tabelas-precos`).then((r) => {
           if (!r.ok) throw new Error("Erro ao buscar tabelas");
           return r.json();
         }),
-        fetch("http://localhost:8080/usuarios", {
+        fetch(`${API_URL}/usuarios`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }).then((r) => {
           if (!r.ok) throw new Error("Erro ao buscar usuários");
@@ -184,7 +185,7 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose, onSucc
         numero: endereco.numero,
       };
 
-      const resEndereco = await fetch("http://localhost:8080/enderecos", {
+      const resEndereco = await fetch(`${API_URL}/enderecos`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(enderecoPayload),
@@ -212,7 +213,7 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose, onSucc
 
       console.log("Payload fornecedor:", JSON.stringify(fornecedorPayload));
 
-      const resFornecedor = await fetch("http://localhost:8080/fornecedores", {
+      const resFornecedor = await fetch(`${API_URL}/fornecedores`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(fornecedorPayload),
@@ -254,7 +255,7 @@ export default function NovoFornecedorModal({ isOpen, isClosing, onClose, onSucc
           tipoConta: !isPix ? tipoContaMap[dadosBancarios.tipoConta] : null,
         };
 
-        const resConta = await fetch("http://localhost:8080/contas-pagamentos", {
+        const resConta = await fetch(`${API_URL}/contas-pagamentos`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(contaPayload),

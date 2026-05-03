@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styles from '../styles/login.module.css';
 import { useEffect } from 'react';
 import { buscarUsuarioPorId, extrairUsuarioPersistivel, salvarUsuarioLogado } from '../services/usuarioService';
+import { API_URL } from '../services/apiClient';
 
 export default function Login({ setCurrentPage }) {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ export default function Login({ setCurrentPage }) {
     document.title = "CR Metais | Login"
   })
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+
 
   const enviar = async () => {
     setErro('');

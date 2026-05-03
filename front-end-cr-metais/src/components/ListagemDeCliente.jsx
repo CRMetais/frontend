@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/CadastroClienteStyle.css";
 import styles from "../styles/Clientes.module.css";
+import { API_URL } from "../services/apiClient";
 import CadastroClienteContainer from "./CadastroCliente";
 import { useEffect } from "react";
 import ClienteModal from "./ClienteModal";
@@ -46,7 +47,7 @@ export default function ListaClientes() {
     if (!confirmado) return;
 
     try {
-      const res = await fetch(`http://localhost:8080/fornecedores/${id}`, {
+      const res = await fetch(`${API_URL}/fornecedores/${id}`, {
         method: "DELETE",
       });
 

@@ -6,8 +6,7 @@ USE crmetais;
 INSERT INTO usuario (nome, senha, email, cargo) VALUES
                                                     ('Celso Ricardo', '123456', 'celso@empresa.com', 'ADMIN'),
                                                     ('Maria Oliveira', '123456', 'maria@empresa.com', 'COMUM');
--- TESTE
---TESTE
+
 -- ==========================================================
 -- TABELA: endereco (base p/ fornecedor e cliente)
 -- ==========================================================

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../styles/Clientes.module.css";
 import CustomSelect from "./BoxSelects";
+import { API_URL } from "../services/apiClient";
 
 const TOTAL_STEPS = 6;
 
@@ -53,15 +54,15 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
         setLoading(true);
         setStep(1);
 
-        // fetch("http://localhost:8080/usuarios", {
+        // fetch(`${API_URL}/usuarios`, {
         //     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         // }).then((r) => r.json()),
 
         Promise.all([
-            fetch("http://localhost:8080/tabelas-precos").then((r) => r.json()),
-            fetch(`http://localhost:8080/fornecedores/${fornecedorId}`).then((r) => r.json()),
-            fetch("http://localhost:8080/contas-pagamentos").then((r) => r.ok ? r.json() : []),
-            fetch("http://localhost:8080/usuarios", {
+            fetch(`${API_URL}/tabelas-precos`).then((r) => r.json()),
+            fetch(`${API_URL}/fornecedores/${fornecedorId}`).then((r) => r.json()),
+            fetch(`${API_URL}/contas-pagamentos`).then((r) => r.ok ? r.json() : []),
+            fetch(`${API_URL}/usuarios`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             }).then((r) => r.json()),
         ])
@@ -205,7 +206,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                 numero: endereco.numero,
             };
 
-            const resEndereco = await fetch(`http://localhost:8080/enderecos/${idEndereco}`, {
+            const resEndereco = await fetch(`${API_URL}/enderecos/${idEndereco}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(enderecoPayload),
@@ -222,7 +223,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                 tabelaPreco: tabela.idTabela ? { idTabela: tabela.idTabela } : null,
             };
 
-            const resFornecedor = await fetch(`http://localhost:8080/fornecedores/${fornecedorId}`, {
+            const resFornecedor = await fetch(`${API_URL}/fornecedores/${fornecedorId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(fornecedorPayload),
@@ -248,8 +249,8 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
             };
 
             const contaUrl = idContaPagamento
-                ? `http://localhost:8080/contas-pagamentos/${idContaPagamento}`
-                : `http://localhost:8080/contas-pagamentos`;
+                ? `${API_URL}/contas-pagamentos/${idContaPagamento}`
+                : `${API_URL}/contas-pagamentos`;
 
             const contaMethod = idContaPagamento ? "PUT" : "POST";
 
