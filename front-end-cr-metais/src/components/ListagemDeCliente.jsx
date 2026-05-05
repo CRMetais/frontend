@@ -111,13 +111,31 @@ export default function ListaClientes() {
             {cliente.tabelaPreco?.nomeTabela || "-"}
           </span>
  
-          <div className={styles.clienteEdicao}>
+          {/* <div className={styles.clienteEdicao}>
             <div className={styles.editar} onClick={() => abrirEdicao(cliente.idFornecedor)}>
               🖋️
             </div>
             <div className={styles.excluir} onClick={() => excluirCliente(cliente.idFornecedor)}>
               🗑️
             </div>
+          </div> */}
+
+          <div className={styles.clienteEdicao}>
+            <button 
+              className={styles.acao}
+              onClick={() => abrirEdicao(cliente.idFornecedor)}
+            >
+              <span>🖋️</span>
+              <span className={styles.label}>Editar</span>
+            </button>
+
+            <button 
+              className={styles.acao}
+              onClick={() => excluirCliente(cliente.idFornecedor)}
+            >
+              <span>🗑️</span>
+              <span className={styles.label}>Excluir</span>
+            </button>
           </div>
         </div>
  
