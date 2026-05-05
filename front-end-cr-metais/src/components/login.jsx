@@ -3,6 +3,7 @@ import styles from '../styles/login.module.css';
 import { useEffect } from 'react';
 import { buscarUsuarioPorId, extrairUsuarioPersistivel, salvarUsuarioLogado } from '../services/usuarioService';
 import { API_URL } from '../services/apiClient';
+import logo from "../assets/logo.png";
 
 export default function Login({ setCurrentPage }) {
   const [email, setEmail] = useState('');
@@ -87,8 +88,9 @@ export default function Login({ setCurrentPage }) {
     <div className={styles.loginContainer}>
       <div className={styles.loginCard}>
         <div className={styles.logo}>
-          <h1>CR Metais</h1>
-          <img src="../src/assets/logo.png" alt="Logo" />
+          <img src={logo} alt="Logo" />
+          <h1> CR Metais</h1>
+          {/* <img src="../src/assets/logo.png" alt="Logo" /> */}
         </div>
 
         <div className="titulo">

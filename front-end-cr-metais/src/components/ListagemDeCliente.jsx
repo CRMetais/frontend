@@ -122,7 +122,7 @@ export default function ListaClientes() {
 
           <div className={styles.clienteEdicao}>
             <button 
-              className={styles.acao}
+              className={`${styles.acao} ${styles.editar}`}
               onClick={() => abrirEdicao(cliente.idFornecedor)}
             >
               <span>🖋️</span>
@@ -130,7 +130,7 @@ export default function ListaClientes() {
             </button>
 
             <button 
-              className={styles.acao}
+              className={`${styles.acao} ${styles.excluir}`}
               onClick={() => excluirCliente(cliente.idFornecedor)}
             >
               <span>🗑️</span>
