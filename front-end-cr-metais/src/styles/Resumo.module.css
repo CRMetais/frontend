@@ -124,6 +124,7 @@
 h1 {
   margin: 24px 0;
   color: #020618;
+
 }
 
 .containerCards {
@@ -194,7 +195,7 @@ h1 {
   color: #020618;
   line-height: 1.7dvw;
   /* border: solid red; */
-  font-weight: bold;
+  font-weight: 600;
 }
 
 

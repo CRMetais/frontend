@@ -154,7 +154,10 @@ const ListaColaboradores = () => {
   return (
     <div className="lista-colaboradores-page">
       <div className="lista-colaboradores-container">
-        <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
+        <div className="container-titulo">
+          <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
+          <span className="subtitulo">Veja aqui todos os Colaboradores cadastrados e clique para cadastrar, editar ou excluir um Colaboradores existente.</span>
+        </div>
 
         <div className="colaborador-header">
           <span>Nome</span>

@@ -1,145 +1,134 @@
-.modal-content-colaborador {
-  background: white;
-  border-radius: 12px;
-  padding: 2rem;
-  width: 100%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  border: 1px solid #e5e5e5;
+.cadastro-box {
+  width: 360px;
+  background: #ffffff;
+  padding: 28px 24px;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e6f0;
+  position: sticky;
+  top: 2rem;
 }
 
-.modal-header-colaborador {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.modal-logo-colaborador {
+.title {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.6rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.2rem;
 }
 
-.modal-logo-colaborador h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.logo-icon {
-  height: 40px;
-}
-
-.modal-header-colaborador h3 {
-  font-size: 1.2rem;
-  color: #333;
-  margin: 0;
-}
-
-.form-colaborador {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.input-box-colaborador {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.8rem;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-}
-
-.input-box-colaborador:focus-within {
-  border-color: #FACC15;
-}
-
-.icon-img-colaborador {
-  width: 24px;
-  height: 24px;
+.logo-img {
+  height: 32px;
   object-fit: contain;
 }
 
-/* .input-box-colaborador input {
+.subtitle {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  background-color: #f5f6fa;
+  border-radius: 4px;
+  border: 1px solid #e2e6f0;
+  margin-bottom: 0.4rem;
+  transition: border-color 0.2s;
+}
+
+.input-box:focus-within {
+  border-color: #020618;
+}
+
+.icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+.input-box input {
   flex: 1;
   border: none;
   background: transparent;
   outline: none;
-  font-size: 1rem;
-  padding: 0.5rem;
-} */
-
-.input-box-colaborador input::placeholder {
-  color: #999;
+  font-size: 0.9rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  color: #333;
+}
+.input-box input::placeholder {
+  color: #aaa;
 }
 
-.btn-proximo-colaborador {
-  background-color: #2d2d2d;
-  color: white;
-  border: none;
-  padding: 1rem;
-  border-radius: 8px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+.erro {
+  color: #c0392b;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 0;
+  margin-bottom: 6px;
+  padding-left: 4px;
+  display: block;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.btn-wrapper {
   margin-top: 1rem;
 }
 
-.btn-proximo-colaborador:hover {
-  background-color: #1a1a1a;
-  transform: translateY(-2px);
+.btn-prev {
+  width: 100%;
+  background-color: #020618;
+  color: white;
+  border: none;
+  padding: 0.85rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "IBM Plex Sans", sans-serif;
+  letter-spacing: 0.02em;
+  transition: background-color 0.2s;
 }
 
-.btn-proximo-colaborador:active {
-  transform: translateY(0);
+.btn-prev:hover {
+  background-color: #020618;
+}
+
+.btn-prev:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* --- TELA DE SUCESSO --- */
+.final-step {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.final-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 1rem;
+}
+
+.final-check {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1.5rem;
+  object-fit: contain;
 }
 
 @media (max-width: 768px) {
-  .modal-content-colaborador {
-    padding: 1.5rem;
-    width: 95%;
+  .cadastro-box {
+    width: 100%;
+    padding: 1.2rem;
   }
-
-  .modal-logo-colaborador h2 {
-    font-size: 1.2rem;
-  }
-
-  .modal-header-colaborador h3 {
-    font-size: 1rem;
-  }
-
-  /* .input-box-colaborador input {
-    font-size: 0.9rem;
-  } */
-}
-.erro {
-  color: #8b0000;
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-top: -6px;
-  margin-bottom: 4px;
-  padding-left: 4px;
-  display: block;
-}
-
-.btn-editar-inline, 
-.btn-excluir-inline,
-.btn-salvar-inline,
-.btn-cancelar-inline {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  border: 1px solid #e2e8f0;
-  background: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s, border-color 0.2s; /* ✅ só cor, sem transform */
 }

@@ -20,7 +20,7 @@
 
 .headerYellow {
   background: #f2c200;
-  color: #222;
+  color: #ffffff;
   font-weight: 700;
   text-align: center;
   padding: 14px 12px;
@@ -76,7 +76,7 @@
 
 /* ====== HEADER ====== */
 .th {
-  background: #2f2f2f;
+  background: #020618;
   color: #ffffff;
   /* padding: 10px 12px; */
   height: 48px;
@@ -101,15 +101,24 @@
 }
 
 /* ====== CELULAS ====== */
-.td {
-  border-bottom: 1px solid #ececec;
-  font-size: 1dvw;
+.td{
+  font-size: 18px;
+  padding: 12px 0;
   text-align: center;
   white-space: nowrap;
   /* background: #ffffff; */
   height: 48px;
   transition: .3s;
   font-family: "IBM Plex Sans";
+}
+
+.td input {
+  display: flex;
+  text-align: left;
+  font-size: 18px;
+  padding: 0.9%;
+  height: 100%;
+  width: 100%;
 }
 
 .tdLeft {
@@ -156,7 +165,7 @@
 
 .sideLabel {
   font-weight: 600;
-  color: #333;
+  color: #020618;
 }
 
 .select {
@@ -166,7 +175,7 @@
   padding: 0 12px;
   font-weight: 800;
   font-size: 1dvw;
-  background: #2f2f2f;
+  background: #020618;
   color: #ffffff;
   outline: none;
   cursor: pointer;
@@ -202,7 +211,7 @@
   display: inline-block;
   margin-left: 12px;
   padding: 2px 10px;
-  background: rgba(0, 0, 0, 0.25);
+  background: #020618;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
@@ -349,6 +358,7 @@
   padding: 2px 10px;
   background: rgba(0, 0, 0, 0.25);
   border-radius: 20px;
+  color: #ffffff;
   font-size: 12px;
   font-weight: 500;
   vertical-align: middle;
@@ -359,27 +369,24 @@
 .cellInput {
   background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(245, 197, 24, 0.4);
   color: inherit;
   font-size: inherit;
   font-family: inherit;
   width: 90px;
   text-align: center;
   outline: none;
-  transition: border-color 0.15s, background 0.15s;
+  transition: background 0.15s;
   padding: 2px 4px;
   border-radius: 2px;
 }
 
 .cellInput:focus {
   background: rgba(245, 197, 24, 0.08);
-  border-bottom-color: #f5c518;
   border-radius: 3px 3px 0 0;
 }
 
 .cellInputDirty {
   color: #f5c518;
-  border-bottom-color: #f5c518;
   font-weight: 600;
 }
 
@@ -391,8 +398,8 @@
   border: 1px solid #444;
   border-radius: 6px;
   cursor: not-allowed;
-  background: #2a2a2a;
-  color: #666;
+  background: #020618;
+  color:#fffbfb;
   font-size: 13px;
   font-family: inherit;
   transition: all 0.2s;
@@ -488,7 +495,7 @@
 }
 
 .modalBox {
-  background: #1e1e1e;
+  background: #020618;
   border: 1px solid #333;
   border-radius: 10px;
   width: 380px;
@@ -498,7 +505,7 @@
 
 .modalHeader {
   background: #f5c518;
-  color: #1a1a1a;
+  color: #ffffff;
   font-weight: 700;
   font-size: 15px;
   padding: 14px 20px;
@@ -520,7 +527,7 @@
 }
 
 .modalInput {
-  background: #2a2a2a;
+  background: #020618;
   border: 1px solid #444;
   border-radius: 6px;
   color: #fff;
@@ -613,7 +620,7 @@
 }
 
 .btnNovaTabela:hover:not(:disabled) {
-  background: #2f2f2f;
+  background: #020618;
   color: white;
 }
 
@@ -642,7 +649,7 @@
 }
  
 .btnNovaTabela:hover:not(:disabled) {
-  background: #2f2f2f;
+  background: #020618;
   color: white;
 }
  
