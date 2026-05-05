@@ -2,62 +2,58 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles/Clientes.module.css";
 import CustomSelect from "./BoxSelects";
 import { API_URL } from "../services/apiClient";
-
+ 
 const TOTAL_STEPS = 6;
-
-export default function EditarFornecedorModal({ isOpen, isClosing, onClose, fornecedorId }) {
+ 
+export default function EditarFornecedorModal({ isOpen, isClosing, onClose, fornecedorId, onSuccess }) { // ✅ recebe onSuccess
     const [step, setStep] = useState(1);
     const [cepLoading, setCepLoading] = useState(false);
     const [cepErro, setCepErro] = useState("");
     const [tabelasDisponiveis, setTabelasDisponiveis] = useState([]);
     const [loading, setLoading] = useState(false);
-
+ 
     const [idEndereco, setIdEndereco] = useState(null);
     const [idContaPagamento, setIdContaPagamento] = useState(null);
-
+ 
     const [dadosPessoais, setDadosPessoais] = useState({
         nomeCompleto: "", cpfCnpj: "", telefone: "", apelido: "", tipoPessoa: "",
     });
-
+ 
     const [endereco, setEndereco] = useState({
         cep: "", bairro: "", logradouro: "", numero: "", municipio: "", uf: "",
     });
-
+ 
     const [pagamento, setPagamento] = useState({
         tipoPagamento: "", pertenceCliente: "",
     });
-
+ 
     const [dadosPix, setDadosPix] = useState({ chavePix: "" });
-
+ 
     const [dadosBancarios, setDadosBancarios] = useState({
         banco: "", agencia: "", numeroConta: "", tipoConta: "",
     });
-
+ 
     const [responsavel, setResponsavel] = useState({
         nomeCompleto: "", cpfCnpj: "",
     });
-
+ 
     const [tabela, setTabela] = useState({
         idTabela: null, nomeTabela: "",
     });
-
+ 
     const [usuariosDisponiveis, setUsuariosDisponiveis] = useState([]);
     const [responsavelSelecionado, setResponsavelSelecionado] = useState({
         idUsuario: null,
         nomeUsuario: "",
     });
-
+ 
     // ─── Carrega todos os dados ao abrir ───
     useEffect(() => {
         if (!isOpen || !fornecedorId) return;
-
+ 
         setLoading(true);
         setStep(1);
-
-        // fetch(`${API_URL}/usuarios`, {
-        //     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        // }).then((r) => r.json()),
-
+ 
         Promise.all([
             fetch(`${API_URL}/tabelas-precos`).then((r) => r.json()),
             fetch(`${API_URL}/fornecedores/${fornecedorId}`).then((r) => r.json()),
@@ -67,17 +63,17 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
             }).then((r) => r.json()),
         ])
             .then(([tabelasData, fornecedor, todasContas, usuariosData]) => {
-
+ 
                 // 🔹 usuários
                 setUsuariosDisponiveis(Array.isArray(usuariosData) ? usuariosData : []);
-
+ 
                 // 🔹 responsável selecionado
                 setResponsavelSelecionado({
                     idUsuario: fornecedor.usuario?.idUsuario ?? null,
                     nomeUsuario: fornecedor.usuario?.nome ?? "",
                 });
-                setTabelasDisponiveis(maisRecentes);
-
+                setTabelasDisponiveis(Array.isArray(tabelasData) ? tabelasData : []);
+ 
                 // Dados pessoais
                 setDadosPessoais({
                     nomeCompleto: fornecedor.nome ?? "",
@@ -86,7 +82,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                     apelido: fornecedor.apelido ?? "",
                     tipoPessoa: fornecedor.tipoFornecedor ?? "",
                 });
-
+ 
                 // Endereço
                 const end = fornecedor.endereco ?? {};
                 setIdEndereco(end.idEndereco ?? null);
@@ -98,28 +94,28 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                     municipio: end.cidade ?? "",
                     uf: end.estado ?? "",
                 });
-
+ 
                 // Tabela de preço
                 const tp = fornecedor.tabelaPreco;
                 if (tp) {
                     setTabela({ idTabela: tp.idTabela, nomeTabela: tp.nomeTabela });
                 }
-
+ 
                 // Conta de pagamento — filtra pelo fornecedor
                 const contas = Array.isArray(todasContas) ? todasContas : [];
                 const conta = contas.find(
                     (c) => c.fornecedor?.idFornecedor === fornecedorId && c.contaAtiva
                 );
-
+ 
                 if (conta) {
                     setIdContaPagamento(conta.idContaPagamento);
-
+ 
                     const isPix = conta.pix;
                     setPagamento({
                         tipoPagamento: isPix ? "Pix" : "Conta Bancária",
                         pertenceCliente: conta.pertenceFornecedor ? "Sim" : "Não",
                     });
-
+ 
                     if (isPix) {
                         setDadosPix({ chavePix: conta.chavePix ?? "" });
                     } else {
@@ -131,7 +127,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                             tipoConta: tipoContaReverso[conta.tipoConta] ?? "",
                         });
                     }
-
+ 
                     setResponsavel({
                         nomeCompleto: conta.nome ?? "",
                         cpfCnpj: conta.documento ?? "",
@@ -140,14 +136,13 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
             })
             .catch((err) => {
                 console.error(err);
-                // alert("Erro ao carregar dados do fornecedor.");
             })
             .finally(() => setLoading(false));
-
+ 
     }, [isOpen, fornecedorId]);
-
+ 
     if (!isOpen) return null;
-
+ 
     const buscarCep = async (cep) => {
         const cepLimpo = cep.replace(/\D/g, "");
         if (cepLimpo.length !== 8) return;
@@ -170,7 +165,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
             setCepLoading(false);
         }
     };
-
+ 
     const handleNext = () => {
         if (step === 1) {
             if (!dadosPessoais.nomeCompleto || !dadosPessoais.cpfCnpj || !dadosPessoais.telefone || !dadosPessoais.tipoPessoa) {
@@ -190,9 +185,9 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
         }
         setStep((s) => Math.min(s + 1, TOTAL_STEPS));
     };
-
+ 
     const handleBack = () => setStep((s) => Math.max(s - 1, 1));
-
+ 
     const handleFinish = async () => {
         try {
             // 1. Atualiza endereço
@@ -205,14 +200,14 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                 bairro: endereco.bairro,
                 numero: endereco.numero,
             };
-
+ 
             const resEndereco = await fetch(`${API_URL}/enderecos/${idEndereco}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(enderecoPayload),
             });
             if (!resEndereco.ok) throw new Error("Erro ao atualizar endereço");
-
+ 
             // 2. Atualiza fornecedor
             const fornecedorPayload = {
                 nome: dadosPessoais.nomeCompleto,
@@ -221,19 +216,22 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                 telefone: dadosPessoais.telefone.replace(/\D/g, ""),
                 apelido: dadosPessoais.apelido,
                 tabelaPreco: tabela.idTabela ? { idTabela: tabela.idTabela } : null,
+                responsavel: responsavelSelecionado.idUsuario
+                    ? { idUsuario: responsavelSelecionado.idUsuario }
+                    : null,
             };
-
+ 
             const resFornecedor = await fetch(`${API_URL}/fornecedores/${fornecedorId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(fornecedorPayload),
             });
             if (!resFornecedor.ok) throw new Error("Erro ao atualizar fornecedor");
-
+ 
             // 3. Atualiza conta de pagamento
             const isPix = pagamento.tipoPagamento === "Pix";
             const tipoContaMap = { "Conta Corrente": "C", "Conta Poupança": "P" };
-
+ 
             const contaPayload = {
                 pix: isPix,
                 pertenceFornecedor: pagamento.pertenceCliente === "Sim",
@@ -247,27 +245,28 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                 conta: !isPix ? dadosBancarios.numeroConta : null,
                 tipoConta: !isPix ? tipoContaMap[dadosBancarios.tipoConta] : null,
             };
-
+ 
             const contaUrl = idContaPagamento
                 ? `${API_URL}/contas-pagamentos/${idContaPagamento}`
                 : `${API_URL}/contas-pagamentos`;
-
+ 
             const contaMethod = idContaPagamento ? "PUT" : "POST";
-
+ 
             const resConta = await fetch(contaUrl, {
                 method: contaMethod,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(contaPayload),
             });
             if (!resConta.ok) throw new Error("Erro ao atualizar conta de pagamento");
-
+ 
             onClose();
+            onSuccess?.(); // ✅ atualiza a lista após salvar com sucesso
         } catch (err) {
             console.error(err);
             alert(err.message);
         }
     };
-
+ 
     if (loading) {
         return (
             <div className={styles.modalOverlay}>
@@ -277,16 +276,16 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
             </div>
         );
     }
-
+ 
     return (
         <div className={styles.modalOverlay}>
             <div className={`${styles.modal} ${isClosing ? styles.closing : ""}`}>
-
+ 
                 {/* ETAPA 1 — Dados pessoais */}
                 {step === 1 && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>Nome completo</span>
                             <input className={styles.inputs} type="text" value={dadosPessoais.nomeCompleto}
@@ -312,17 +311,17 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                             <CustomSelect options={["PESSOA_FISICA", "PESSOA_JURIDICA"]} value={dadosPessoais.tipoPessoa}
                                 onChange={(val) => setDadosPessoais({ ...dadosPessoais, tipoPessoa: val })} />
                         </div>
-
+ 
                         <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próxima página</button>
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
-
+ 
                 {/* ETAPA 2 — Endereço */}
                 {step === 2 && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>CEP</span>
                             <input className={styles.inputs} type="text" value={endereco.cep}
@@ -356,21 +355,21 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                             <input className={styles.inputs} type="text" maxLength={2} value={endereco.uf}
                                 onChange={(e) => setEndereco({ ...endereco, uf: e.target.value.toUpperCase() })} />
                         </div>
-
+ 
                         <div className={styles.btns_back_prox}>
                             <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
                             <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
                         </div>
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
-
+ 
                     </>
                 )}
-
+ 
                 {/* ETAPA 3 — Pagamento */}
                 {step === 3 && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>Tipo de pagamento</span>
                             <CustomSelect placeholder="Pix ou Conta Bancária" options={["Pix", "Conta Bancária"]}
@@ -383,7 +382,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 value={pagamento.pertenceCliente}
                                 onChange={(val) => setPagamento({ ...pagamento, pertenceCliente: val })} />
                         </div>
-
+ 
                         <div className={styles.btns_back_prox}>
                             <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
                             <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
@@ -391,18 +390,18 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
-
+ 
                 {/* ETAPA 4 — Pix */}
                 {step === 4 && pagamento.tipoPagamento === "Pix" && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>Chave Pix</span>
                             <input className={styles.inputs} type="text" value={dadosPix.chavePix}
                                 onChange={(e) => setDadosPix({ chavePix: e.target.value })} />
                         </div>
-
+ 
                         <div className={styles.btns_back_prox}>
                             <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
                             <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
@@ -410,12 +409,12 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
-
+ 
                 {/* ETAPA 4 — Conta Bancária */}
                 {step === 4 && pagamento.tipoPagamento === "Conta Bancária" && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>Banco</span>
                             <input className={styles.inputs} type="text" value={dadosBancarios.banco}
@@ -437,7 +436,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 value={dadosBancarios.tipoConta}
                                 onChange={(val) => setDadosBancarios({ ...dadosBancarios, tipoConta: val })} />
                         </div>
-
+ 
                         <div className={styles.btns_back_prox}>
                             <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
                             <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
@@ -445,12 +444,12 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
-
+ 
                 {/* ETAPA 5 — Responsável */}
                 {step === 5 && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>Nome completo</span>
                             <input className={styles.inputs} type="text" value={responsavel.nomeCompleto}
@@ -461,7 +460,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                             <input className={styles.inputs} type="text" value={responsavel.cpfCnpj}
                                 onChange={(e) => setResponsavel({ ...responsavel, cpfCnpj: e.target.value })} />
                         </div>
-
+ 
                         <div className={styles.btns_back_prox}>
                             <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
                             <button className={styles.btn_proxima_pagina} onClick={handleNext}>Próx. página</button>
@@ -469,12 +468,12 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
-
+ 
                 {/* ETAPA 6 — Tabela */}
                 {step === 6 && (
                     <>
                         <h2 className={styles.modalTitle}>✏️ Editar fornecedor ✏️</h2>
-
+ 
                         <div className={styles.campos}>
                             <span>Responsável</span>
                             <CustomSelect
@@ -490,7 +489,7 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                 }}
                             />
                         </div>
-
+ 
                         <div className={styles.campos}>
                             <span>Tabela de preço</span>
                             <CustomSelect placeholder="Selecione a tabela" options={tabelasDisponiveis.map((t) => t.nomeTabela)}
@@ -500,16 +499,16 @@ export default function EditarFornecedorModal({ isOpen, isClosing, onClose, forn
                                     setTabela({ nomeTabela, idTabela: selecionada?.idTabela });
                                 }} />
                         </div>
-
+ 
                         <div className={styles.btns_back_prox}>
                             <button className={styles.btn_fechar} onClick={handleBack}>Voltar</button>
                             <button className={styles.btn_proxima_pagina} onClick={handleFinish}>Salvar</button>
                         </div>
-
+ 
                         <button className={styles.btn_fechar} onClick={onClose}>Fechar</button>
                     </>
                 )}
-
+ 
             </div>
         </div>
     );
