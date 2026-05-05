@@ -113,10 +113,10 @@ export default function ListaClientes() {
  
           <div className={styles.clienteEdicao}>
             <div className={styles.editar} onClick={() => abrirEdicao(cliente.idFornecedor)}>
-              <img src="../src/styles/img/icon-edit.png" alt="Editar" />
+              🖋️
             </div>
             <div className={styles.excluir} onClick={() => excluirCliente(cliente.idFornecedor)}>
-              <img src="../src/styles/img/icon-lixeira.png" alt="Excluir" />
+              🗑️
             </div>
           </div>
         </div>
