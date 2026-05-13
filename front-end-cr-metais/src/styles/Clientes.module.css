@@ -130,7 +130,7 @@
 }
 
 .editar {
-  border: 2px solid #facc15;
+  /* border: 2px solid #facc15; */
   color: #facc15;
 }
 
@@ -140,7 +140,7 @@
 }
 
 .excluir {
-  border: 2px solid #ef4444;
+  /* border: 2px solid #ef4444; */
   color: #ef4444;
 }
 
@@ -307,3 +307,16 @@ input:focus {
 input {
   height: 1vh !important;
 }
+
+.trashAlt {
+  /* background-color: red; */
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.editIcon {
+  /* background-color: #facc15; */
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
