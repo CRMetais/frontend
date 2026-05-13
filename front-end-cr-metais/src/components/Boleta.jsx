@@ -152,9 +152,7 @@ const Boleta = () => {
 
       limparBoleta();
       setPagamentoConfirmado(true);
-      alert("Nota registrada com sucesso!");
     } catch (erro) {
-      alert("Erro ao salvar nota. Verifique o console.");
       console.error("Detalhe do erro:", erro.response?.data || erro.message);
     } finally {
       setSalvandoNota(false);
