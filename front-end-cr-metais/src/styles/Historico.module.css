@@ -44,13 +44,14 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 280px;
+  width: 300px;
   flex-shrink: 0;
+  /* border: solid red; */
 }
 
 .searchIcon {
   position: absolute;
-  left: 12px;
+  left: 24px;
   color: #94a3b8;
   font-size: 0.8rem;
   pointer-events: none;
@@ -58,10 +59,12 @@
 
 .searchInput {
   width: 100%;
-  padding: 8px 32px 8px 34px;
+  padding: 8px 32px 8px 48px;
+  height: 100% !important;
   border: 1.5px solid #e2e8f0;
-  border-radius: 0.6rem;
+  border-radius: 0.9rem;
   background-color: #f8fafc;
+  background-color: white;
   color: #020618;
   font-size: 0.9rem;
   outline: none;
@@ -81,7 +84,7 @@
 
 .searchClear {
   position: absolute;
-  right: 8px;
+  right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
