@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import styles from "../styles/Historico.module.css";
 import { buscarHistorico } from "../services/histoticoService";
 import { isUsuarioComum } from "../services/usuarioService";
-import { baixarHistoricoCsv } from "../services/histoticoService";  
+import { baixarHistoricoCsv } from "../services/histoticoService";
+import { FaSearch } from "react-icons/fa";
 
 function Historico() {
 
@@ -13,6 +14,7 @@ function Historico() {
   const [loading, setLoading] = useState(false);
   const [pagina, setPagina] = useState(0);
   const [temMais, setTemMais] = useState(true);
+  const [busca, setBusca] = useState("");
 
   const observer = useRef(null);
   const loadingRef = useRef(false);
@@ -101,7 +103,6 @@ function Historico() {
 
     try {
       const tipoApi = tipoHistorico === "Entrada" ? "COMPRA" : "VENDA";
-
       const data = await buscarHistorico(tipoApi, paginaAtual, PAGE_SIZE);
       const novosDados = data.content;
 
@@ -110,7 +111,6 @@ function Historico() {
       );
 
       setTemMais(novosDados.length === PAGE_SIZE);
-
       setPagina(prev => prev + 1);
 
     } catch (error) {
@@ -124,7 +124,6 @@ function Historico() {
   // 🔥 OBSERVER
   const lastElementRef = useCallback(node => {
     if (loadingRef.current) return;
-
     if (observer.current) observer.current.disconnect();
 
     observer.current = new IntersectionObserver(entries => {
@@ -137,26 +136,23 @@ function Historico() {
   }, [temMais, carregarDados, pagina]);
 
   const baixarCsv = async () => {
-  try {
-    const tipo = tipoHistorico === "Entrada" ? "COMPRA" : "VENDA";
+    try {
+      const tipo = tipoHistorico === "Entrada" ? "COMPRA" : "VENDA";
+      const urlDownload = await baixarHistoricoCsv(tipo, dataInicio, dataFim);
 
-    const urlDownload = await baixarHistoricoCsv(tipo, dataInicio, dataFim);
+      const link = document.createElement("a");
+      link.href = urlDownload;
+      link.download = `historico-${tipo}-${dataInicio}-a-${dataFim}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    const link = document.createElement("a");
-    link.href = urlDownload;
-    link.download = `historico-${tipo}-${dataInicio}-a-${dataFim}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    setMostrarModal(false);
-
-  } catch (error) {
-    console.error("Erro ao gerar CSV:", error);
-    alert("Não foi possível gerar o CSV. Tente novamente.");
-  }
-};
-
+      setMostrarModal(false);
+    } catch (error) {
+      console.error("Erro ao gerar CSV:", error);
+      alert("Não foi possível gerar o CSV. Tente novamente.");
+    }
+  };
 
   // 🔥 RESET TOTAL AO TROCAR TIPO
   useEffect(() => {
@@ -165,15 +161,23 @@ function Historico() {
     setTableData([]);
     setPagina(0);
     setTemMais(true);
-
     loadingRef.current = false;
 
-    // 🔥 garante execução após reset
     setTimeout(() => {
       carregarDados(0);
     }, 0);
-
   }, [tipoHistorico]);
+
+  // Filtro por produto ou parceiro (client-side, sobre os dados já carregados)
+  const termo = busca.toLowerCase().trim();
+  const dadosFiltrados = tableData
+    .map((item, originalIndex) => ({ item, originalIndex }))
+    .filter(({ item }) => {
+      if (!termo) return true;
+      const produtoMatch = item.produto?.toLowerCase().includes(termo);
+      const parceiroMatch = item.parceiro?.toLowerCase().includes(termo);
+      return produtoMatch || parceiroMatch;
+    });
 
   return (
     <div className={styles.containerPrincipal}>
@@ -184,7 +188,6 @@ function Historico() {
             <h1 className={styles.titulo}>
               Histórico de {tipoHistorico}
             </h1>
-
             <span className={styles.subtitulo}>
               Alterne a visualização clicando em{" "}
               <b>
@@ -194,7 +197,27 @@ function Historico() {
           </div>
 
           <div className={styles.containerBotoes}>
-            <button 
+            <div className={styles.searchWrapper}>
+              <FaSearch className={styles.searchIcon} />
+              <input
+                type="text"
+                className={styles.searchInput}
+                placeholder="Buscar por produto ou parceiro..."
+                value={busca}
+                onChange={(e) => setBusca(e.target.value)}
+              />
+              {busca && (
+                <button
+                  className={styles.searchClear}
+                  onClick={() => setBusca("")}
+                  aria-label="Limpar busca"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            <button
               className={styles.botaoCsv}
               onClick={() => setMostrarModal(true)}
             >
@@ -211,81 +234,77 @@ function Historico() {
             >
               Alternar para {tipoHistorico === "Entrada" ? "Saída" : "Entrada"}
             </button>
-          
-          </div>          
+          </div>
         </div>
 
         <div className={styles.historicoGrid}>
           <HistoricoHeader />
 
           <div className={styles.historicoLista}>
-            {tableData.map((produto, index) => {
-              if (index === tableData.length - 1) {
+            {dadosFiltrados.length > 0 ? (
+              dadosFiltrados.map(({ item, originalIndex }, filteredIndex) => {
+                const isLast = filteredIndex === dadosFiltrados.length - 1;
                 return (
                   <HistoricoList
-                    key={`${produto.id}-${index}`}
-                    produto={produto}
-                    isEven={index % 2 === 0}
-                    refProp={lastElementRef}
+                    key={`${item.id}-${originalIndex}`}
+                    produto={item}
+                    isEven={originalIndex % 2 === 0}
+                    refProp={isLast && !termo ? lastElementRef : undefined}
                   />
                 );
-              }
-
-              return (
-                <HistoricoList
-                  key={`${produto.id}-${index}`}
-                  produto={produto}
-                  isEven={index % 2 === 0}
-                />
-              );
-            })}
+              })
+            ) : (
+              termo ? (
+                <div className={styles.semResultados}>
+                  Nenhum resultado encontrado para &quot;{busca}&quot;
+                </div>
+              ) : null
+            )}
           </div>
 
-          {loading && <p>Carregando...</p>}
+          {loading && <p className={styles.carregando}>Carregando...</p>}
         </div>
 
-      {mostrarModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modalCalendario}>
+        {mostrarModal && (
+          <div className={styles.modalOverlay}>
+            <div className={styles.modalCalendario}>
 
-            <h2 className={styles.modalTitulo}>Selecionar período</h2>
+              <h2 className={styles.modalTitulo}>Selecionar período</h2>
 
-            <div className={styles.date_filter}>
-              <div>
-                <p className={styles.tit_data}>Data inicial</p>
-                <input
-                  className={styles.input}
-                  type="date"
-                  value={dataInicio}
-                  onChange={(e) => setDataInicio(e.target.value)}
-                />
+              <div className={styles.date_filter}>
+                <div>
+                  <p className={styles.tit_data}>Data inicial</p>
+                  <input
+                    className={styles.input}
+                    type="date"
+                    value={dataInicio}
+                    onChange={(e) => setDataInicio(e.target.value)}
+                  />
+                </div>
+
+                <div>
+                  <p className={styles.tit_data}>Data final</p>
+                  <input
+                    className={styles.input}
+                    type="date"
+                    value={dataFim}
+                    onChange={(e) => setDataFim(e.target.value)}
+                  />
+                </div>
               </div>
 
-              <div>
-                <p className={styles.tit_data}>Data final</p>
-                <input
-                  className={styles.input}
-                  type="date"
-                  value={dataFim}
-                  onChange={(e) => setDataFim(e.target.value)}
-                />
+              <div className={styles.modalBotoes}>
+                <button onClick={() => setMostrarModal(false)}>
+                  Cancelar
+                </button>
+                <button onClick={() => baixarCsv()}>
+                  Confirmar
+                </button>
               </div>
+
             </div>
-
-            <div className={styles.modalBotoes}>
-              <button onClick={() => setMostrarModal(false)}>
-                Cancelar
-              </button>
-
-              <button onClick={() => baixarCsv()}>
-                Confirmar
-              </button>
-            </div>
-
           </div>
-        </div>
-      )}
-
+        )}
 
       </main>
     </div>
