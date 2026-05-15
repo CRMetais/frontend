@@ -166,6 +166,11 @@ export default function ListaClientes() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [filtroNome, setFiltroNome] = useState("");
+
+  const fornecedoresFiltrados = clientes.filter((cliente) =>
+    cliente.nome?.toLowerCase().includes(filtroNome.toLowerCase())
+  );
 
   const handleClose = () => {
     setIsClosing(true);
@@ -187,9 +192,18 @@ export default function ListaClientes() {
           </span>
         </div>
 
-        <button onClick={() => setIsModalOpen(true)}>
-          Cadastrar fornecedor
-        </button>
+        <div className={styles.cabecalhoAcoes}>
+          <input
+            type="text"
+            className={styles.searchInput}
+            value={filtroNome}
+            onChange={(e) => setFiltroNome(e.target.value)}
+            placeholder="Pesquisar por nome"
+          />
+          <button onClick={() => setIsModalOpen(true)}>
+            Cadastrar fornecedor
+          </button>
+        </div>
 
         <NovoFornecedorModal
           isOpen={isModalOpen}
@@ -214,10 +228,10 @@ export default function ListaClientes() {
           <ClientesHeader />
 
           <div className={styles.clientesLista}>
-            {clientes.length === 0 ? (
+            {fornecedoresFiltrados.length === 0 ? (
               <p>Nenhum cliente encontrado</p>
             ) : (
-              clientes.map((cliente, index) => (
+              fornecedoresFiltrados.map((cliente, index) => (
                 <ClienteItem
                   key={cliente.idFornecedor}
                   cliente={cliente}
