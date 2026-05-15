@@ -24,18 +24,23 @@ body {
   min-width: 600px;
 }
 
+/* ── HEADER: título à esquerda, busca à direita ── */
+.lista-colaboradores-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
 .container-titulo {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  justify-content: start;
-  align-self: center;
-}
-
-.subtitulo {
-  display: flex;
-  justify-content: start;
-  font-family: "IBM Plex Sans", sans-serif;
+  gap: 0.15rem;
+  flex: 1;
+  align-self: flex-start; /* corrigido: era center */
+  text-align: left;
 }
 
 .lista-colaboradores-titulo {
@@ -46,7 +51,45 @@ body {
   font-weight: 600;
   height: 60px;
   color: #020618;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+.subtitulo {
+  display: flex;
+  justify-content: flex-start;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.lista-colaboradores-top {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  margin: 0; /* removido o margin-bottom que empurrava */
+}
+
+.search-input {
+  width: auto;
+  min-width: 240px;
+  max-width: 320px;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #d1d5e0;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 0.95rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #020618;
+  box-shadow: 0 0 0 5px rgba(2, 6, 24, 0.08);
 }
 
 /* --- ESTRUTURA --- */
@@ -77,24 +120,21 @@ body {
   text-align: center;
 }
 
-/* GRID PADRÃO IGUAL ESTOQUE */
+/* GRID */
 .lista-colaboradores-grid {
   width: 100%;
   height: 65vh;
   overflow-y: auto;
   background: #f8fafc;
-
   border-left: thin gainsboro solid;
   border-right: thin gainsboro solid;
   border-bottom: thin gainsboro solid;
   border-top: none;
-
   border-radius: 0 0 1rem 1rem;
-
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* SCROLLBAR PADRONIZADA */
+/* SCROLLBAR */
 .lista-colaboradores-grid::-webkit-scrollbar {
   width: 10px;
 }
@@ -125,13 +165,7 @@ body {
 
 .colaborador-item {
   background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb; /* borda suave */
-  color: #020618;
-  transition: 0.3s;
-}
-
-/* HOVER IGUAL AO ESTOQUE */
-.colaborador-item {
+  border-bottom: 1px solid #e5e7eb;
   color: #020618;
   transition: 0.3s;
 }
@@ -308,4 +342,22 @@ body {
 
 .divisao {
   display: none;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+  .lista-colaboradores-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .lista-colaboradores-top {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    max-width: 100%;
+  }
 }

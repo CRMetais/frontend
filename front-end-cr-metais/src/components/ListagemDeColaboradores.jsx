@@ -58,6 +58,7 @@ const ListaColaboradores = () => {
   const [colaboradorParaEditar, setColaboradorParaEditar] = useState(null);
   const [dadosEditados, setDadosEditados] = useState({});
   const [paginaAtual, setPaginaAtual] = useState(1);
+  const [filtroNome, setFiltroNome] = useState("");
 
   const carregarUsuarios = async () => {
     try {
@@ -79,9 +80,13 @@ const ListaColaboradores = () => {
     document.title = "CR Metais | Gestão de dados";
   }, []);
 
-  const totalPaginas = Math.ceil(colaboradores.length / ITENS_POR_PAGINA);
+  const colaboradoresFiltrados = colaboradores.filter((colaborador) =>
+    colaborador.nome?.toLowerCase().includes(filtroNome.toLowerCase())
+  );
+
+  const totalPaginas = Math.ceil(colaboradoresFiltrados.length / ITENS_POR_PAGINA);
   const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
-  const colaboradoresPagina = colaboradores.slice(indiceInicio, indiceInicio + ITENS_POR_PAGINA);
+  const colaboradoresPagina = colaboradoresFiltrados.slice(indiceInicio, indiceInicio + ITENS_POR_PAGINA);
 
   const prepararEdicao = (colaborador) => {
     setColaboradorParaEditar(colaborador.id);
@@ -119,7 +124,6 @@ const ListaColaboradores = () => {
         cargo: dadosEditados.cargo
       });
 
-      // Atualiza o token se editou o próprio perfil
       if (eOMesmoUsuario && resposta.data?.token) {
         localStorage.setItem("token", resposta.data.token);
       }
@@ -154,9 +158,26 @@ const ListaColaboradores = () => {
   return (
     <div className="lista-colaboradores-page">
       <div className="lista-colaboradores-container">
-        <div className="container-titulo">
-          <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
-          <span className="subtitulo">Veja aqui todos os Colaboradores cadastrados e clique para cadastrar, editar ou excluir um Colaboradores existente.</span>
+
+        {/* HEADER: título + subtítulo à esquerda, busca à direita */}
+        <div className="lista-colaboradores-header">
+          <div className="container-titulo">
+            <h1 className="lista-colaboradores-titulo">Colaboradores</h1>
+            <span className="subtitulo">Veja aqui todos os Colaboradores cadastrados e clique para cadastrar, editar ou excluir um Colaborador existente.</span>
+          </div>
+
+          <div className="lista-colaboradores-top">
+            <input
+              type="text"
+              className="search-input"
+              value={filtroNome}
+              onChange={(e) => {
+                setFiltroNome(e.target.value);
+                setPaginaAtual(1);
+              }}
+              placeholder="Pesquisar por nome"
+            />
+          </div>
         </div>
 
         <div className="colaborador-header">
