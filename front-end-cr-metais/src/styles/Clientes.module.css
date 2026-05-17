@@ -260,8 +260,11 @@ img {
   background-color: #ff6467 !important;
   color: #82181a;
   width: 100% !important;
-  height: 3rem;
+  /* height: 3rem; */
   font-size: 20px !important;
+  justify-content: center;
+  text-align: center;
+  display: flex;
 }
 
 .btn_fechar:hover {
@@ -274,8 +277,12 @@ img {
   /* background-color: #020618 !important; */
   /* color: white; */
   width: 100% !important;
-  height: 3rem;
+  /* height: 3rem; */
   font-size: 20px !important;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  display: flex;
 }
 
 .closing {
@@ -333,6 +340,10 @@ input:focus {
   display: flex;
   width: 100%;
   gap: 20px;
+}
+
+.btns_back_prox button {
+  flex: 1;
 }
 
 input {
