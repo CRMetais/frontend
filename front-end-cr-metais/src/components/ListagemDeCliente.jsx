@@ -15,6 +15,7 @@ import { FaEdit } from "react-icons/fa";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
+import { FaSearch } from "react-icons/fa";
 
 
 
@@ -193,13 +194,26 @@ export default function ListaClientes() {
         </div>
 
         <div className={styles.cabecalhoAcoes}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            value={filtroNome}
-            onChange={(e) => setFiltroNome(e.target.value)}
-            placeholder="Pesquisar por nome"
-          />
+          <div className={styles.searchWrapper}>
+            <FaSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              className={styles.searchInput}
+              value={filtroNome}
+              onChange={(e) => setFiltroNome(e.target.value)}
+              placeholder="Pesquisar por nome"
+            />
+            {filtroNome && (
+              <button
+                className={styles.searchClear}
+                onClick={() => setFiltroNome("")}
+                aria-label="Limpar busca"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
           <button onClick={() => setIsModalOpen(true)}>
             Cadastrar fornecedor
           </button>
