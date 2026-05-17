@@ -130,10 +130,24 @@ export default function ListaClientes() {
           </div> */}
 
           <div className={styles.clienteEdicao}>
-            <Tippy content="Clique aqui para exluir o usuário" theme="light">
+
+            <Tippy content="Clique aqui para editar o usuário" theme="light">
               <span
                 className={`${styles.acao} ${styles.editar}`}
                 onClick={() => abrirEdicao(cliente.idFornecedor)}
+              >
+                {/* <span>🗑️</span> */}
+                <div>
+                  <FaEdit className={styles.editIcon} />
+                </div>
+                {/* <span className={styles.label}>Excluir</span> */}
+              </span>
+            </Tippy>
+
+            <Tippy content="Clique aqui para exluir o usuário" theme="light">
+              <span
+                className={`${styles.acao} ${styles.excluir}`}
+                onClick={() => excluirCliente(cliente.idFornecedor)}
               >
                 {/* <span>🖋️</span> */}
 
@@ -145,18 +159,7 @@ export default function ListaClientes() {
               </span>
             </Tippy>
 
-            <Tippy content="Clique aqui para editar o usuário" theme="light">
-              <span
-                className={`${styles.acao} ${styles.excluir}`}
-                onClick={() => excluirCliente(cliente.idFornecedor)}
-              >
-                {/* <span>🗑️</span> */}
-                <div>
-                  <FaEdit className={styles.editIcon} />
-                </div>
-                {/* <span className={styles.label}>Excluir</span> */}
-              </span>
-            </Tippy>
+
           </div>
         </div>
 
