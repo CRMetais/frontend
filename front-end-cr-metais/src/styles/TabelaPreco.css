@@ -43,7 +43,7 @@
 .tableWrap {
   position: relative;
   border: 1px solid #e6e6e6;
-  border-radius: 6px;
+  border-radius: 1rem;
 
   overflow-x: auto;
   overflow-y: auto;
@@ -70,8 +70,10 @@
 /* ====== TABELA ====== */
 .table {
   border-collapse: collapse;
-  width: max-content; /* cresce com as colunas */
-  min-width: 100%;    /* mas não fica menor que o container */
+  width: max-content;
+  /* cresce com as colunas */
+  min-width: 100%;
+  /* mas não fica menor que o container */
 }
 
 /* ====== HEADER ====== */
@@ -101,7 +103,7 @@
 }
 
 /* ====== CELULAS ====== */
-.td{
+.td {
   font-size: 18px;
   padding: 12px 0;
   text-align: center;
@@ -130,15 +132,22 @@
 
   width: 220px;
   /* background: #ffffff; */
-  border-right: 1px solid #f0f0f0;
+  /* border-right: 1px solid #f0f0f0; */
+}
+
+.trHover {
+  border-bottom: solid gainsboro 0.1px;
 }
 
 /* hover */
 .trHover:hover td {
-  background: rgb(238, 238, 238);
+  /* background: rgb(238, 238, 238); */
+  background-color: #fef9c2;
 }
+
 .trHover:hover .tdLeft {
-  background: rgb(238, 238, 238);
+  /* background: rgb(238, 238, 238); */
+  background-color: #fef9c2;
 }
 
 /* ====== TENDÊNCIA (cores automáticas) ====== */
@@ -198,6 +207,7 @@
   .body {
     grid-template-columns: 1fr;
   }
+
   .side {
     padding-top: 0;
   }
@@ -368,6 +378,7 @@
 /* ── Input dentro da célula editável ── */
 .cellInput {
   background: transparent;
+  /* background-color: red !important; */
   border: none;
   color: inherit;
   font-size: inherit;
@@ -376,13 +387,14 @@
   text-align: center;
   outline: none;
   transition: background 0.15s;
-  padding: 2px 4px;
-  border-radius: 2px;
+  /* padding: 2px 4px; */
+  /* border-radius: 2px; */
+  height: calc(24px) !important;
 }
 
 .cellInput:focus {
   background: rgba(245, 197, 24, 0.08);
-  border-radius: 3px 3px 0 0;
+  /* border-radius: 3px 3px 0 0; */
 }
 
 .cellInputDirty {
@@ -399,7 +411,7 @@
   border-radius: 6px;
   cursor: not-allowed;
   background: #020618;
-  color:#fffbfb;
+  color: #fffbfb;
   font-size: 13px;
   font-family: inherit;
   transition: all 0.2s;
@@ -479,8 +491,13 @@
   font-weight: 500;
 }
 
-.status.success { color: #4caf50; }
-.status.error   { color: #f44336; }
+.status.success {
+  color: #4caf50;
+}
+
+.status.error {
+  color: #f44336;
+}
 
 /* ── Modal ── */
 .modalOverlay {
@@ -647,17 +664,17 @@
   font-weight: 600;
   transition: all 0.2s;
 }
- 
+
 .btnNovaTabela:hover:not(:disabled) {
   background: #020618;
   color: white;
 }
- 
+
 .btnNovaTabela:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
- 
+
 .btnCompra {
   width: 100%;
   padding: 10px 14px;
@@ -671,12 +688,16 @@
   font-weight: 600;
   transition: all 0.2s;
 }
- 
+
 .btnCompra:hover {
   background: #020618;
   color: white;
 }
- 
+
 .status.success {
   color: #16a34a;
+}
+
+tbody {
+  background-color: #fef9c2 !important;
 }

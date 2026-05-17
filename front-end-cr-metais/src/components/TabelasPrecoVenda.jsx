@@ -281,7 +281,7 @@ function TabelaVendaView({ usuarioComum, onIrParaCompra }) {
                   <tr>
                     <th className="th thLeft">Produto</th>
                     {datas.map((d, idx) => (
-                      <th key={d} className="th" style={idx === 0 ? { borderBottom: "2px solid #FACC15" } : {}}>
+                      <th key={d} className="th" /* style={idx === 0 ? { borderBottom: "2px solid #FACC15" } : {}} */>
                         {d}
                       </th>
                     ))}
@@ -300,7 +300,7 @@ function TabelaVendaView({ usuarioComum, onIrParaCompra }) {
                         const valorEdit = edits[nome];
                         const displayValue = valorEdit !== undefined ? valorEdit : formatBRL(current);
                         return (
-                          <td key={d} className={`td ${trendClass}`} style={idx === 0 ? { background: "rgba(250,204,21,0.04)" } : {}}>
+                          <td key={d} className={`td ${trendClass}`} /*style={idx === 0 ? { background: "rgba(250,204,21,0.04)" } : {}}*/>
                             {isEditavel ? (
                               <input
                                 className={`cellInput ${valorEdit !== undefined ? "cellInputDirty" : ""}`}
