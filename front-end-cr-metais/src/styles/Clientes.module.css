@@ -13,12 +13,11 @@
 
 .titulos {
   display: flex;
-  /* justify-content: space-between; */
   flex-direction: column;
   align-items: start;
-  /* border: solid blue; */
   margin: 0;
-  padding: 2rem 0;
+  padding: 0; /* Removido para alinhar com os botões */
+  max-width: 50%; /* Evita que o texto empurre os botões para baixo */
 }
 
 .titulo {
@@ -367,9 +366,7 @@ input {
   position: relative;
   display: flex;
   align-items: center;
-  width: 300px;
-  flex-shrink: 0;
-  /* border: solid red; */
+  width: 100%; /* Ocupa todo o container elástico */
 }
 
 .searchIcon {
@@ -382,17 +379,16 @@ input {
 
 .searchInput {
   width: 100%;
-  padding: 8px 32px 8px 48px;
-  height: 100% !important;
+  padding: 10px 16px 10px 42px;
+  height: 42px !important;
   border: 1.5px solid #e2e8f0;
-  border-radius: 0.9rem;
-  background-color: #f8fafc;
+  border-radius: 0.75rem;
   background-color: white;
   color: #020618;
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .searchInput::placeholder {
@@ -428,4 +424,278 @@ input {
 .searchClear:hover {
   background-color: #cbd5e1;
   color: #020618;
+}
+
+.toggleWrapper {
+  display: flex;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid #d1d5db;
+  width: fit-content;
+  align-self: flex-end;
+}
+ 
+/* Botão individual do toggle */
+.toggleBtn {
+  padding: 8px 24px;
+  background: #ffffff;
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+ 
+.toggleBtn:not(:last-child) {
+  border-right: 1.5px solid #d1d5db;
+}
+ 
+.toggleBtn:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+ 
+/* Estado ativo do toggle */
+.toggleAtivo {
+  background: #1f2937;  /* ajuste para a cor primária do seu projeto */
+  color: #ffffff !important;
+}
+ 
+.toggleAtivo:hover {
+  background: #374151;
+}
+ 
+/* Animações dos modais (se ainda não existirem) */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+ 
+.fadeIn {
+  animation: fadeIn 0.25s ease forwards;
+}
+.fadeOut {
+  animation: fadeOut 0.25s ease forwards;
+}
+ 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+ 
+.modalBox {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  overflow: hidden;
+}
+ 
+.slideIn {
+  animation: slideIn 0.25s ease forwards;
+}
+.slideOut {
+  animation: slideOut 0.25s ease forwards;
+}
+ 
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+@keyframes slideOut {
+  from { transform: translateY(0);    opacity: 1; }
+  to   { transform: translateY(20px); opacity: 0; }
+}
+ 
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+ 
+.modalTitulo {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+ 
+.modalFechar {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 4px;
+  line-height: 1;
+}
+ 
+.modalFechar:hover {
+  color: #111827;
+}
+ 
+.modalBody {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+.label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: -6px;
+}
+ 
+.input {
+  padding: 9px 12px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+ 
+.input:focus {
+  border-color: #6366f1;
+}
+ 
+.erroMsg {
+  color: #dc2626;
+  font-size: 0.8rem;
+  margin: 0;
+}
+ 
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #e5e7eb;
+}
+ 
+.btnCancelar {
+  padding: 8px 18px;
+  border: 1.5px solid #d1d5db;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+}
+ 
+.btnCancelar:hover {
+  background: #f3f4f6;
+}
+ 
+.btnSalvar {
+  padding: 8px 18px;
+  background: #1f2937;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+ 
+.btnSalvar:hover {
+  background: #374151;
+}
+ 
+.btnSalvar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Modifique ou adicione esta classe para a barra amarela de cadastro */
+.btnCadastrarAmarelo {
+  height: 42px;
+  width: auto !important; /* Remove o esticamento de 100% */
+  padding: 0 20px;
+  background-color: #facc15;
+  color: #020618;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  white-space: nowrap;
+  margin-bottom: 0 !important; /* Remove a quebra de margem inferior */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnCadastrarAmarelo:hover {
+  background-color: #e2b60d;
+  transform: translateY(-1px);
+}
+
+/* Ajuste no cabeçalho de ações para empilhar o input e o botão corretamente */
+/* --- Container Único das Ações (Lado Direito) --- */
+.cabecalhoLayoutNovo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  justify-content: flex-end; /* Empurra tudo para a extrema direita */
+}
+
+/* Alinha a barra de pesquisa à esquerda */
+.searchContainerEsquerda {
+  display: flex;
+  flex: 1; /* Faz a pesquisa crescer */
+  justify-content: flex-end;
+  max-width: 450px; /* Define um limite máximo elegante para a pesquisa */
+}
+
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Alinha perfeitamente com os títulos na vertical */
+  width: 100%;
+  padding: 2rem 0 1rem 0; /* Unifica o padding superior */
+}
+
+.toggleBtnUnico {
+  display: flex;
+  height: 42px;
+  padding: 0 20px;
+  background-color: #020618;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggleBtnUnico:hover {
+  background-color: #1e293b;
+  transform: translateY(-1px);
 }

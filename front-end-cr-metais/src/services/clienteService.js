@@ -1,36 +1,67 @@
-import api from "./apiClient";
-import axios from "axios";
-
-
-// 1. Cadastrar Cliente (POST)
-export const cadastrarCliente = async (dadosCliente) => {
-  return await api.post("/clientes", dadosCliente);
-};
-
-// 2. Listar todos os Clientes (GET)
+import { API_URL } from "./apiClient";
+ 
 export async function listarClientes() {
-  const response = await api.get("/fornecedores");
-  return response.data; // Retorna o JSON com a lista que vem do Spring
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/clientes`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+ 
+  if (!res.ok) throw new Error("Erro ao listar clientes");
+  return res.json();
 }
-
-// 3. Deletar por ID (DELETE)
-export async function excluirCliente(id) {
-  return await api.delete(`/clientes/${id}`);
+ 
+export async function buscarClientePorId(id) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/clientes/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+ 
+  if (!res.ok) throw new Error("Cliente não encontrado");
+  return res.json();
 }
-
-// 4. Atualizar dados (PUT)
-export async function editarCliente(id, dados) {
-  return await api.put(`/clientes/${id}`, dados);
+ 
+export async function cadastrarCliente(dto) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/clientes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dto),
+  });
+ 
+  if (!res.ok) throw new Error("Erro ao cadastrar cliente");
+  return res.json();
 }
-
-
-// A que fizemos
-export const deleteUser = async (id) => {
-  try {
-    await axios.delete(`http://localhost:8080/fornecedores/${id}`);
-    alert("Fornecedor removido!");
-    // Atualize sua lista local após o sucesso
-  } catch (error) {
-    console.error("Erro ao deletar:", error);
-  }
-};
+ 
+export async function atualizarCliente(id, dto) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/clientes/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(dto),
+  });
+ 
+  if (!res.ok) throw new Error("Erro ao atualizar cliente");
+  return res.json();
+}
+ 
+export async function deletarCliente(id) {
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${API_URL}/clientes/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+ 
+  if (!res.ok) throw new Error("Erro ao deletar cliente");
+}

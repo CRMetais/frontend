@@ -1,40 +1,61 @@
-import React, { useState } from "react";
-import "../styles/CadastroClienteStyle.css";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/Clientes.module.css";
 import { API_URL } from "../services/apiClient";
-import CadastroClienteContainer from "./CadastroCliente";
-import { useEffect } from "react";
-import ClienteModal from "./ClienteModal";
-import { listarClientes } from "../services/clienteService";
-import CustomSelect from "./BoxSelects";
-import { deleteUser } from "../services/clienteService";
+import { listarClientes, deletarCliente } from "../services/clienteService";
+import { FaTrashAlt, FaEdit, FaSearch } from "react-icons/fa";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
+import "tippy.js/themes/light.css";
+
+// Modais de Fornecedor
 import NovoFornecedorModal from "./NovoFornecedorModal";
 import EditarFornecedorModal from "./EditarFornecedorModal";
-import { FaTrashAlt } from "react-icons/fa";
-import { FaEdit } from "react-icons/fa";
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light.css';
-import { FaSearch } from "react-icons/fa";
 
+// Modais de Cliente
+import NovoClienteModal from "./NovoClienteModal";
+import EditarClienteModal from "./EditarClienteModal";
 
-
-
-export default function ListaClientes() {
-  const [clientes, setClientes] = useState([]);
-  const [clienteSelecionado, setClienteSelecionado] = useState(null);
-  const [modalAberto, setModalAberto] = useState(false);
+// ─────────────────────────────────────────────
+// Sub-componente: listagem de FORNECEDORES
+// ─────────────────────────────────────────────
+function ListaFornecedores({ filtroNome, setFiltroNome }) {
+  const [fornecedores, setFornecedores] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isEditClosing, setIsEditClosing] = useState(false);
   const [fornecedorEditandoId, setFornecedorEditandoId] = useState(null);
 
-  useEffect(() => {
-    document.title = "CR Metais | Fornecedores";
-  });
+  const carregarFornecedores = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/fornecedores`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setFornecedores(data || []);
+    } catch (err) {
+      console.error("Erro ao buscar fornecedores:", err);
+    }
+  };
 
-  function abrirModal(cliente) {
-    setClienteSelecionado(cliente);
-    setModalAberto(true);
+  useEffect(() => {
+    carregarFornecedores();
+  }, []);
+
+  async function excluirFornecedor(id) {
+    if (!window.confirm("Tem certeza que deseja excluir este fornecedor?")) return;
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch(`${API_URL}/fornecedores/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error();
+      setFornecedores((prev) => prev.filter((f) => f.idFornecedor !== id));
+    } catch {
+      alert("Erro ao excluir fornecedor.");
+    }
   }
 
   function abrirEdicao(id) {
@@ -51,34 +72,102 @@ export default function ListaClientes() {
     }, 300);
   }
 
-  async function excluirCliente(id) {
-    const confirmado = window.confirm("Tem certeza que deseja excluir este fornecedor?");
-    if (!confirmado) return;
-
-    try {
-      const res = await fetch(`${API_URL}/fornecedores/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!res.ok) throw new Error("Erro ao excluir fornecedor");
-
-      setClientes((prev) => prev.filter((c) => c.idFornecedor !== id));
-    } catch (err) {
-      console.error(err);
-      alert("Erro ao excluir fornecedor. Tente novamente.");
-    }
+  function handleClose() {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsClosing(false);
+    }, 300);
   }
 
-  function fecharModal() {
-    setModalAberto(false);
-  }
+  const filtrados = fornecedores.filter((f) =>
+    f.nome?.toLowerCase().includes(filtroNome.toLowerCase())
+  );
+
+  return (
+    <>
+      {/* Botão de gatilho do modal controlado internamente pela listagem */}
+      <div style={{ display: "none" }}>
+        <button id="btn-cadastrar-fornecedor-trigger" onClick={() => setIsModalOpen(true)}></button>
+      </div>
+
+      <NovoFornecedorModal
+        isOpen={isModalOpen}
+        isClosing={isClosing}
+        onClose={handleClose}
+        onSuccess={carregarFornecedores}
+      />
+      <EditarFornecedorModal
+        isOpen={isEditModalOpen}
+        isClosing={isEditClosing}
+        onClose={fecharEdicao}
+        fornecedorId={fornecedorEditandoId}
+        onSuccess={carregarFornecedores}
+      />
+
+      <div className={styles.listaClientesGrid}>
+        <div className={styles.clientesHeader}>
+          <span className={styles.clienteId}>ID</span>
+          <span className={styles.clienteNome}>Nome</span>
+          <span className={styles.clienteResponsavel}>Responsável</span>
+          <span className={styles.clienteTabela}>Tabela</span>
+          <span className={styles.clienteTabela}>Ações</span>
+        </div>
+
+        <div className={styles.clientesLista}>
+          {filtrados.length === 0 ? (
+            <p style={{ padding: "20px", color: "#6b7280" }}>Nenhum fornecedor encontrado</p>
+          ) : (
+            filtrados.map((f, index) => (
+              <div
+                key={f.idFornecedor}
+                className={`${styles.clienteLine} ${index % 2 === 0 ? styles.linhaPar : styles.linhaImpar}`}
+              >
+                <div className={styles.clienteItem}>
+                  <span className={styles.clienteId}>{f.idFornecedor}</span>
+                  <span className={styles.clienteNome}>{f.nome}</span>
+                  <span className={styles.clienteResponsavel}>{f.responsavel?.nome || "-"}</span>
+                  <span className={styles.clienteTabela}>{f.tabelaPreco?.nomeTabela || "-"}</span>
+                  <div className={styles.clienteEdicao}>
+                    <Tippy content="Editar fornecedor" theme="light">
+                      <span className={`${styles.acao} ${styles.editar}`} onClick={() => abrirEdicao(f.idFornecedor)}>
+                        <FaEdit className={styles.editIcon} />
+                      </span>
+                    </Tippy>
+                    <Tippy content="Excluir fornecedor" theme="light">
+                      <span className={`${styles.acao} ${styles.excluir}`} onClick={() => excluirFornecedor(f.idFornecedor)}>
+                        <FaTrashAlt className={styles.trashAlt} />
+                      </span>
+                    </Tippy>
+                  </div>
+                </div>
+                <div className={styles.divisao}></div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────
+// Sub-componente: listagem de CLIENTES
+// ─────────────────────────────────────────────
+function ListaClientes({ filtroNome, setFiltroNome }) {
+  const [clientes, setClientes] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isEditClosing, setIsEditClosing] = useState(false);
+  const [clienteEditandoId, setClienteEditandoId] = useState(null);
 
   const carregarClientes = async () => {
     try {
       const data = await listarClientes();
       setClientes(data || []);
-    } catch (error) {
-      console.error("Erro ao buscar clientes:", error);
+    } catch (err) {
+      console.error("Erro ao buscar clientes:", err);
     }
   };
 
@@ -86,191 +175,198 @@ export default function ListaClientes() {
     carregarClientes();
   }, []);
 
-  const ClientesHeader = () => {
-    return (
-      <div className={styles.clientesHeader}>
-        <span className={styles.clienteId}>ID</span>
-        <span className={styles.clienteNome}>Nome</span>
-        <span className={styles.clienteResponsavel}>Responsável</span>
-        <span className={styles.clienteTabela}>Tabela</span>
-        <span className={styles.clienteTabela}>Ações</span>
-      </div>
-    );
-  };
+  async function excluirClienteItem(id) {
+    if (!window.confirm("Tem certeza que deseja excluir este cliente?")) return;
+    try {
+      await deletarCliente(id);
+      setClientes((prev) => prev.filter((c) => c.idCliente !== id));
+    } catch {
+      alert("Erro ao excluir cliente.");
+    }
+  }
 
-  const ClienteItem = ({ cliente, isEven }) => {
-    return (
-      <div
-        className={`${styles.clienteLine} ${isEven ? styles.linhaPar : styles.linhaImpar}`}
-      >
-        <div className={styles.clienteItem}>
-          <span className={styles.clienteId}>
-            {cliente?.idFornecedor}
-          </span>
+  function abrirEdicao(id) {
+    setClienteEditandoId(id);
+    setIsEditModalOpen(true);
+  }
 
-          <span className={styles.clienteNome}>
-            {cliente?.nome}
-          </span>
+  function fecharEdicao() {
+    setIsEditClosing(true);
+    setTimeout(() => {
+      setIsEditModalOpen(false);
+      setIsEditClosing(false);
+      setClienteEditandoId(null);
+    }, 300);
+  }
 
-          <span className={styles.clienteResponsavel}>
-            {cliente.responsavel?.nome || "-"}
-          </span>
-
-          <span className={styles.clienteTabela}>
-            {cliente.tabelaPreco?.nomeTabela || "-"}
-          </span>
-
-          {/* <div className={styles.clienteEdicao}>
-            <div className={styles.editar} onClick={() => abrirEdicao(cliente.idFornecedor)}>
-              🖋️
-            </div>
-            <div className={styles.excluir} onClick={() => excluirCliente(cliente.idFornecedor)}>
-              🗑️
-            </div>
-          </div> */}
-
-          <div className={styles.clienteEdicao}>
-
-            <Tippy content="Clique aqui para editar o usuário" theme="light">
-              <span
-                className={`${styles.acao} ${styles.editar}`}
-                onClick={() => abrirEdicao(cliente.idFornecedor)}
-              >
-                {/* <span>🗑️</span> */}
-                <div>
-                  <FaEdit className={styles.editIcon} />
-                </div>
-                {/* <span className={styles.label}>Excluir</span> */}
-              </span>
-            </Tippy>
-
-            <Tippy content="Clique aqui para exluir o usuário" theme="light">
-              <span
-                className={`${styles.acao} ${styles.excluir}`}
-                onClick={() => excluirCliente(cliente.idFornecedor)}
-              >
-                {/* <span>🖋️</span> */}
-
-                <div>
-                  <FaTrashAlt className={styles.trashAlt} />
-                </div>
-
-                {/* <span className={styles.label}>Editar</span> */}
-              </span>
-            </Tippy>
-
-
-          </div>
-        </div>
-
-        <div className={styles.divisao}></div>
-      </div>
-    );
-  };
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-  const [filtroNome, setFiltroNome] = useState("");
-
-  const fornecedoresFiltrados = clientes.filter((cliente) =>
-    cliente.nome?.toLowerCase().includes(filtroNome.toLowerCase())
-  );
-
-  const handleClose = () => {
+  function handleClose() {
     setIsClosing(true);
-
     setTimeout(() => {
       setIsModalOpen(false);
       setIsClosing(false);
     }, 300);
+  }
+
+  const filtrados = clientes.filter((c) =>
+    c.razaoSocial?.toLowerCase().includes(filtroNome.toLowerCase())
+  );
+
+  return (
+    <>
+      {/* Botão de gatilho do modal controlado internamente pela listagem */}
+      <div style={{ display: "none" }}>
+        <button id="btn-cadastrar-cliente-trigger" onClick={() => setIsModalOpen(true)}></button>
+      </div>
+
+      <NovoClienteModal
+        isOpen={isModalOpen}
+        isClosing={isClosing}
+        onClose={handleClose}
+        onSuccess={carregarClientes}
+      />
+      <EditarClienteModal
+        isOpen={isEditModalOpen}
+        isClosing={isEditClosing}
+        onClose={fecharEdicao}
+        clienteId={clienteEditandoId}
+        onSuccess={carregarClientes}
+      />
+
+      <div className={styles.listaClientesGrid}>
+        <div className={styles.clientesHeader}>
+          <span className={styles.clienteId}>ID</span>
+          <span className={styles.clienteNome}>Razão Social</span>
+          <span className={styles.clienteResponsavel}>CNPJ</span>
+          <span className={styles.clienteTabela}>Tabela</span>
+          <span className={styles.clienteTabela}>Ações</span>
+        </div>
+
+        <div className={styles.clientesLista}>
+          {filtrados.length === 0 ? (
+            <p style={{ padding: "20px", color: "#6b7280" }}>Nenhum cliente encontrado</p>
+          ) : (
+            filtrados.map((c, index) => (
+              <div
+                key={c.idCliente}
+                className={`${styles.clienteLine} ${index % 2 === 0 ? styles.linhaPar : styles.linhaImpar}`}
+              >
+                <div className={styles.clienteItem}>
+                  <span className={styles.clienteId}>{c.idCliente}</span>
+                  <span className={styles.clienteNome}>{c.razaoSocial}</span>
+                  <span className={styles.clienteResponsavel}>{c.responsavel || c.cnpj || "-"}</span>
+                  <span className={styles.clienteTabela}>{c.tabelaPreco || "-"}</span>
+                  <div className={styles.clienteEdicao}>
+                    <Tippy content="Editar cliente" theme="light">
+                      <span className={`${styles.acao} ${styles.editar}`} onClick={() => abrirEdicao(c.idCliente)}>
+                        <FaEdit className={styles.editIcon} />
+                      </span>
+                    </Tippy>
+                    <Tippy content="Excluir cliente" theme="light">
+                      <span className={`${styles.acao} ${styles.excluir}`} onClick={() => excluirClienteItem(c.idCliente)}>
+                        <FaTrashAlt className={styles.trashAlt} />
+                      </span>
+                    </Tippy>
+                  </div>
+                </div>
+                <div className={styles.divisao}></div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ─────────────────────────────────────────────
+// Componente principal com barra integrada
+// ─────────────────────────────────────────────
+export default function ListagemDeCliente() {
+  const [visao, setVisao] = useState("fornecedores"); // "fornecedores" | "clientes"
+  const [filtroNome, setFiltroNome] = useState("");
+
+  useEffect(() => {
+    document.title = "CR Metais | Fornecedores & Clientes";
+  }, []);
+
+  const alternarVisao = () => {
+    setFiltroNome("");
+    setVisao((prev) => (prev === "fornecedores" ? "clientes" : "fornecedores"));
+  };
+
+  const handleCadastrarClick = () => {
+    if (visao === "fornecedores") {
+      document.getElementById("btn-cadastrar-fornecedor-trigger")?.click();
+    } else {
+      document.getElementById("btn-cadastrar-cliente-trigger")?.click();
+    }
   };
 
   return (
     <div className={styles.listaClientesContainer}>
-
+      
+      {/* O Cabeçalho agora engloba os Títulos E as Ações na mesma linha horizontal */}
       <div className={styles.cabecalho}>
+        
+        {/* Lado Esquerdo: Textos */}
         <div className={styles.titulos}>
-          <span className={styles.titulo}>Fornecedores</span>
+          <span className={styles.titulo}>
+            {visao === "fornecedores" ? "Fornecedores" : "Clientes"}
+          </span>
           <span className={styles.subtitulo}>
-            Veja aqui todos os fornecedores cadastrados e clique para cadastrar, editar ou excluir um fornecedor existente.
+            {visao === "fornecedores"
+              ? "Veja aqui todos os fornecedores cadastrados e clique para cadastrar, editar ou excluir um fornecedor existente."
+              : "Veja todos os clientes cadastrados e clique para cadastrar, editar ou excluir."}
           </span>
         </div>
 
-        <div className={styles.cabecalhoAcoes}>
-          <div className={styles.searchWrapper}>
-            <FaSearch className={styles.searchIcon} />
-            <input
-              type="text"
-              className={styles.searchInput}
-              value={filtroNome}
-              onChange={(e) => setFiltroNome(e.target.value)}
-              placeholder="Pesquisar por nome"
-            />
-            {filtroNome && (
-              <button
-                className={styles.searchClear}
-                onClick={() => setFiltroNome("")}
-                aria-label="Limpar busca"
-              >
-                ✕
-              </button>
-            )}
+        {/* Lado Direito: Ações (Pesquisa robusta + Botão Toggle + Botão Cadastrar) */}
+        <div className={styles.cabecalhoLayoutNovo}>
+          
+          {/* 1. Barra de Busca Expandida */}
+          <div className={styles.searchContainerEsquerda}>
+            <div className={styles.searchWrapper}>
+              <FaSearch className={styles.searchIcon} />
+              <input
+                type="text"
+                className={styles.searchInput}
+                value={filtroNome}
+                onChange={(e) => setFiltroNome(e.target.value)}
+                placeholder={visao === "fornecedores" ? "Pesquisar por nome" : "Pesquisar por razão social"}
+              />
+              {filtroNome && (
+                <button
+                  className={styles.searchClear}
+                  onClick={() => setFiltroNome("")}
+                  aria-label="Limpar busca"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
           </div>
 
-          <button onClick={() => setIsModalOpen(true)}>
-            Cadastrar fornecedor
+          {/* 2. Botão Único que Alterna de Texto */}
+          <button className={styles.toggleBtnUnico} onClick={alternarVisao}>
+            {visao === "fornecedores" ? "Clientes" : "Fornecedores"}
           </button>
+
+          {/* 3. Botão Amarelo Compacto */}
+          <button className={styles.btnCadastrarAmarelo} onClick={handleCadastrarClick}>
+            {visao === "fornecedores" ? "Cadastrar fornecedor" : "Cadastrar cliente"}
+          </button>
+
         </div>
-
-        <NovoFornecedorModal
-          isOpen={isModalOpen}
-          isClosing={isClosing}
-          onClose={handleClose}
-          onSuccess={carregarClientes}
-        />
-
-        <EditarFornecedorModal
-          isOpen={isEditModalOpen}
-          isClosing={isEditClosing}
-          onClose={fecharEdicao}
-          fornecedorId={fornecedorEditandoId}
-          onSuccess={carregarClientes} // ✅ chama carregarClientes após salvar
-        />
       </div>
 
+      {/* Conteúdo dinâmico da tabela */}
       <div className={styles.containerInfos}>
-
-        {/* TABELA ESQUERDA */}
-        <div className={styles.listaClientesGrid}>
-          <ClientesHeader />
-
-          <div className={styles.clientesLista}>
-            {fornecedoresFiltrados.length === 0 ? (
-              <p>Nenhum cliente encontrado</p>
-            ) : (
-              fornecedoresFiltrados.map((cliente, index) => (
-                <ClienteItem
-                  key={cliente.idFornecedor}
-                  cliente={cliente}
-                  isEven={index % 2 === 0}
-                />
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* LADO DIREITO */}
-        <CadastroClienteContainer />
-
+        {visao === "fornecedores" ? (
+          <ListaFornecedores filtroNome={filtroNome} setFiltroNome={setFiltroNome} />
+        ) : (
+          <ListaClientes filtroNome={filtroNome} setFiltroNome={setFiltroNome} />
+        )}
       </div>
-
-      {modalAberto && (
-        <ClienteModal
-          cliente={clienteSelecionado}
-          onClose={fecharModal}
-        />
-      )}
-
     </div>
   );
 }
